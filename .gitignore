@@ -1,0 +1,8 @@
+atml-pa4-datasets/
+handout/
+outputs/
+report/
+__pycache__/
+*.pt
+*.safetensors
+.env
