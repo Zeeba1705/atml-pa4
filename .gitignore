@@ -6,3 +6,13 @@ __pycache__/
 *.pt
 *.safetensors
 .env
+data/
+*.bin
+*.npz
+*.pth
+*.gguf
+.venv/
+.pytest_cache/
+.DS_Store
+kaggle.json
+.ipynb_checkpoints/

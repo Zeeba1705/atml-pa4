@@ -1,0 +1,76 @@
+#task 2 part B, MQAR (handout pp.7-9)
+
+data:
+  generator: atml-pa4-datasets/scripts/mqar_generator.py
+  development: atml-pa4-datasets/data/mqar/mqar_development.jsonl.gz
+  test: atml-pa4-datasets/data/mqar/mqar_test.jsonl.gz
+  test_per_cell: 1024
+  dev_per_cell: 256
+  #decision 2.4: train index = update*batch_size + b, same stream for every seed and method
+  train_stream: shared_across_seeds
+
+seq_len: 256
+vocab_size: 256
+key_ids: [64, 127]
+value_ids: [128, 191]
+filler_ids: [2, 63]
+num_classes: 64                #decision 2.3, head over value ids 128..191, label = id - 128
+chance_label_space: 0.015625   #1/64; the 1/K baseline is computed per example
+
+model:
+  num_layers: 2
+  hidden_dim: 128
+  num_heads: 4
+  head_dim: 32
+  mlp_mult: 4
+  norm: pre
+  token_embedding: learned
+  positional_embedding: sinusoidal
+  dropout: 0.0                 #ours, not specified
+
+optimizer:
+  name: AdamW
+  peak_lr: 0.0008
+  weight_decay: 0.01
+batch_size: 32
+updates: 4500
+warmup_updates: 200
+final_lr_fraction: 0.15        #linear decay to 15% of peak
+grad_clip: 1.0
+eval_at: [500, 1000, 1500, 2000, 3000, 4500]   #on development set; test only at the final checkpoint
+seeds: [6304, 6305, 6306]
+
+attention:
+  window: 64                   #j in [i-W+1, i]
+  receptive_field_limit: 126   #2(W-1)
+  dilated_offsets_step: 4
+  dilated_offsets_max: 252     #offsets {0,4,...,252}, 64 positions
+  dilated_heads: [2, 3]        #ours: heads 0,1 local 64, heads 2,3 dilated
+  linear_feature_map: elu_plus_1
+  linear_eps: 1.0e-6           #ours
+
+distance_bins: [[0, 32], [32, 64], [64, 128], [128, 256]]
+regimes: [near, far, mixed]
+
+runs:   #B1/B2 required (pp.9); B3 added after decision, K=16, 3 seeds, within 5% params
+  - {name: dense_K4_mixed, attention: dense, K: 4, regime: mixed}
+  - {name: dense_K8_mixed, attention: dense, K: 8, regime: mixed}
+  - {name: dense_K16_mixed, attention: dense, K: 16, regime: mixed}
+  - {name: dense_K16_near, attention: dense, K: 16, regime: near}
+  - {name: window_K4_near, attention: window, K: 4, regime: near}
+  - {name: window_K8_near, attention: window, K: 8, regime: near}
+  - {name: window_K16_near, attention: window, K: 16, regime: near}
+  - {name: window_K16_mixed, attention: window, K: 16, regime: mixed}
+  - {name: linear_K4_mixed, attention: linear, K: 4, regime: mixed}
+  - {name: linear_K8_mixed, attention: linear, K: 8, regime: mixed}
+  - {name: linear_K16_mixed, attention: linear, K: 16, regime: mixed}
+  - {name: dilated_K4_mixed, attention: local_dilated, K: 4, regime: mixed}
+  - {name: dilated_K16_mixed, attention: local_dilated, K: 16, regime: mixed}
+
+test_time_window_control: [dense_K4_mixed, dense_K8_mixed, dense_K16_mixed, dense_K16_near]   #ours, all dense models
+
+forward_sweep:   #p.8
+  seq_lengths: [256, 1024, 4096, 8192]
+  batch_size: 2                #ours
+  warmup_reps: 2
+  timing_reps: 10

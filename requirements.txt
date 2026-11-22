@@ -1,0 +1,12 @@
+#pinned by the handout (p.2)
+transformers==4.57.1
+huggingface_hub==0.36.2
+
+#to be pinned once smoke tests pass; torch comes from the kaggle image (version recorded at runtime)
+datasets>=3,<5
+peft
+pyyaml
+numpy
+scipy
+matplotlib
+pytest

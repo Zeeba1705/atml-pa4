@@ -1,0 +1,38 @@
+#task 3 speculative evaluation and prefix banks (handout pp.11-14)
+
+target: Qwen/Qwen2.5-1.5B-Instruct
+draft: Qwen/Qwen2.5-0.5B-Instruct
+temperature: 1.0
+top_p: 1.0
+gammas: [2, 4]
+paired_reps: 2
+speed_max_new_tokens: 64           #primary eos-aware benchmark
+quality_max_new_tokens:
+  math: 512
+  short: 32
+standalone_decoding: sample_t1     #decision 3.7, 2 reps
+throughput_diag:
+  n_math_prompts: 24               #ours: first 24 gsm8k test prompts by order
+  fixed_new_tokens: 64             #ignores eos, timing only
+counterbalance: alternate_order
+timing: per_phase_synchronized     #decision 3.6, overhead measured and reported
+num_eval_prompts: 120              #60 gsm8k test + 30 familiar + 30 shifted
+
+banks:
+  supplied: atml-pa4-datasets/data/prefix_banks/prefix_banks_locked.jsonl.gz   #teacher, original_draft (rep penalty 1.1, decision G1)
+  generated: [teacher_pure, exact_spec_original_gamma4]   #decision G1, 3.1
+  student_banks: own rollouts of each trained student on the 120 prompts
+  position_bins: [[1, 16], [17, 32], [33, 64], [65, 192]]
+  positions_per_bin: [8, 8, 16, 16]   #same rule as setup_data.py
+  max_new_tokens: 192
+  rng_string: "PA4-banks-v1:6304:{pid}:{bank}"
+  generation_seed: "6304 + 10007*j + offset"
+  seed_offsets: {teacher: 0, original_draft: 123, teacher_pure: 789, exact_spec_original_gamma4: 456}   #ours for the new banks
+  spec_bank_gamma: 4
+
+markov_test:   #p.13 step 1
+  num_symbols: 3
+  sequence_length: 3
+  num_samples: 100000
+  p_value_threshold: 0.01
+  min_expected_count: 10

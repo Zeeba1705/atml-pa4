@@ -1,0 +1,51 @@
+#task 3 distillation (handout pp.12-13)
+
+teacher: Qwen/Qwen2.5-1.5B-Instruct
+student: Qwen/Qwen2.5-0.5B-Instruct
+backbone_dtype: float16        #frozen
+adapter_dtype: float32
+optimizer_state_dtype: float32
+vocab_size: 151936             #kl over the full common logit vocabulary, asserted equal for both models
+
+data:
+  gsm8k_train: atml-pa4-datasets/data/public_locked/gsm8k_train_locked.jsonl.gz
+  gsm8k_test: atml-pa4-datasets/data/public_locked/gsm8k_test_locked.jsonl.gz
+  short_train: atml-pa4-datasets/data/short_form/short_train.jsonl
+  short_test: atml-pa4-datasets/data/short_form/short_test.jsonl
+  prompt_format: raw question as single user message, default chat template   #decision 3.2, matches setup_data banks
+
+lora:
+  r: 8
+  alpha: 16
+  dropout: 0.0
+  target_modules: [q_proj, k_proj, v_proj, o_proj]
+
+seeds: [6304, 6305]
+methods: [off_policy, on_policy]
+
+quota:
+  math_tokens: 30000
+  short_tokens: 10000
+  total_tokens: 40000
+response_caps:
+  math: 192
+  short: 32
+sampling:
+  temperature: 1.0
+  top_p: 1.0
+
+#decision 3.3: seeded permutation per category, alternate math/short, continue the other when one quota is met
+schedule: alternate_categories_seeded_permutation
+teacher_pool_samples_per_prompt: 1   #decision 3.4
+
+microbatch: 1
+update_every_scored_tokens: 256      #decision 3.5, exact split, short final update permitted
+optimizer:
+  name: AdamW
+  lr: 0.0003
+  weight_decay: 0.01
+grad_clip: 1.0
+autocast: float16
+grad_scaler: dynamic                 #unscale before clipping
+kl_normalization: supervised_tokens_per_update
+objective: forward_kl_teacher_student

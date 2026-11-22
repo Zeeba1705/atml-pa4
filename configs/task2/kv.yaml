@@ -1,0 +1,41 @@
+#task 2 part C, KV memory (handout pp.8-10)
+
+model: Qwen/Qwen2.5-1.5B-Instruct
+dtype: float16
+attn_implementation: sdpa
+decoding: greedy
+max_new_tokens: 16             #ours, answer is 5 digit tokens
+answer_regex: "\\d{5}"         #ours, first match = prediction
+data: atml-pa4-datasets/data/kv_retrieval/kv_retrieval_cases.jsonl.gz
+num_cases: 180
+question_marker: QUESTION_BEGIN   #suffix = marker through end of generation prompt (decision 2.7)
+
+#qwen2.5-1.5b cache shape
+num_layers: 28
+num_kv_heads: 2
+head_dim: 128
+
+#decision 2.6: prefill pre-question context -> compress -> prefill question over compressed cache -> decode
+pipeline: compress_pre_question_then_prefill_question
+
+quant:
+  group_size: 64               #p.8
+  metadata_bytes_per_group: 4  #fp16 scale + fp16 offset
+  budget_bits: 4               #reference: uniform int4 channel-wise K / token-wise V
+  hybrid_low_bits: 2           #p.9 c4
+  trailing_fp16_rule: L_mod_64  #p.8, both K and V; appended tokens stay fp16 until a full group (decision 2.10)
+
+eviction:
+  sink_tokens: 8               #p.9
+  recent_tokens: 64            #p.9, last 64 before the question marker
+  granularity: per_layer_kv_head   #decision 2.9
+  score: sum fp32 softmax mass over grouped query heads and all question-suffix queries
+  index_bytes: 2               #int16 per retained position per (layer, kv head)
+
+bootstrap_resamples: 2000      #p.10, at least 2000
+
+bench:   #p.10 c5
+  batch_sizes: [1, 8]
+  context_lengths: [2048, 4096]
+  warmup_reps: 2
+  timing_reps: 10

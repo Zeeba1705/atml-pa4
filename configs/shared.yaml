@@ -1,0 +1,49 @@
+#shared conventions (handout p.2). values marked #ours are our choices, see docs/decisions.md
+
+seed: 6304
+
+pinned:
+  transformers: "4.57.1"
+  huggingface_hub: "0.36.2"
+
+data_repo: atml-pa4-datasets
+data_lock_source: atml-pa4-datasets/data/local_source_revisions.json
+data_lock_copy: splits/data_lock/local_source_revisions.json
+
+output_dir_kaggle: /kaggle/working/outputs
+output_dir_local: outputs
+results_dir: results
+
+models:
+  task1_base: Qwen/Qwen2.5-1.5B            #p.3, base not instruct
+  target: Qwen/Qwen2.5-1.5B-Instruct       #p.8 task 2C, p.12 task 3 teacher/target
+  draft: Qwen/Qwen2.5-0.5B-Instruct        #p.12 task 3 student/draft
+
+#revision keys inside the data lock file
+model_revision_keys:
+  task1_base: model_base
+  target: model_target
+  draft: model_draft
+
+dtype_gpu: float16          #T4 has no bf16
+dtype_smoke: float32
+attn_implementation: sdpa
+
+#qwen2.5 instruct generation_config defaults to rep penalty 1.1, top_k 20, top_p 0.8, temp 0.7, do_sample true.
+#every generation call overrides these explicitly (decision G1)
+generation_overrides:
+  repetition_penalty: 1.0
+  top_k: 0
+  top_p: 1.0
+
+eos_token_ids: [151645, 151643]   #<|im_end|>, <|endoftext|> from generation_config
+
+smoke:
+  #tiny random-init qwen2 config with the real tokenizer
+  num_hidden_layers: 2
+  hidden_size: 64
+  intermediate_size: 128
+  num_attention_heads: 4
+  num_key_value_heads: 2
+  max_examples: 4
+  max_steps: 3

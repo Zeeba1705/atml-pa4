@@ -1,0 +1,18 @@
+#task 2 part A, attention operators (handout p.7, pp.8-9)
+
+batch_size: 2
+num_heads: 4
+head_dim: 64
+seq_lengths: [256, 512, 1024, 2048, 4096, 8192]
+dtypes: [float16, float32]
+reference_dtype: float32       #errors vs dense fp32 at feasible lengths
+warmup_reps: 2                 #ours
+timing_reps: 10                #p.7
+causal: true                   #sdpa called with is_causal=true
+
+tiled:
+  default_block_q: 128         #ours
+  default_block_k: 128         #ours
+  verify_tile_sizes: [32, 64, 128, 256]   #ours, p.8 "verify outputs across tile sizes"
+
+sdpa_backends: [FLASH_ATTENTION, EFFICIENT_ATTENTION, CUDNN_ATTENTION, MATH]   #try forcing each, log unsupported
