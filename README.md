@@ -43,4 +43,7 @@ TODO
 
 ## Attribution
 
-TODO
+- `task1/evaluate_hellaswag.py::preprocess` and the query/choice construction are copied from
+  lm-evaluation-harness 0.4.13 (`lm_eval/tasks/hellaswag/utils.py`, task `hellaswag` v1.0), MIT licence.
+- `task1/awq.py::awq_scales` follows the scale formula of the llm-awq reference implementation
+  (`awq/quantize/auto_scale.py`: `x.pow(ratio).clamp(min=1e-4)`, normalised by `sqrt(max*min)`), MIT licence.
