@@ -38,7 +38,7 @@ def test_block_by_block_matches_full_forward_without_compression():
 
     captured= {}
 
-    def identity(idx, linears, stats):
+    def identity(idx, linears, stats, layer):
         captured[idx]= {name: s["n"] for name, s in stats.items()}
         return {}
 
@@ -66,7 +66,7 @@ def test_sequential_block_outputs_feed_next_block():
 
     seen= {}
 
-    def record(idx, linears, stats):
+    def record(idx, linears, stats, layer):
         if idx == 1:
             seen["sumsq"]= stats["q_proj"]["sumsq"]
         return {}

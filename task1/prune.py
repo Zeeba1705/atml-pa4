@@ -60,7 +60,7 @@ def score_summary(scores):
 
 def make_pruner(method, sparsity, two_four=False):
     #returns a compress_fn for calibrate.sequential_compress
-    def compress(idx, linears, stats):
+    def compress(idx, linears, stats, layer):
         infos= {}
 
         for name, linear in linears:

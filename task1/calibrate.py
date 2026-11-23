@@ -60,7 +60,7 @@ def run_block(layer, inputs, kwargs):
 
 
 @torch.no_grad()
-def sequential_compress(model, sequences, device, batch_size, compress_fn):
+def sequential_compress(model, sequences, device, batch_size, compress_fn, cache_inputs=False):
     #decision 1.5: block l is calibrated on outputs of the already-compressed blocks < l
     hidden, kwargs= block_inputs(model, sequences, device, batch_size)
     records= []
@@ -73,14 +73,19 @@ def sequential_compress(model, sequences, device, batch_size, compress_fn):
 
         #1. input statistics of every projection, from the uncompressed block
         start= time.perf_counter()
-        stats= {name: {"sumsq": 0.0, "sumabs": 0.0, "n": 0} for name, _ in linears}
+        stats= {name: {"sumsq": 0.0, "sumabs": 0.0, "n": 0, "x": []} for name, _ in linears}
 
         def stats_hook(name):
             def hook(module, inp, out):
-                x= inp[0].reshape(-1, inp[0].shape[-1]).float()
-                stats[name]["sumsq"]= stats[name]["sumsq"] + x.pow(2).sum(dim=0)
-                stats[name]["sumabs"]= stats[name]["sumabs"] + x.abs().sum(dim=0)
+                x= inp[0].reshape(-1, inp[0].shape[-1])
+                xf= x.float()
+                stats[name]["sumsq"]= stats[name]["sumsq"] + xf.pow(2).sum(dim=0)
+                stats[name]["sumabs"]= stats[name]["sumabs"] + xf.abs().sum(dim=0)
                 stats[name]["n"]+= x.shape[0]
+
+                #awq needs the inputs themselves for its scale search
+                if cache_inputs:
+                    stats[name]["x"].append(x.detach())
             return hook
 
         handles= [linear.register_forward_hook(stats_hook(name)) for name, linear in linears]
@@ -95,9 +100,16 @@ def sequential_compress(model, sequences, device, batch_size, compress_fn):
 
         #2. compress the block
         start= time.perf_counter()
-        original= {name: linear.weight.detach().clone() for name, linear in linears}
-        infos= compress_fn(idx, linears, stats)
+        original= {name: (linear.weight.detach().clone(), None if linear.bias is None else linear.bias.detach().clone()) for name, linear in linears}
+        infos= compress_fn(idx, linears, stats, layer)
+        del stats
         t_compress+= time.perf_counter() - start
+
+        #modules may have been wrapped (awq o_proj) and inputs/outputs rescaled by folds:
+        #in_scale/out_scale map a module's actual input/output back to the original space
+        in_scale= {name: info.pop("in_scale", None) for name, info in infos.items()}
+        out_scale= {name: info.pop("out_scale", None) for name, info in infos.items()}
+        linears= layer_linears(layer)
 
         #3. relative output error per projection, and outputs for the next block
         start= time.perf_counter()
@@ -105,11 +117,23 @@ def sequential_compress(model, sequences, device, batch_size, compress_fn):
 
         def error_hook(name):
             def hook(module, inp, out):
+                #relative error of the module's real output vs the original projection on the same (original-space) input
                 x= inp[0].reshape(-1, inp[0].shape[-1]).float()
-                w= original[name].float()
-                ref= x @ w.T
-                diff= x @ (w - module.weight.float()).T
-                err[name][0]+= diff.pow(2).sum().item()
+                y= out.reshape(-1, out.shape[-1]).float()
+                w, b= original[name]
+
+                if in_scale.get(name) is not None:
+                    x= x * in_scale[name].float()
+
+                if out_scale.get(name) is not None:
+                    y= y * out_scale[name].float()
+
+                ref= x @ w.float().T
+
+                if b is not None:
+                    ref= ref + b.float()
+
+                err[name][0]+= (y - ref).pow(2).sum().item()
                 err[name][1]+= ref.pow(2).sum().item()
             return hook
 
