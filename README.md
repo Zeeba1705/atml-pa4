@@ -27,7 +27,17 @@ cp data/local_source_revisions.json ../splits/data_lock/
 
 ## Task 1 — compression
 
-TODO
+Data paths in `configs/task1/base.yaml` are relative to `--data_root` (default `atml-pa4-datasets`).
+Each (condition × eval) writes `results/task1/<condition>/<eval>.json` (+ `<eval>_examples.jsonl`) and is skipped
+if that file exists. Evals: `wikitext2`, `c4_val`, `hellaswag`, `resources`.
+
+```bash
+# cpu smoke: tiny random qwen2, real tokenizer and data, writes to outputs/smoke/
+python -m task1.run_condition --method baseline --smoke
+
+# gpu baseline (one T4)
+CUDA_VISIBLE_DEVICES=0 python -m task1.run_condition --method baseline
+```
 
 ## Task 2 — attention and KV memory
 
