@@ -41,5 +41,47 @@ class InputScaledLinear(nn.Module):
         self.linear= linear
         self.register_buffer("scales", s.to(linear.weight.dtype).clone())
 
+    @property
+    def weight(self):
+        return self.linear.weight
+
+    @property
+    def bias(self):
+        return self.linear.bias
+
     def forward(self, x):
         return self.linear(x / self.scales)
+
+
+def effective_weight(w, s, quantize_fn):
+    #Q(W*s)/s: the weight seen by an unscaled input when the module gets X/s
+    return quantize_fn(w.float() * s[None, :]) / s[None, :]
+
+
+def awq_group_loss(xs, weights, w_hats, chunk):
+    #sum over the group's projections of ||W x - W_hat x||^2 on the cached calibration inputs
+    loss= 0.0
+
+    for x in xs:
+        for i in range(0, x.shape[0], chunk):
+            xc= x[i:i + chunk]
+
+            for w, w_hat in zip(weights, w_hats):
+                diff= xc @ (w - w_hat.to(w.dtype)).T
+                loss+= diff.float().pow(2).sum().item()
+
+    return loss
+
+
+def awq_search(xs, x_mean_abs, weights, alpha_grid, quantize_fn, chunk=8192):
+    #grid search over alpha (s = x^alpha normalised); alpha=0 is plain uniform quantization
+    losses= []
+
+    for alpha in alpha_grid:
+        s= awq_scales(x_mean_abs, alpha).to(weights[0].device)
+        w_hats= [effective_weight(w, s, quantize_fn) for w in weights]
+        losses.append(awq_group_loss(xs, weights, w_hats, chunk))
+
+    best= min(range(len(alpha_grid)), key=lambda i: losses[i])
+
+    return alpha_grid[best], awq_scales(x_mean_abs, alpha_grid[best]).to(weights[0].device), losses

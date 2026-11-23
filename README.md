@@ -42,6 +42,10 @@ CUDA_VISIBLE_DEVICES=0 python -m task1.run_condition --method baseline
 CUDA_VISIBLE_DEVICES=0 python -m task1.run_condition --method p1_magnitude --sparsity 0.5
 CUDA_VISIBLE_DEVICES=0 python -m task1.run_condition --method p2_wanda --sparsity 0.5
 CUDA_VISIBLE_DEVICES=0 python -m task1.run_condition --method p2_wanda_2of4 --sparsity 0.5
+
+# quantization: Q1 uniform / Q2 AWQ-style at b in {8, 4, 3}, group 128 (fake-quant FP16, packed bytes reported)
+CUDA_VISIBLE_DEVICES=0 python -m task1.run_condition --method q1_uniform --bits 4
+CUDA_VISIBLE_DEVICES=0 python -m task1.run_condition --method q2_awq --bits 4
 ```
 
 Colab: `colab/task1.ipynb` (edit `CONDITIONS` in cell 0, Runtime → Run all; results go to Drive).

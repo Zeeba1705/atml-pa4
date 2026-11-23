@@ -9,19 +9,41 @@ from common.io_utils import load_config, default_output_dir, run_info, write_jso
 from task1.load import load_model, load_tokenizer, load_windows, load_hellaswag, load_sequences, data_path
 from task1.calibrate import sequential_compress
 from task1.prune import make_pruner
+from task1.quantize import make_quantizer
 from task1.evaluate_ppl import evaluate_ppl
 from task1.evaluate_hellaswag import evaluate_hellaswag
 from task1.resources import storage_counts, measure_latency, reset_peak, peak_memory
 
 EVALS= ["wikitext2", "c4_val", "hellaswag", "resources"]
-METHODS= ["baseline", "p1_magnitude", "p2_wanda", "p2_wanda_2of4"]
+METHODS= ["baseline", "p1_magnitude", "p2_wanda", "p2_wanda_2of4", "q1_uniform", "q2_awq"]
+QUANT_METHODS= ["q1_uniform", "q2_awq"]
 CALIBRATION_BATCH= 8   #ours, sequences per calibration forward
 
 
 def condition_name(args):
-    name= args.method if args.method == "baseline" else f"{args.method}_s{args.sparsity:g}"
+    if args.method == "baseline":
+        name= "baseline"
+    elif args.method in QUANT_METHODS:
+        name= f"{args.method}_b{args.bits}"
+    else:
+        name= f"{args.method}_s{args.sparsity:g}"
 
     return "smoke_" + name if args.smoke else name
+
+
+def quant_storage(model, records, bits):
+    #serialized size: packed codes + zero-points + fp16 group scales, awq's unfolded fp16 scales, all other params in fp16
+    counts= storage_counts(model)
+    eligible= sum(r["packed_bytes"] for r in records)
+    extra= sum(r["extra_fp16_bytes"] for r in records)
+
+    return {
+        "nominal_bits_per_eligible_weight": bits,
+        "packed_eligible_bytes": eligible,
+        "unfolded_scale_bytes": extra,
+        "effective_bits_per_eligible_weight": 8 * (eligible + extra) / counts["eligible_weights"],
+        "packed_total_bytes": eligible + extra + 2 * counts["non_eligible_params"]
+    }
 
 
 def build_condition(model, args, cfg, data_root, device, out_dir):
@@ -30,8 +52,21 @@ def build_condition(model, args, cfg, data_root, device, out_dir):
         return {"calibration_seconds": 0.0, "compression_seconds": 0.0, "total_build_seconds": 0.0}
 
     pruning= cfg["pruning"]
+    quant= cfg["quantization"]
 
-    if args.method == "p1_magnitude":
+    if args.method in QUANT_METHODS:
+        assert args.bits in quant["q_bits"]
+
+        compress_fn= make_quantizer(
+            method="uniform" if args.method == "q1_uniform" else "awq",
+            bits=args.bits,
+            group_size=quant["group_size"],
+            scale_dtype=getattr(torch, quant["scale_dtype"]),
+            alpha_grid=quant["awq_alpha_grid"],
+            folds=quant["awq_folds"],
+            unfolded=quant["awq_unfolded_fp16_scales"]
+        )
+    elif args.method == "p1_magnitude":
         assert args.sparsity in pruning["p1_sparsities"]
         compress_fn= make_pruner("magnitude", args.sparsity)
     elif args.method == "p2_wanda":
@@ -48,11 +83,14 @@ def build_condition(model, args, cfg, data_root, device, out_dir):
         seqs= [{"token_ids": s["token_ids"][:64]} for s in seqs[:cfg["smoke"]["max_examples"]]]
 
     start= time.perf_counter()
-    records, times= sequential_compress(model, seqs, device, CALIBRATION_BATCH, compress_fn)
+    records, times= sequential_compress(model, seqs, device, CALIBRATION_BATCH, compress_fn, cache_inputs=(args.method == "q2_awq"))
     times["total_build_seconds"]= time.perf_counter() - start
 
+    if args.method in QUANT_METHODS:
+        times["storage_extra"]= quant_storage(model, records, args.bits)
+
     write_jsonl(os.path.join(out_dir, "compression_layers.jsonl"), records)
-    print(f"built {args.method} s={args.sparsity}: {times['total_build_seconds']:.1f}s")
+    print(f"built {condition_name(args)}: {times['total_build_seconds']:.1f}s")
 
     return times
 
@@ -141,7 +179,7 @@ def main(args):
             summary= {
                 "latency": measure_latency(model, windows, cfg, device, lengths, decode),
                 "batch_size": res["batch_size"],
-                "storage": storage_counts(model)
+                "storage": {**storage_counts(model), **build.get("storage_extra", {})}
             }
 
         summary["wall_clock_seconds"]= time.perf_counter() - start
@@ -167,6 +205,11 @@ if __name__ == "__main__":
         type=str,
         choices=METHODS,
         default="baseline"
+    )
+    parser.add_argument(
+        "--bits",
+        type=int,
+        default=4
     )
     parser.add_argument(
         "--sparsity",
