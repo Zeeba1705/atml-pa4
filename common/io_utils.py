@@ -55,6 +55,17 @@ def default_output_dir():
     return "/kaggle/working/outputs" if os.path.exists("/kaggle") else "outputs"
 
 
+def resolve_data_root(data_repo, given=None, root=ROOT):
+    #the data repo is inside the code repo locally and next to it on colab/kaggle
+    candidates= [given] if given else [os.path.join(root, data_repo), os.path.join(os.path.dirname(root), data_repo)]
+
+    for path in candidates:
+        if os.path.isdir(os.path.join(path, "data")):
+            return os.path.abspath(path)
+
+    raise FileNotFoundError(f"data repo not found, tried {candidates}")
+
+
 def data_lock(cfg):
     with open(os.path.join(ROOT, cfg["data_lock_copy"])) as f:
         return json.load(f)

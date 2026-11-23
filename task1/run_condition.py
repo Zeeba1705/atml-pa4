@@ -5,8 +5,8 @@ import argparse
 import torch
 
 from common.seed import set_seed
-from common.io_utils import load_config, default_output_dir, run_info, write_json, write_jsonl
-from task1.load import load_model, load_tokenizer, load_windows, load_hellaswag
+from common.io_utils import load_config, default_output_dir, run_info, write_json, write_jsonl, resolve_data_root
+from task1.load import load_model, load_tokenizer, load_windows, load_hellaswag, data_path
 from task1.evaluate_ppl import evaluate_ppl
 from task1.evaluate_hellaswag import evaluate_hellaswag
 from task1.resources import storage_counts, measure_latency, reset_peak, peak_memory
@@ -49,6 +49,16 @@ def main(args):
     if not todo:
         return
 
+    #check every data file before spending time on the model
+    data_root= resolve_data_root(cfg["data_repo"], args.data_root)
+    needed= {"wikitext2": ["wikitext2"], "c4_val": ["c4_val"], "hellaswag": ["hellaswag"], "resources": ["c4_val"]}
+
+    for e in todo:
+        for key in needed[e]:
+            data_path(cfg, data_root, key)
+
+    print("data root:", data_root)
+
     tok= load_tokenizer(cfg)
     model= load_model(cfg, device, args.smoke)
     dtype= next(model.parameters()).dtype
@@ -68,7 +78,7 @@ def main(args):
         start= time.perf_counter()
 
         if eval_name in ["wikitext2", "c4_val"]:
-            windows= load_windows(cfg, args.data_root, eval_name)
+            windows= load_windows(cfg, data_root, eval_name)
 
             if args.smoke:
                 windows= windows[:n_small]
@@ -82,7 +92,7 @@ def main(args):
             print(f"{eval_name}: ppl {summary['ppl']:.4f} over {summary['n_scored']} tokens")
 
         elif eval_name == "hellaswag":
-            rows_in= load_hellaswag(cfg, args.data_root)
+            rows_in= load_hellaswag(cfg, data_root)
             full= args.method in cfg["hellaswag"]["full_conditions"]
             n= cfg["hellaswag"]["n_full"] if full else cfg["hellaswag"]["n_diagnostic"]
 
@@ -93,7 +103,7 @@ def main(args):
             print(f"hellaswag: acc {summary['acc']:.4f}, acc_norm {summary['acc_norm']:.4f} on {summary['n_examples']}")
 
         else:
-            windows= load_windows(cfg, args.data_root, "c4_val")
+            windows= load_windows(cfg, data_root, "c4_val")
             res= cfg["resources"]
             lengths= [16, 32] if args.smoke else res["prefill_lengths"]
             decode= 4 if args.smoke else res["decode_tokens"]
@@ -116,7 +126,6 @@ def main(args):
 
 
 if __name__ == "__main__":
-    defaults= load_config(os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "configs", "task1", "base.yaml"))
     parser= argparse.ArgumentParser()
 
     parser.add_argument(
@@ -140,7 +149,7 @@ if __name__ == "__main__":
     parser.add_argument(
         "--data_root",
         type=str,
-        default=defaults["data_repo"]
+        default=None
     )
     parser.add_argument(
         "--output_dir",
