@@ -6,12 +6,12 @@ dtype: float16
 #p.3 eligible projections; embeddings, norms, biases, lm_head untouched; tied params counted once
 eligible_projections: [q_proj, k_proj, v_proj, o_proj, gate_proj, up_proj, down_proj]
 
-data:
-  calibration: atml-pa4-datasets/data/public_locked/c4_calibration_locked.jsonl.gz
-  development: atml-pa4-datasets/data/public_locked/c4_development_locked.jsonl.gz
-  wikitext2: atml-pa4-datasets/data/public_locked/wikitext2_test_windows_locked.jsonl.gz
-  c4_val: atml-pa4-datasets/data/public_locked/c4_validation_windows_locked.jsonl.gz
-  hellaswag: atml-pa4-datasets/data/public_locked/hellaswag_val_locked.jsonl.gz
+data:   #relative to --data_root (default: data_repo in shared.yaml)
+  calibration: data/public_locked/c4_calibration_locked.jsonl.gz
+  development: data/public_locked/c4_development_locked.jsonl.gz
+  wikitext2: data/public_locked/wikitext2_test_windows_locked.jsonl.gz
+  c4_val: data/public_locked/c4_validation_windows_locked.jsonl.gz
+  hellaswag: data/public_locked/hellaswag_val_locked.jsonl.gz
 
 calibration_sequences: 128      #p.3
 development_sequences: 32       #p.3, only for allocation hyperparameters
