@@ -6,28 +6,55 @@ import torch
 
 from common.seed import set_seed
 from common.io_utils import load_config, default_output_dir, run_info, write_json, write_jsonl, resolve_data_root
-from task1.load import load_model, load_tokenizer, load_windows, load_hellaswag, data_path
+from task1.load import load_model, load_tokenizer, load_windows, load_hellaswag, load_sequences, data_path
+from task1.calibrate import sequential_compress
+from task1.prune import make_pruner
 from task1.evaluate_ppl import evaluate_ppl
 from task1.evaluate_hellaswag import evaluate_hellaswag
 from task1.resources import storage_counts, measure_latency, reset_peak, peak_memory
 
 EVALS= ["wikitext2", "c4_val", "hellaswag", "resources"]
+METHODS= ["baseline", "p1_magnitude", "p2_wanda", "p2_wanda_2of4"]
+CALIBRATION_BATCH= 8   #ours, sequences per calibration forward
 
 
 def condition_name(args):
-    name= args.method
+    name= args.method if args.method == "baseline" else f"{args.method}_s{args.sparsity:g}"
 
     return "smoke_" + name if args.smoke else name
 
 
-def build_condition(model, args, cfg):
-    #each condition starts from a fresh copy of the unchanged weights; compression methods plug in here
+def build_condition(model, args, cfg, data_root, device, out_dir):
+    #each condition starts from a freshly loaded, unchanged model
+    if args.method == "baseline":
+        return {"calibration_seconds": 0.0, "compression_seconds": 0.0, "total_build_seconds": 0.0}
+
+    pruning= cfg["pruning"]
+
+    if args.method == "p1_magnitude":
+        assert args.sparsity in pruning["p1_sparsities"]
+        compress_fn= make_pruner("magnitude", args.sparsity)
+    elif args.method == "p2_wanda":
+        assert args.sparsity in pruning["p2_sparsities"]
+        compress_fn= make_pruner("wanda", args.sparsity)
+    else:
+        assert args.sparsity == pruning["two_four"]["sparsity"]
+        compress_fn= make_pruner("wanda", args.sparsity, two_four=True)
+
+    #calibration = the 128 c4 calibration sequences only (never dev or eval data)
+    seqs= load_sequences(cfg, data_root, "calibration", cfg["calibration_sequences"])
+
+    if args.smoke:
+        seqs= [{"token_ids": s["token_ids"][:64]} for s in seqs[:cfg["smoke"]["max_examples"]]]
+
     start= time.perf_counter()
+    records, times= sequential_compress(model, seqs, device, CALIBRATION_BATCH, compress_fn)
+    times["total_build_seconds"]= time.perf_counter() - start
 
-    if args.method != "baseline":
-        raise NotImplementedError(args.method)
+    write_jsonl(os.path.join(out_dir, "compression_layers.jsonl"), records)
+    print(f"built {args.method} s={args.sparsity}: {times['total_build_seconds']:.1f}s")
 
-    return {"compression_seconds": time.perf_counter() - start, "calibration_seconds": 0.0}
+    return times
 
 
 def main(args):
@@ -68,7 +95,9 @@ def main(args):
     info["condition"]= name
     info["smoke"]= args.smoke
 
-    build= build_condition(model, args, cfg)
+    reset_peak(device)
+    build= build_condition(model, args, cfg, data_root, device, out_dir)
+    build.update({"build_" + k: v for k, v in peak_memory(device).items()})
     write_json(os.path.join(out_dir, "condition.json"), {**info, **build, "storage": storage_counts(model)})
 
     n_small= cfg["smoke"]["max_examples"]
@@ -93,7 +122,7 @@ def main(args):
 
         elif eval_name == "hellaswag":
             rows_in= load_hellaswag(cfg, data_root)
-            full= args.method in cfg["hellaswag"]["full_conditions"]
+            full= name.removeprefix("smoke_") in cfg["hellaswag"]["full_conditions"]
             n= cfg["hellaswag"]["n_full"] if full else cfg["hellaswag"]["n_diagnostic"]
 
             if args.smoke:
@@ -136,8 +165,13 @@ if __name__ == "__main__":
     parser.add_argument(
         "--method",
         type=str,
-        choices=["baseline"],
+        choices=METHODS,
         default="baseline"
+    )
+    parser.add_argument(
+        "--sparsity",
+        type=float,
+        default=0.5
     )
     parser.add_argument(
         "--evals",

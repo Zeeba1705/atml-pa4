@@ -37,7 +37,16 @@ python -m task1.run_condition --method baseline --smoke
 
 # gpu baseline (one T4)
 CUDA_VISIBLE_DEVICES=0 python -m task1.run_condition --method baseline
+
+# pruning: P1 magnitude / P2 Wanda at s in {0.25, 0.5, 0.75}; 2:4 Wanda at 0.5
+CUDA_VISIBLE_DEVICES=0 python -m task1.run_condition --method p1_magnitude --sparsity 0.5
+CUDA_VISIBLE_DEVICES=0 python -m task1.run_condition --method p2_wanda --sparsity 0.5
+CUDA_VISIBLE_DEVICES=0 python -m task1.run_condition --method p2_wanda_2of4 --sparsity 0.5
 ```
+
+Colab: `colab/task1.ipynb` (edit `CONDITIONS` in cell 0, Runtime → Run all; results go to Drive).
+Pruning conditions also write `compression_layers.jsonl` (per-projection output error on calibration activations,
+nonzero fraction, Wanda score quantiles).
 
 ## Task 2 — attention and KV memory
 
