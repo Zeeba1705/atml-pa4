@@ -75,11 +75,13 @@ def awq_group_loss(xs, weights, w_hats, chunk):
 
 def awq_search(xs, x_mean_abs, weights, alpha_grid, quantize_fn, chunk=8192):
     #grid search over alpha (s = x^alpha normalised); alpha=0 is plain uniform quantization
+    #quantize_fn is one function for all weights or a list with one per weight (q3: mixed bits within a group)
+    fns= quantize_fn if isinstance(quantize_fn, (list, tuple)) else [quantize_fn] * len(weights)
     losses= []
 
     for alpha in alpha_grid:
         s= awq_scales(x_mean_abs, alpha).to(weights[0].device)
-        w_hats= [effective_weight(w, s, quantize_fn) for w in weights]
+        w_hats= [effective_weight(w, s, fn) for w, fn in zip(weights, fns)]
         losses.append(awq_group_loss(xs, weights, w_hats, chunk))
 
     best= min(range(len(alpha_grid)), key=lambda i: losses[i])

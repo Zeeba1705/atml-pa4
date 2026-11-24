@@ -62,12 +62,17 @@ def fake_quantize(w, bits, group_size, scale_dtype):
 
 
 def make_quantizer(method, bits, group_size, scale_dtype, alpha_grid=None, folds=None, unfolded=None):
-    #returns a compress_fn for calibrate.sequential_compress; method is "uniform" (q1) or "awq" (q2)
-    quantize_fn= lambda w: fake_quantize(w, bits, group_size, scale_dtype)
+    #returns a compress_fn for calibrate.sequential_compress; method is "uniform" (q1) or "awq" (q2, q3)
+    #bits is one int for every projection, or (q3) a list with one {proj: bits} dict per block
+    def bits_of(idx, name):
+        return bits if isinstance(bits, int) else bits[idx][name]
+
+    def quantizer(b):
+        return lambda w: fake_quantize(w, b, group_size, scale_dtype)
 
     def compress(idx, linears, stats, layer):
         mods= dict(linears)
-        infos= {name: {"bits": bits, "extra_fp16_bytes": 0} for name in mods}
+        infos= {name: {"bits": bits_of(idx, name), "extra_fp16_bytes": 0} for name in mods}
 
         if method == "awq":
             #search one alpha per group of projections sharing an input, using the uncompressed block's inputs
@@ -79,7 +84,8 @@ def make_quantizer(method, bits, group_size, scale_dtype, alpha_grid=None, folds
                 xs= stats[names[0]]["x"]
                 x_mean_abs= stats[names[0]]["sumabs"] / stats[names[0]]["n"]
 
-                alpha, s, losses= awq_search(xs, x_mean_abs, weights, alpha_grid, quantize_fn)
+                fns= [quantizer(bits_of(idx, n)) for n in names]
+                alpha, s, losses= awq_search(xs, x_mean_abs, weights, alpha_grid, fns)
                 chosen.append((prev, names, s))
 
                 for n in names:
@@ -106,11 +112,12 @@ def make_quantizer(method, bits, group_size, scale_dtype, alpha_grid=None, folds
         for name, linear in linears:
             w= linear.weight
             dout, din= w.shape
-            w.copy_(quantize_fn(w).to(w.dtype))
+            b= bits_of(idx, name)
+            w.copy_(quantizer(b)(w).to(w.dtype))
 
             infos[name].update({
                 "shape": [dout, din],
-                "packed_bytes": packed_bytes(dout, din, bits, group_size),
+                "packed_bytes": packed_bytes(dout, din, b, group_size),
                 "storage": "fake-quant fp16 in memory; packed_bytes is the serialized size"
             })
 

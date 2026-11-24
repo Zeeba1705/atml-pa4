@@ -58,8 +58,9 @@ def score_summary(scores):
     return {"score_quantiles": dict(zip([str(x) for x in SCORE_QUANTILES], q.tolist())), "score_mean": flat.mean().item()}
 
 
-def make_pruner(method, sparsity, two_four=False):
+def make_pruner(method, sparsity, two_four=False, row_zeros=None):
     #returns a compress_fn for calibrate.sequential_compress
+    #row_zeros (p3): one {proj: [zeros per output row]} dict per block; the wanda ranking within each row is unchanged
     def compress(idx, linears, stats, layer):
         infos= {}
 
@@ -76,6 +77,11 @@ def make_pruner(method, sparsity, two_four=False):
             if two_four:
                 assert sparsity == 0.5
                 keep= two_four_mask(scores)
+            elif row_zeros is not None:
+                counts= torch.tensor(row_zeros[idx][name], device=w.device)
+                assert counts.numel() == w.shape[0]
+                keep= row_prune_mask(scores, counts)
+                assert (~keep).sum().item() == counts.sum().item()
             else:
                 n_prune= int(round(sparsity * w.shape[1]))
                 assert n_prune == sparsity * w.shape[1], "per-row count must be exact"

@@ -47,11 +47,19 @@ pruning:
   mask: per_output_row               #p.2/p.4
   exact_zero_count: true             #decision 1.6, largest-remainder rounding, asserted
   two_four: {n: 2, m: 4, sparsity: 0.5}   #p.4 step 8, along contiguous input channels
+  #decision 1.7 (student choice): projection units, rank-linear rule s = target + lam*(1 - 2 rank/(U-1)), lam on dev only
+  p3_unit: projection
+  p3_lambda_grid: [0.0, 0.05, 0.1, 0.15, 0.2]   #ours; 0.0 = p2, kept as the dev reference
+
+#decision 1.7: one gradient pass over the 128 calibration sequences (p3 taylor, q3 fisher)
+sensitivity:
+  loss_scale: 1024     #ours, fp16 backward; halved automatically on overflow (count recorded)
 
 quantization:
   q_bits: [8, 4, 3]                  #p.4 q1/q2
   q3_allowed_bits: [2, 3, 4, 8]      #p.4
   q3_budgets_from: [q2_awq_b4, q2_awq_b3]   #p.4, packed bytes incl metadata and uncompressed params
+  q3_unit: projection                #decision 1.7; exact ilp (scipy milp) on fisher sensitivities under the byte budget
   group_size: 128                    #p.4, along input columns
   symmetric: false                   #p.2 asymmetric
   range: minmax                      #decision 1.3, no clipping search for q1/q2/q3
