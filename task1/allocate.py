@@ -318,6 +318,9 @@ def run_q3(args, cfg, sens, sens_file):
     allowed= quant["q3_allowed_bits"]
     budget, fixed= q3_budget(cfg, sens, args.bits)
 
+    if not args.smoke:
+        assert budget == quant["q3_expected_budget_bytes"][args.bits], (budget, quant["q3_expected_budget_bytes"])
+
     #cross-check against the measured q2 storage when that result is available (bytes only, no quality)
     q2= os.path.join(args.results_dir, f"q2_awq_b{args.bits}", "resources.json")
 

@@ -60,6 +60,8 @@ quantization:
   q3_allowed_bits: [2, 3, 4, 8]      #p.4
   q3_budgets_from: [q2_awq_b4, q2_awq_b3]   #p.4, packed bytes incl metadata and uncompressed params
   q3_unit: projection                #decision 1.7; exact ilp (scipy milp) on fisher sensitivities under the byte budget
+  #q2 uniform packed totals measured on gpu (results/task1/q2_awq_b*/resources.json, commit 215d0a1); bytes only, asserted
+  q3_expected_budget_bytes: {4: 1147810816, 3: 982756864}
   group_size: 128                    #p.4, along input columns
   symmetric: false                   #p.2 asymmetric
   range: minmax                      #decision 1.3, no clipping search for q1/q2/q3
