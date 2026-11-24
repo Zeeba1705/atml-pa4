@@ -1,4 +1,5 @@
 import os
+import json
 import time
 import argparse
 
@@ -6,17 +7,18 @@ import torch
 
 from common.seed import set_seed
 from common.io_utils import load_config, default_output_dir, run_info, write_json, write_jsonl, resolve_data_root
-from task1.load import load_model, load_tokenizer, load_windows, load_hellaswag, load_sequences, data_path
+from task1.load import eligible_linears, load_model, load_tokenizer, load_windows, load_hellaswag, load_sequences, data_path
 from task1.calibrate import sequential_compress
 from task1.prune import make_pruner
 from task1.quantize import make_quantizer
 from task1.evaluate_ppl import evaluate_ppl
 from task1.evaluate_hellaswag import evaluate_hellaswag
 from task1.resources import storage_counts, measure_latency, reset_peak, peak_memory
+from task1.allocate import splits_dir, p3_path, q3_path, per_block, row_counts
 
 EVALS= ["wikitext2", "c4_val", "hellaswag", "resources"]
-METHODS= ["baseline", "p1_magnitude", "p2_wanda", "p2_wanda_2of4", "q1_uniform", "q2_awq"]
-QUANT_METHODS= ["q1_uniform", "q2_awq"]
+METHODS= ["baseline", "p1_magnitude", "p2_wanda", "p2_wanda_2of4", "p3_nonuniform", "q1_uniform", "q2_awq", "q3_mixed_budget"]
+QUANT_METHODS= ["q1_uniform", "q2_awq", "q3_mixed_budget"]
 CALIBRATION_BATCH= 8   #ours, sequences per calibration forward
 
 
@@ -31,19 +33,30 @@ def condition_name(args):
     return "smoke_" + name if args.smoke else name
 
 
-def quant_storage(model, records, bits):
+def quant_storage(model, records):
     #serialized size: packed codes + zero-points + fp16 group scales, awq's unfolded fp16 scales, all other params in fp16
     counts= storage_counts(model)
     eligible= sum(r["packed_bytes"] for r in records)
     extra= sum(r["extra_fp16_bytes"] for r in records)
+    nominal= sum(r["bits"] * r["shape"][0] * r["shape"][1] for r in records) / counts["eligible_weights"]
 
     return {
-        "nominal_bits_per_eligible_weight": bits,
+        "nominal_bits_per_eligible_weight": nominal,
         "packed_eligible_bytes": eligible,
         "unfolded_scale_bytes": extra,
         "effective_bits_per_eligible_weight": 8 * (eligible + extra) / counts["eligible_weights"],
         "packed_total_bytes": eligible + extra + 2 * counts["non_eligible_params"]
     }
+
+
+def load_frozen(path, records_key):
+    #p3/q3 allocations are frozen (task1.allocate) before any held-out result exists
+    assert os.path.exists(path), f"missing frozen allocation {path}: run python -m task1.allocate first (README)"
+
+    with open(path) as f:
+        frozen= json.load(f)
+
+    return frozen, [u[records_key] for u in frozen["units"]]
 
 
 def build_condition(model, args, cfg, data_root, device, out_dir):
@@ -53,13 +66,21 @@ def build_condition(model, args, cfg, data_root, device, out_dir):
 
     pruning= cfg["pruning"]
     quant= cfg["quantization"]
+    base= splits_dir(args.output_dir, args.smoke)
+    frozen= None
 
     if args.method in QUANT_METHODS:
-        assert args.bits in quant["q_bits"]
+        bits= args.bits
+
+        if args.method == "q3_mixed_budget":
+            frozen, unit_bits= load_frozen(q3_path(base, args.bits), "bits")
+            bits= per_block(frozen, unit_bits)
+        else:
+            assert args.bits in quant["q_bits"]
 
         compress_fn= make_quantizer(
             method="uniform" if args.method == "q1_uniform" else "awq",
-            bits=args.bits,
+            bits=bits,
             group_size=quant["group_size"],
             scale_dtype=getattr(torch, quant["scale_dtype"]),
             alpha_grid=quant["awq_alpha_grid"],
@@ -72,6 +93,11 @@ def build_condition(model, args, cfg, data_root, device, out_dir):
     elif args.method == "p2_wanda":
         assert args.sparsity in pruning["p2_sparsities"]
         compress_fn= make_pruner("wanda", args.sparsity)
+    elif args.method == "p3_nonuniform":
+        assert args.sparsity in pruning["p3_sparsities"]
+        frozen, zeros= load_frozen(p3_path(base, args.sparsity), "zeros")
+        rows= [row_counts(z, u["shape"][0]) for z, u in zip(zeros, frozen["units"])]
+        compress_fn= make_pruner("wanda", args.sparsity, row_zeros=per_block(frozen, rows))
     else:
         assert args.sparsity == pruning["two_four"]["sparsity"]
         compress_fn= make_pruner("wanda", args.sparsity, two_four=True)
@@ -83,11 +109,27 @@ def build_condition(model, args, cfg, data_root, device, out_dir):
         seqs= [{"token_ids": s["token_ids"][:64]} for s in seqs[:cfg["smoke"]["max_examples"]]]
 
     start= time.perf_counter()
-    records, times= sequential_compress(model, seqs, device, CALIBRATION_BATCH, compress_fn, cache_inputs=(args.method == "q2_awq"))
+    records, times= sequential_compress(model, seqs, device, CALIBRATION_BATCH, compress_fn, cache_inputs=(args.method in ["q2_awq", "q3_mixed_budget"]))
     times["total_build_seconds"]= time.perf_counter() - start
 
     if args.method in QUANT_METHODS:
-        times["storage_extra"]= quant_storage(model, records, args.bits)
+        times["storage_extra"]= quant_storage(model, records)
+
+    if args.method == "q3_mixed_budget":
+        #matched budget (p.4 step 7): realized bytes must fit the q2 uniform budget and equal the frozen plan
+        realized= times["storage_extra"]["packed_total_bytes"]
+        assert realized <= frozen["budget_total_bytes"], (realized, frozen["budget_total_bytes"])
+        assert realized == frozen["packed_total_bytes"], (realized, frozen["packed_total_bytes"])
+
+    if args.method == "p3_nonuniform":
+        #matched to p1/p2 by the total number of zeroed eligible weights (p.4 step 4); make_pruner asserts
+        #the pruned count per projection, zeros after the build can only add the base model's own exact zeros
+        zeros_now= sum(int((m.weight == 0).sum().item()) for _, m in eligible_linears(model))
+        times["matched_zero_check"]= {"allocated_zeros": frozen["total_zeros"], "zeros_after_build": zeros_now}
+        assert zeros_now >= frozen["total_zeros"]
+
+    if frozen is not None:
+        times["frozen_allocation"]= {k: frozen[k] for k in ["sensitivity_sha256", "git_commit"]}
 
     write_jsonl(os.path.join(out_dir, "compression_layers.jsonl"), records)
     print(f"built {condition_name(args)}: {times['total_build_seconds']:.1f}s")

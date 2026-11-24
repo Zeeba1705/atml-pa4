@@ -46,6 +46,17 @@ CUDA_VISIBLE_DEVICES=0 python -m task1.run_condition --method p2_wanda_2of4 --sp
 # quantization: Q1 uniform / Q2 AWQ-style at b in {8, 4, 3}, group 128 (fake-quant FP16, packed bytes reported)
 CUDA_VISIBLE_DEVICES=0 python -m task1.run_condition --method q1_uniform --bits 4
 CUDA_VISIBLE_DEVICES=0 python -m task1.run_condition --method q2_awq --bits 4
+
+# p3/q3 (decision 1.7): gradient pass on calibration data, then freeze allocations BEFORE any held-out eval
+CUDA_VISIBLE_DEVICES=0 python -m task1.sensitivity                          # -> splits/task1/sensitivity.json
+CUDA_VISIBLE_DEVICES=0 python -m task1.allocate --method p3 --sparsity 0.5  # lambda sweep on c4 dev -> p3_allocation_s0.5.json
+CUDA_VISIBLE_DEVICES=0 python -m task1.allocate --method p3 --sparsity 0.75
+python -m task1.allocate --method q3 --bits 4                               # cpu, exact ilp under the q2-int4 budget
+python -m task1.allocate --method q3 --bits 3
+CUDA_VISIBLE_DEVICES=0 python -m task1.run_condition --method p3_nonuniform --sparsity 0.5
+CUDA_VISIBLE_DEVICES=0 python -m task1.run_condition --method q3_mixed_budget --bits 4
+
+# smoke for the same chain: add --smoke to every command (frozen files then go to outputs/smoke/task1/splits)
 ```
 
 Colab: `colab/task1.ipynb` (edit `CONDITIONS` in cell 0, Runtime → Run all; results go to Drive).
