@@ -85,4 +85,7 @@ def test_evaluate_ppl_matches_reference_and_skips_unscored():
     assert abs(rows[0]["nll_sum"] - ref_full) < 1e-3
     assert abs(rows[1]["nll_sum"] - ref_part) < 1e-3
     assert summary["n_scored"] == len(ids) - 1 + 3
-    assert abs(summary["ppl"] - math.exp((ref_full + ref_part) / summary["n_scored"])) < 1e-3
+    #pooled over tokens; ppl of the random tiny model is ~1.6e5, so compare it relatively (exp amplifies fp32 noise)
+    ref_mean= (ref_full + ref_part) / summary["n_scored"]
+    assert abs(summary["mean_nll"] - ref_mean) < 1e-4
+    assert math.isclose(summary["ppl"], math.exp(ref_mean), rel_tol=1e-4)
