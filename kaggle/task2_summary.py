@@ -1,5 +1,6 @@
 #prints the task 2b sweep status: test accuracy per run (mean over finished seeds) at every K and regime
 import os
+import glob
 import json
 import argparse
 
@@ -10,8 +11,29 @@ def cell_table(metrics, k):
     return " ".join(f"{reg}={sum(m['cells'][f'K{k}_{reg}']['accuracy'] for m in metrics) / len(metrics):.3f}" for reg in ["near", "far", "mixed"])
 
 
+def attention_summary(results_dir):
+    files= sorted(glob.glob(os.path.join(results_dir, "task2", "attention", "*_L*.json")), key=lambda f: (f.split("_L")[0], int(f.split("_L")[1][:-5])))
+
+    for f in files:
+        d= json.load(open(f))
+        print(f"--- A {d['dtype']} L={d['T']}  ref={d['reference']}  sdpa default={d['sdpa_default_backend']}")
+
+        for r in d["rows"]:
+            if r["status"] != "ok":
+                print(f"    {r['impl']:26s} {r['status']}: {r.get('message', '')[:80]}")
+                continue
+
+            fb= f"{r['forward_backward']['median']:9.2f} ms" if r["backward_status"] == "ok" else f"{r['backward_status']:>12s}"
+            mem= r["forward_memory"]["peak_allocated_bytes"]
+            print(
+                f"    {r['impl']:26s} fwd {r['forward']['median']:9.2f} ms  fwd+bwd {fb}  "
+                f"fwd peak {mem / 2**20 if mem else 0:8.0f} MiB  out err {r['forward_errors_vs_reference']['output']['max_abs']:.2e}"
+            )
+
+
 def main(args):
     cfg= load_config(args.config)
+    attention_summary(args.results_dir)
     root= os.path.join(args.results_dir, "task2", "mqar")
     done= 0
     total= 0

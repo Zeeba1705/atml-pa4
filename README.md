@@ -65,6 +65,15 @@ nonzero fraction, Wanda score quantiles).
 
 ## Task 2 — attention and KV memory
 
+### Part A — attention operators (configs/task2/attention.yaml)
+
+```bash
+# dense / tiled online-softmax / sdpa (default + each forced backend), B=2 H=4 d=64, L 256..8192, fp16 + fp32;
+# one file per (dtype, L) in results/task2/attention/, plus edge_cases.json; finished files are skipped
+python -m task2.bench_attention --device cuda
+python -m task2.bench_attention --smoke     # cpu, L in {64, 128}
+```
+
 ### Part B — MQAR (configs/task2/mqar.yaml)
 
 ```bash
@@ -83,7 +92,7 @@ python -m task2.eval_mqar --checkpoint outputs/task2/mqar/dense_K16_mixed_s6304/
 python -m task2.mqar_data --smoke && python -m task2.train_mqar --smoke --run_name linear_K8_mixed --seed 6304
 ```
 
-Kaggle: `kaggle/task2.ipynb` runs all 39 B1/B2 runs (13 mechanisms × seeds 6304/6305/6306) on both T4s via `kaggle/task2_run.sh`.
+Kaggle: `kaggle/task2.ipynb` with `PARTS= "A"` runs the Part A benchmark alone on GPU 0; `PARTS= "B"` runs all 39 B1/B2 runs (13 mechanisms × seeds 6304/6305/6306) on both T4s via `kaggle/task2_run.sh`.
 Outputs per run in `results/task2/mqar/<run>_s<seed>/`: `config.json`, `train_log.jsonl`, `<run>_history.json` (dev curves),
 `test_metrics.json` (+ `test_window_mask_metrics.json` for dense), `test_predictions.jsonl.gz`.
 

@@ -1,6 +1,9 @@
 #!/bin/bash
-#kaggle task 2b mqar sweep on two T4s: data checks + streams (cpu), then NW workers (two per gpu) over all runs x seeds
-#every (run, seed) skips if finished and resumes from its last checkpoint, so rerunning the notebook continues the sweep
+#kaggle task 2 on two T4s. PARTS (from the notebook) picks what runs, default B:
+#  A: attention-operator benchmark on gpu 0, run alone first so nothing else shares the gpu/cpu during timing
+#  B: mqar sweep: data checks + streams (cpu), then NW workers (two per gpu) over all runs x seeds;
+#     every (run, seed) skips if finished and resumes from its last checkpoint
+PARTS=${PARTS:-B}
 cd /tmp/pa4/atml-pa4
 RES=/kaggle/working/results
 OUT=/kaggle/working/outputs
@@ -8,6 +11,14 @@ SPL=/kaggle/working/task2_splits
 NW=${NW:-4}
 mkdir -p "$RES/task2/logs" "$SPL"
 test -z "$(git status --porcelain)" || { echo "code tree is dirty:"; git status --porcelain; exit 1; }
+
+if [[ "$PARTS" == *A* ]]; then
+  CUDA_VISIBLE_DEVICES=0 PYTHONUNBUFFERED=1 python -m task2.bench_attention --results_dir "$RES" --output_dir "$OUT" --device cuda 2>&1 \
+    | grep --line-buffered -v -i "warn\|cudart_stub" | tee -a "$RES/task2/logs/attention.log" | sed -u "s/^/[A] /"
+  [ "${PIPESTATUS[0]}" -eq 0 ] || echo "[A] FAILED attention benchmark" | tee -a "$RES/task2/logs/failed.log"
+fi
+
+[[ "$PARTS" == *B* ]] || { echo "parts $PARTS finished"; exit 0; }
 
 PYTHONUNBUFFERED=1 python -m task2.mqar_data --workers "$(nproc)" --output_dir "$OUT" \
   --check_path "$SPL/mqar_data_check.json" --data_root /tmp/pa4/atml-pa4-datasets 2>&1 | tee "$RES/task2/logs/data.log" || exit 1
