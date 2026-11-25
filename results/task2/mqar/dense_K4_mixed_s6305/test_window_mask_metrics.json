@@ -1,0 +1,205 @@
+{
+  "git_commit": "a4105a0ef735bf6a1bc7b7c49dbd413ccdb24301",
+  "seed": 6305,
+  "device": "cuda",
+  "gpu_name": "Tesla T4",
+  "dtype": "float32",
+  "attn_implementation": "sdpa",
+  "sdpa": {
+    "flash_enabled": true,
+    "mem_efficient_enabled": true,
+    "math_enabled": true,
+    "compute_capability": "7.5"
+  },
+  "torch": "2.11.0+cu130",
+  "transformers": "4.57.1",
+  "cuda": "13.0",
+  "run": {
+    "name": "dense_K4_mixed",
+    "attention": "dense",
+    "K": 4,
+    "regime": "mixed"
+  },
+  "smoke": false,
+  "n_params": 437824,
+  "train_stream": "make_example('train', 4, 'mixed', update * 32 + b)",
+  "theoretical_pairs_T256": {
+    "per_head": [
+      32896,
+      32896,
+      32896,
+      32896
+    ],
+    "total": 131584,
+    "per_query_max": [
+      256,
+      256,
+      256,
+      256
+    ]
+  },
+  "state_bytes_T256_fp32": {
+    "per_layer": 262144,
+    "total": 524288,
+    "bytes_per_value": 4
+  },
+  "cells": {
+    "K4_far": {
+      "n_queries": 4096,
+      "accuracy": 0.014892578125,
+      "mean_loss": 6.3757367213656835,
+      "chance_label_space": 0.015625,
+      "chance_1_over_k": 0.25
+    },
+    "K4_mixed": {
+      "n_queries": 4096,
+      "accuracy": 0.262451171875,
+      "mean_loss": 4.740458399979833,
+      "chance_label_space": 0.015625,
+      "chance_1_over_k": 0.25
+    },
+    "K4_near": {
+      "n_queries": 4096,
+      "accuracy": 1.0,
+      "mean_loss": 0.0003770754245184804,
+      "chance_label_space": 0.015625,
+      "chance_1_over_k": 0.25
+    },
+    "K8_far": {
+      "n_queries": 8192,
+      "accuracy": 0.0146484375,
+      "mean_loss": 6.4004800272668945,
+      "chance_label_space": 0.015625,
+      "chance_1_over_k": 0.125
+    },
+    "K8_mixed": {
+      "n_queries": 8192,
+      "accuracy": 0.165771484375,
+      "mean_loss": 5.511869531879072,
+      "chance_label_space": 0.015625,
+      "chance_1_over_k": 0.125
+    },
+    "K8_near": {
+      "n_queries": 8192,
+      "accuracy": 0.68701171875,
+      "mean_loss": 2.479866579282474,
+      "chance_label_space": 0.015625,
+      "chance_1_over_k": 0.125
+    },
+    "K16_far": {
+      "n_queries": 16384,
+      "accuracy": 0.015869140625,
+      "mean_loss": 6.374631368851624,
+      "chance_label_space": 0.015625,
+      "chance_1_over_k": 0.0625
+    },
+    "K16_mixed": {
+      "n_queries": 16384,
+      "accuracy": 0.08184814453125,
+      "mean_loss": 6.240745716742972,
+      "chance_label_space": 0.015625,
+      "chance_1_over_k": 0.0625
+    },
+    "K16_near": {
+      "n_queries": 16384,
+      "accuracy": 0.380859375,
+      "mean_loss": 4.875507337495655,
+      "chance_label_space": 0.015625,
+      "chance_1_over_k": 0.0625
+    }
+  },
+  "bins": {
+    "K4_[0,32)": {
+      "n_queries": 2271,
+      "accuracy": 1.0,
+      "mean_loss": 0.0003996568871542837,
+      "chance_label_space": 0.015625,
+      "chance_1_over_k": 0.25
+    },
+    "K4_[128,256)": {
+      "n_queries": 6154,
+      "accuracy": 0.015274618134546636,
+      "mean_loss": 6.359847300718328,
+      "chance_label_space": 0.015625,
+      "chance_1_over_k": 0.25
+    },
+    "K4_[32,64)": {
+      "n_queries": 2816,
+      "accuracy": 1.0,
+      "mean_loss": 0.00035445278825818605,
+      "chance_label_space": 0.015625,
+      "chance_1_over_k": 0.25
+    },
+    "K4_[64,128)": {
+      "n_queries": 1047,
+      "accuracy": 0.04871060171919771,
+      "mean_loss": 6.106087554447955,
+      "chance_label_space": 0.015625,
+      "chance_1_over_k": 0.25
+    },
+    "K8_[0,32)": {
+      "n_queries": 4062,
+      "accuracy": 0.6258000984736583,
+      "mean_loss": 3.104889122459005,
+      "chance_label_space": 0.015625,
+      "chance_1_over_k": 0.125
+    },
+    "K8_[128,256)": {
+      "n_queries": 12294,
+      "accuracy": 0.015942736294127218,
+      "mean_loss": 6.386757821075549,
+      "chance_label_space": 0.015625,
+      "chance_1_over_k": 0.125
+    },
+    "K8_[32,64)": {
+      "n_queries": 5977,
+      "accuracy": 0.7192571524176008,
+      "mean_loss": 2.117564119907867,
+      "chance_label_space": 0.015625,
+      "chance_1_over_k": 0.125
+    },
+    "K8_[64,128)": {
+      "n_queries": 2243,
+      "accuracy": 0.030762371823450735,
+      "mean_loss": 6.29223967614141,
+      "chance_label_space": 0.015625,
+      "chance_1_over_k": 0.125
+    },
+    "K16_[0,32)": {
+      "n_queries": 5382,
+      "accuracy": 0.14715719063545152,
+      "mean_loss": 7.435859468360285,
+      "chance_label_space": 0.015625,
+      "chance_1_over_k": 0.0625
+    },
+    "K16_[128,256)": {
+      "n_queries": 24618,
+      "accuracy": 0.015720204728247623,
+      "mean_loss": 6.378849632353455,
+      "chance_label_space": 0.015625,
+      "chance_1_over_k": 0.0625
+    },
+    "K16_[32,64)": {
+      "n_queries": 14409,
+      "accuracy": 0.45464640155458397,
+      "mean_loss": 4.052393976884688,
+      "chance_label_space": 0.015625,
+      "chance_1_over_k": 0.0625
+    },
+    "K16_[64,128)": {
+      "n_queries": 4743,
+      "accuracy": 0.02340290955091714,
+      "mean_loss": 6.562384496518406,
+      "chance_label_space": 0.015625,
+      "chance_1_over_k": 0.0625
+    }
+  },
+  "attention_at_eval": "window",
+  "n_examples": 9216,
+  "eval_seconds": 3.273389386999952,
+  "trained_attention": "dense",
+  "final_update": 4500,
+  "train_wall_clock_seconds": 141.1480138510001,
+  "ms_per_update": 31.36622530022224,
+  "peak_allocated_bytes_train": 413263872
+}

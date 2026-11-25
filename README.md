@@ -93,7 +93,7 @@ python -m task2.mqar_data --smoke && python -m task2.train_mqar --smoke --run_na
 ```
 
 Kaggle: `kaggle/task2.ipynb` with `PARTS= "A"` runs the Part A benchmark alone on GPU 0; `PARTS= "B"` runs all 39 B1/B2 runs (13 mechanisms × seeds 6304/6305/6306) on both T4s via `kaggle/task2_run.sh`.
-Outputs per run in `results/task2/mqar/<run>_s<seed>/`: `config.json`, `train_log.jsonl`, `<run>_history.json` (dev curves),
+Outputs per run in `results/task2/mqar/<run>_s<seed>/`: `config.json`, `train_log.jsonl.gz`, `<run>_history.json` (dev curves),
 `test_metrics.json` (+ `test_window_mask_metrics.json` for dense), `test_predictions.jsonl.gz`.
 
 ## Task 3 — distillation and speculative decoding

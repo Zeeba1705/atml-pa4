@@ -1,0 +1,174 @@
+Using device: cuda
+dense_K16_near_s6304: dense K=16 near, 437824 params
+speed 137.4 ms/update, about 10.3 min of training left
+update 500: loss=3.5818, query_acc=0.0785, lr=7.53e-04
+dev at 500: own cell K16_near acc=0.0813 loss=3.5101
+update 1000: loss=0.0115, query_acc=0.9991, lr=6.73e-04
+dev at 1000: own cell K16_near acc=0.9993 loss=0.0119
+update 1500: loss=0.0022, query_acc=0.9999, lr=5.94e-04
+dev at 1500: own cell K16_near acc=0.9998 loss=0.0018
+update 2000: loss=0.0017, query_acc=0.9998, lr=5.15e-04
+dev at 2000: own cell K16_near acc=0.9998 loss=0.0021
+update 2500: loss=0.0010, query_acc=0.9999, lr=4.36e-04
+update 3000: loss=0.0006, query_acc=0.9999, lr=3.57e-04
+dev at 3000: own cell K16_near acc=1.0000 loss=0.0005
+update 3500: loss=0.0003, query_acc=1.0000, lr=2.78e-04
+update 4000: loss=0.0002, query_acc=1.0000, lr=1.99e-04
+update 4500: loss=0.0002, query_acc=1.0000, lr=1.20e-04
+dev at 4500: own cell K16_near acc=1.0000 loss=0.0002
+test (dense): K4_far=1.000, K4_mixed=1.000, K4_near=0.999, K8_far=1.000, K8_mixed=1.000, K8_near=1.000, K16_far=1.000, K16_mixed=1.000, K16_near=1.000
+test_window_mask (window): K4_far=0.019, K4_mixed=0.256, K4_near=0.999, K8_far=0.016, K8_mixed=0.245, K8_near=1.000, K16_far=0.015, K16_mixed=0.225, K16_near=1.000
+Using device: cuda
+window_K16_mixed_s6304: window K=16 mixed, 437824 params
+speed 69.6 ms/update, about 5.2 min of training left
+update 500: loss=4.1664, query_acc=0.0167, lr=7.53e-04
+dev at 500: own cell K16_mixed acc=0.0156 loss=4.1677
+update 1000: loss=4.1552, query_acc=0.0236, lr=6.73e-04
+dev at 1000: own cell K16_mixed acc=0.0281 loss=4.1497
+update 1500: loss=4.0535, query_acc=0.0410, lr=5.94e-04
+dev at 1500: own cell K16_mixed acc=0.0508 loss=4.0447
+update 2000: loss=3.9941, query_acc=0.0413, lr=5.15e-04
+dev at 2000: own cell K16_mixed acc=0.0442 loss=3.9895
+update 2500: loss=3.9607, query_acc=0.0409, lr=4.36e-04
+update 3000: loss=3.9411, query_acc=0.0397, lr=3.57e-04
+dev at 3000: own cell K16_mixed acc=0.0396 loss=3.9356
+update 3500: loss=3.9186, query_acc=0.0421, lr=2.78e-04
+update 4000: loss=3.9072, query_acc=0.0416, lr=1.99e-04
+update 4500: loss=3.8988, query_acc=0.0408, lr=1.20e-04
+dev at 4500: own cell K16_mixed acc=0.0410 loss=3.8932
+test (window): K4_far=0.015, K4_mixed=0.121, K4_near=0.246, K8_far=0.015, K8_mixed=0.072, K8_near=0.128, K16_far=0.014, K16_mixed=0.041, K16_near=0.070
+Using device: cuda
+dilated_K4_mixed_s6304: local_dilated K=4 mixed, 437824 params
+speed 72.2 ms/update, about 5.4 min of training left
+update 500: loss=3.7043, query_acc=0.1741, lr=7.53e-04
+dev at 500: own cell K4_mixed acc=0.2188 loss=3.3588
+update 1000: loss=2.1889, query_acc=0.2523, lr=6.73e-04
+dev at 1000: own cell K4_mixed acc=0.2402 loss=2.1436
+update 1500: loss=1.8937, query_acc=0.2501, lr=5.94e-04
+dev at 1500: own cell K4_mixed acc=0.2471 loss=1.8620
+update 2000: loss=1.7437, query_acc=0.2634, lr=5.15e-04
+dev at 2000: own cell K4_mixed acc=0.2539 loss=1.7204
+update 2500: loss=1.6527, query_acc=0.2601, lr=4.36e-04
+update 3000: loss=1.6074, query_acc=0.2637, lr=3.57e-04
+dev at 3000: own cell K4_mixed acc=0.2783 loss=1.5819
+update 3500: loss=1.5570, query_acc=0.2766, lr=2.78e-04
+update 4000: loss=1.5191, query_acc=0.2848, lr=1.99e-04
+update 4500: loss=1.4871, query_acc=0.3044, lr=1.20e-04
+dev at 4500: own cell K4_mixed acc=0.3115 loss=1.4773
+test (local_dilated): K4_far=0.302, K4_mixed=0.302, K4_near=0.307, K8_far=0.146, K8_mixed=0.145, K8_near=0.149, K16_far=0.073, K16_mixed=0.073, K16_near=0.074
+Using device: cuda
+dense_K16_mixed_s6305: dense K=16 mixed, 437824 params
+speed 58.5 ms/update, about 4.4 min of training left
+update 500: loss=3.9076, query_acc=0.0625, lr=7.53e-04
+dev at 500: own cell K16_mixed acc=0.0625 loss=3.8341
+update 1000: loss=3.5162, query_acc=0.0619, lr=6.73e-04
+dev at 1000: own cell K16_mixed acc=0.0618 loss=3.4961
+update 1500: loss=3.2455, query_acc=0.0726, lr=5.94e-04
+dev at 1500: own cell K16_mixed acc=0.0889 loss=3.2050
+update 2000: loss=0.0067, query_acc=0.9996, lr=5.15e-04
+dev at 2000: own cell K16_mixed acc=0.9995 loss=0.0062
+update 2500: loss=0.0031, query_acc=0.9997, lr=4.36e-04
+update 3000: loss=0.0010, query_acc=1.0000, lr=3.57e-04
+dev at 3000: own cell K16_mixed acc=1.0000 loss=0.0011
+update 3500: loss=0.0008, query_acc=0.9999, lr=2.78e-04
+update 4000: loss=0.0005, query_acc=1.0000, lr=1.99e-04
+update 4500: loss=0.0004, query_acc=1.0000, lr=1.20e-04
+dev at 4500: own cell K16_mixed acc=1.0000 loss=0.0004
+test (dense): K4_far=1.000, K4_mixed=1.000, K4_near=1.000, K8_far=1.000, K8_mixed=1.000, K8_near=1.000, K16_far=1.000, K16_mixed=1.000, K16_near=1.000
+test_window_mask (window): K4_far=0.017, K4_mixed=0.257, K4_near=1.000, K8_far=0.016, K8_mixed=0.242, K8_near=1.000, K16_far=0.016, K16_mixed=0.224, K16_near=1.000
+Using device: cuda
+window_K16_near_s6305: window K=16 near, 437824 params
+speed 62.1 ms/update, about 4.6 min of training left
+update 500: loss=3.4383, query_acc=0.0843, lr=7.53e-04
+dev at 500: own cell K16_near acc=0.0872 loss=3.3451
+update 1000: loss=0.0082, query_acc=0.9992, lr=6.73e-04
+dev at 1000: own cell K16_near acc=0.9995 loss=0.0055
+update 1500: loss=0.0015, query_acc=1.0000, lr=5.94e-04
+dev at 1500: own cell K16_near acc=1.0000 loss=0.0013
+update 2000: loss=0.0008, query_acc=1.0000, lr=5.15e-04
+dev at 2000: own cell K16_near acc=0.9995 loss=0.0038
+update 2500: loss=0.0005, query_acc=1.0000, lr=4.36e-04
+update 3000: loss=0.0013, query_acc=0.9998, lr=3.57e-04
+dev at 3000: own cell K16_near acc=0.9998 loss=0.0007
+update 3500: loss=0.0007, query_acc=0.9999, lr=2.78e-04
+update 4000: loss=0.0002, query_acc=1.0000, lr=1.99e-04
+update 4500: loss=0.0002, query_acc=1.0000, lr=1.20e-04
+dev at 4500: own cell K16_near acc=1.0000 loss=0.0002
+test (window): K4_far=0.018, K4_mixed=0.258, K4_near=1.000, K8_far=0.016, K8_mixed=0.243, K8_near=1.000, K16_far=0.015, K16_mixed=0.224, K16_near=1.000
+Using device: cuda
+linear_K16_mixed_s6305: linear K=16 mixed, 437824 params
+speed 68.5 ms/update, about 5.1 min of training left
+update 500: loss=4.1662, query_acc=0.0167, lr=7.53e-04
+dev at 500: own cell K16_mixed acc=0.0149 loss=4.1677
+update 1000: loss=3.4683, query_acc=0.0616, lr=6.73e-04
+dev at 1000: own cell K16_mixed acc=0.0554 loss=3.4311
+update 1500: loss=3.1438, query_acc=0.0620, lr=5.94e-04
+dev at 1500: own cell K16_mixed acc=0.0637 loss=3.1225
+update 2000: loss=2.9807, query_acc=0.0637, lr=5.15e-04
+dev at 2000: own cell K16_mixed acc=0.0603 loss=2.9674
+update 2500: loss=2.8872, query_acc=0.0642, lr=4.36e-04
+update 3000: loss=1.5263, query_acc=0.5595, lr=3.57e-04
+dev at 3000: own cell K16_mixed acc=0.7456 loss=0.9017
+update 3500: loss=0.0318, query_acc=0.9931, lr=2.78e-04
+update 4000: loss=0.0142, query_acc=0.9976, lr=1.99e-04
+update 4500: loss=0.0095, query_acc=0.9983, lr=1.20e-04
+dev at 4500: own cell K16_mixed acc=0.9998 loss=0.0077
+test (linear): K4_far=1.000, K4_mixed=1.000, K4_near=0.999, K8_far=1.000, K8_mixed=0.999, K8_near=0.999, K16_far=0.998, K16_mixed=0.998, K16_near=0.998
+Using device: cuda
+dense_K8_mixed_s6306: dense K=8 mixed, 437824 params
+speed 59.8 ms/update, about 4.5 min of training left
+update 500: loss=3.0243, query_acc=0.1253, lr=7.53e-04
+dev at 500: own cell K8_mixed acc=0.1211 loss=2.9261
+update 1000: loss=2.0973, query_acc=0.2945, lr=6.73e-04
+dev at 1000: own cell K8_mixed acc=0.6660 loss=1.1591
+update 1500: loss=0.0038, query_acc=0.9998, lr=5.94e-04
+dev at 1500: own cell K8_mixed acc=0.9995 loss=0.0038
+update 2000: loss=0.0014, query_acc=1.0000, lr=5.15e-04
+dev at 2000: own cell K8_mixed acc=1.0000 loss=0.0015
+update 2500: loss=0.0011, query_acc=1.0000, lr=4.36e-04
+update 3000: loss=0.0008, query_acc=0.9999, lr=3.57e-04
+dev at 3000: own cell K8_mixed acc=1.0000 loss=0.0006
+update 3500: loss=0.0005, query_acc=1.0000, lr=2.78e-04
+update 4000: loss=0.0004, query_acc=1.0000, lr=1.99e-04
+update 4500: loss=0.0003, query_acc=1.0000, lr=1.20e-04
+dev at 4500: own cell K8_mixed acc=1.0000 loss=0.0003
+test (dense): K4_far=1.000, K4_mixed=1.000, K4_near=1.000, K8_far=1.000, K8_mixed=1.000, K8_near=1.000, K16_far=0.518, K16_mixed=0.521, K16_near=0.519
+test_window_mask (window): K4_far=0.016, K4_mixed=0.259, K4_near=1.000, K8_far=0.016, K8_mixed=0.244, K8_near=1.000, K16_far=0.016, K16_mixed=0.113, K16_near=0.539
+Using device: cuda
+window_K8_near_s6306: window K=8 near, 437824 params
+speed 50.4 ms/update, about 3.8 min of training left
+update 500: loss=2.7173, query_acc=0.1441, lr=7.53e-04
+dev at 500: own cell K8_near acc=0.1533 loss=2.6399
+update 1000: loss=0.0059, query_acc=0.9997, lr=6.73e-04
+dev at 1000: own cell K8_near acc=1.0000 loss=0.0037
+update 1500: loss=0.0024, query_acc=0.9998, lr=5.94e-04
+dev at 1500: own cell K8_near acc=1.0000 loss=0.0017
+update 2000: loss=0.0012, query_acc=0.9999, lr=5.15e-04
+dev at 2000: own cell K8_near acc=0.9995 loss=0.0017
+update 2500: loss=0.0019, query_acc=0.9997, lr=4.36e-04
+update 3000: loss=0.0004, query_acc=1.0000, lr=3.57e-04
+dev at 3000: own cell K8_near acc=1.0000 loss=0.0004
+update 3500: loss=0.0003, query_acc=1.0000, lr=2.78e-04
+update 4000: loss=0.0003, query_acc=1.0000, lr=1.99e-04
+update 4500: loss=0.0002, query_acc=1.0000, lr=1.20e-04
+dev at 4500: own cell K8_near acc=1.0000 loss=0.0002
+test (window): K4_far=0.019, K4_mixed=0.256, K4_near=1.000, K8_far=0.016, K8_mixed=0.242, K8_near=1.000, K16_far=0.016, K16_mixed=0.115, K16_near=0.555
+Using device: cuda
+linear_K8_mixed_s6306: linear K=8 mixed, 437824 params
+speed 65.4 ms/update, about 4.9 min of training left
+update 500: loss=4.1672, query_acc=0.0168, lr=7.53e-04
+dev at 500: own cell K8_mixed acc=0.0176 loss=4.1646
+update 1000: loss=2.4718, query_acc=0.1235, lr=6.73e-04
+dev at 1000: own cell K8_mixed acc=0.1226 loss=2.4198
+update 1500: loss=2.2433, query_acc=0.1226, lr=5.94e-04
+dev at 1500: own cell K8_mixed acc=0.1265 loss=2.2418
+update 2000: loss=2.1826, query_acc=0.1269, lr=5.15e-04
+dev at 2000: own cell K8_mixed acc=0.1211 loss=2.1869
+update 2500: loss=2.1477, query_acc=0.1351, lr=4.36e-04
+update 3000: loss=2.1227, query_acc=0.1404, lr=3.57e-04
+dev at 3000: own cell K8_mixed acc=0.1440 loss=2.1294
+update 3500: loss=2.0967, query_acc=0.1562, lr=2.78e-04
+update 4000: loss=1.7009, query_acc=0.3718, lr=1.99e-04
+update 4500: loss=0.6391, query_acc=0.7735, lr=1.20e-04
+dev at 4500: own cell K8_mixed acc=0.7900 loss=0.6061
+test (linear): K4_far=0.889, K4_mixed=0.885, K4_near=0.885, K8_far=0.779, K8_mixed=0.789, K8_near=0.788, K16_far=0.396, K16_mixed=0.395, K16_near=0.394

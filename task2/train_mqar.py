@@ -235,7 +235,7 @@ def main(args):
             print(f"dev at {update}: own cell K{run['K']}_{run['regime']} acc={own['accuracy']:.4f} loss={own['mean_loss']:.4f}")
 
             write_json(os.path.join(res_dir, f"{name}_history.json"), history)
-            write_jsonl(os.path.join(res_dir, "train_log.jsonl"), train_log)
+            write_jsonl(os.path.join(res_dir, "train_log.jsonl.gz"), train_log)
             torch.save({
                 "model": model.state_dict(),
                 "optimizer": optimizer.state_dict(),

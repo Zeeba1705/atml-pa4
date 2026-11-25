@@ -1,0 +1,65 @@
+{
+  "streams": {
+    "K4_mixed": {
+      "n": 144000,
+      "unique_sequences": 144000,
+      "overlap_with": {
+        "development": 0,
+        "test": 0
+      },
+      "sha256": "bc4e1116097804ffa4394205380ee62fccdb705c3e674ffba2777e53943a2e7e"
+    },
+    "K4_near": {
+      "n": 144000,
+      "unique_sequences": 144000,
+      "overlap_with": {
+        "development": 0,
+        "test": 0
+      },
+      "sha256": "fda4c365d60eb3a80ef88074cc51592a1a4e56577ff7b56641e28c2f988e16ba"
+    },
+    "K8_mixed": {
+      "n": 144000,
+      "unique_sequences": 144000,
+      "overlap_with": {
+        "development": 0,
+        "test": 0
+      },
+      "sha256": "3f66a6ccd6591171e866454c8d53c337ac9eb50c072f34c3a8cfb9fa8d6c0d37"
+    },
+    "K8_near": {
+      "n": 144000,
+      "unique_sequences": 144000,
+      "overlap_with": {
+        "development": 0,
+        "test": 0
+      },
+      "sha256": "d5acc2062868ff38f36b1887dfb2c5c0ef9ae16b5bf9ba116f6956e568f6d7c1"
+    },
+    "K16_mixed": {
+      "n": 144000,
+      "unique_sequences": 144000,
+      "overlap_with": {
+        "development": 0,
+        "test": 0
+      },
+      "sha256": "420b4ece416899d68ab04bd34e8c5c88cc844aeec673690df045f8b38f412a26"
+    },
+    "K16_near": {
+      "n": 144000,
+      "unique_sequences": 144000,
+      "overlap_with": {
+        "development": 0,
+        "test": 0
+      },
+      "sha256": "5dbe8cbc5ef11af36a3139948f1c07feb091ef2414f1fd272d7e73b27dd324c5"
+    }
+  },
+  "git_commit": "a4105a0ef735bf6a1bc7b7c49dbd413ccdb24301",
+  "smoke": false,
+  "generator_sha256": "af69fe1cfd03a63ddbe2cc5844691bff138f06206bd94e8c7cb7aad93c727d08",
+  "development_sha256": "b960a5c503956afdb77edb43c9c89003ca5cbed07cca3ca65fbc71d50be5d9fd",
+  "test_sha256": "84925dc5f2b7a7e0b042fc354e5ec34435002b829a90b35813accd005ad4b549",
+  "frozen_records_equal_generator": "all",
+  "wall_clock_seconds": 334.85909132000006
+}
