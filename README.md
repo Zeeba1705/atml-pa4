@@ -65,7 +65,27 @@ nonzero fraction, Wanda score quantiles).
 
 ## Task 2 — attention and KV memory
 
-TODO
+### Part B — MQAR (configs/task2/mqar.yaml)
+
+```bash
+# checks the frozen dev/test files against the supplied generator, builds the 6 training streams once
+# (shared by all seeds and mechanisms), asserts no train/dev/test overlap -> splits/task2/mqar_data_check.json
+python -m task2.mqar_data --workers 4
+
+# one run = one mechanism x one seed (names in configs/task2/mqar.yaml `runs`), 4,500 updates, final checkpoint tested;
+# dense runs also write the test-time W=64 mask control. skips finished runs, resumes from outputs/task2/mqar/<run>/last.pt
+python -m task2.train_mqar --run_name dense_K16_mixed --seed 6304 --device cuda
+
+# re-evaluate a final checkpoint on test, optionally under another mask
+python -m task2.eval_mqar --checkpoint outputs/task2/mqar/dense_K16_mixed_s6304/final.pt --out_dir results/task2/mqar/dense_K16_mixed_s6304 --attention window
+
+# cpu smoke (6 updates, 2 examples per cell, writes under outputs/smoke/)
+python -m task2.mqar_data --smoke && python -m task2.train_mqar --smoke --run_name linear_K8_mixed --seed 6304
+```
+
+Kaggle: `kaggle/task2.ipynb` runs all 39 B1/B2 runs (13 mechanisms × seeds 6304/6305/6306) on both T4s via `kaggle/task2_run.sh`.
+Outputs per run in `results/task2/mqar/<run>_s<seed>/`: `config.json`, `train_log.jsonl`, `<run>_history.json` (dev curves),
+`test_metrics.json` (+ `test_window_mask_metrics.json` for dense), `test_predictions.jsonl.gz`.
 
 ## Task 3 — distillation and speculative decoding
 
