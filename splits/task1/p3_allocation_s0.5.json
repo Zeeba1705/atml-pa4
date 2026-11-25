@@ -1,0 +1,2820 @@
+{
+  "method": "p3_nonuniform",
+  "target_sparsity": 0.5,
+  "unit": "projection",
+  "sensitivity": "taylor_pruned_mean",
+  "rule": "s = target + lam * (1 - 2 rank / (U - 1)), rank ascending in sensitivity; shift+clip to [s_min, s_max] (decision 1.6)",
+  "selection": "lowest dev mean nll over the lambda grid (32 c4 dev sequences); ties -> smaller lambda",
+  "lambda_grid": [
+    0.0,
+    0.05,
+    0.1,
+    0.15,
+    0.2
+  ],
+  "dev_sweep": [
+    {
+      "lambda": 0.0,
+      "dev_nll_sum": 46410.902099609375,
+      "dev_tokens": 16352,
+      "dev_mean_nll": 2.8382400990465615,
+      "dev_ppl": 17.085669975429898,
+      "eligible_zeros": 655097856,
+      "allocated_zeros": 655097856,
+      "build_seconds": 86.86488153900018
+    },
+    {
+      "lambda": 0.05,
+      "dev_nll_sum": 45949.61315917969,
+      "dev_tokens": 16352,
+      "dev_mean_nll": 2.810030158951791,
+      "dev_ppl": 16.61041916406347,
+      "eligible_zeros": 655097856,
+      "allocated_zeros": 655097856,
+      "build_seconds": 87.39445074499986
+    },
+    {
+      "lambda": 0.1,
+      "dev_nll_sum": 45703.935546875,
+      "dev_tokens": 16352,
+      "dev_mean_nll": 2.79500584313081,
+      "dev_ppl": 16.36272436241674,
+      "eligible_zeros": 655097856,
+      "allocated_zeros": 655097856,
+      "build_seconds": 87.67315495899993
+    },
+    {
+      "lambda": 0.15,
+      "dev_nll_sum": 45614.1376953125,
+      "dev_tokens": 16352,
+      "dev_mean_nll": 2.7895142915430835,
+      "dev_ppl": 16.273113892922296,
+      "eligible_zeros": 655097856,
+      "allocated_zeros": 655097856,
+      "build_seconds": 87.318112079
+    },
+    {
+      "lambda": 0.2,
+      "dev_nll_sum": 45655.460998535156,
+      "dev_tokens": 16352,
+      "dev_mean_nll": 2.7920414015738233,
+      "dev_ppl": 16.314289848444137,
+      "eligible_zeros": 655097856,
+      "allocated_zeros": 655097856,
+      "build_seconds": 87.43927019700004
+    }
+  ],
+  "chosen_lambda": 0.15,
+  "sensitivity_file": "splits/task1/sensitivity.json",
+  "sensitivity_sha256": "1fca1b69aa932eb75ab6228e083057d01b166bb93ab996cceacf0f7f885f48bc",
+  "units": [
+    {
+      "name": "model.layers.0.self_attn.q_proj",
+      "layer": 0,
+      "proj": "q_proj",
+      "shape": [
+        1536,
+        1536
+      ],
+      "sensitivity": 4.3894619494722065e-08,
+      "raw": 0.6315384615384615,
+      "sparsity": 0.5988600055406776,
+      "achieved": 0.5988599989149306,
+      "zeros": 1412888
+    },
+    {
+      "name": "model.layers.0.self_attn.k_proj",
+      "layer": 0,
+      "proj": "k_proj",
+      "shape": [
+        256,
+        1536
+      ],
+      "sensitivity": 1.7828369891503826e-07,
+      "raw": 0.38076923076923075,
+      "sparsity": 0.34809077477144695,
+      "achieved": 0.34809112548828125,
+      "zeros": 136875
+    },
+    {
+      "name": "model.layers.0.self_attn.v_proj",
+      "layer": 0,
+      "proj": "v_proj",
+      "shape": [
+        256,
+        1536
+      ],
+      "sensitivity": 5.83159248890297e-07,
+      "raw": 0.35,
+      "sparsity": 0.3173215440022162,
+      "achieved": 0.31732177734375,
+      "zeros": 124776
+    },
+    {
+      "name": "model.layers.0.self_attn.o_proj",
+      "layer": 0,
+      "proj": "o_proj",
+      "shape": [
+        1536,
+        1536
+      ],
+      "sensitivity": 2.057317516346302e-07,
+      "raw": 0.37153846153846154,
+      "sparsity": 0.33886000554067774,
+      "achieved": 0.3388599819607205,
+      "zeros": 799471
+    },
+    {
+      "name": "model.layers.0.mlp.gate_proj",
+      "layer": 0,
+      "proj": "gate_proj",
+      "shape": [
+        8960,
+        1536
+      ],
+      "sensitivity": 4.408769527231016e-08,
+      "raw": 0.6269230769230769,
+      "sparsity": 0.5942446209252932,
+      "achieved": 0.5942446027483259,
+      "zeros": 8178327
+    },
+    {
+      "name": "model.layers.0.mlp.up_proj",
+      "layer": 0,
+      "proj": "up_proj",
+      "shape": [
+        8960,
+        1536
+      ],
+      "sensitivity": 4.824773469636057e-08,
+      "raw": 0.61,
+      "sparsity": 0.5773215440022161,
+      "achieved": 0.577321515764509,
+      "zeros": 7945422
+    },
+    {
+      "name": "model.layers.0.mlp.down_proj",
+      "layer": 0,
+      "proj": "down_proj",
+      "shape": [
+        1536,
+        8960
+      ],
+      "sensitivity": 8.134760065559021e-08,
+      "raw": 0.4684615384615385,
+      "sparsity": 0.4357830824637547,
+      "achieved": 0.43578309558686756,
+      "zeros": 5997491
+    },
+    {
+      "name": "model.layers.1.self_attn.q_proj",
+      "layer": 1,
+      "proj": "q_proj",
+      "shape": [
+        1536,
+        1536
+      ],
+      "sensitivity": 2.56007055554619e-08,
+      "raw": 0.65,
+      "sparsity": 0.6173215440022162,
+      "achieved": 0.6173214382595487,
+      "zeros": 1456444
+    },
+    {
+      "name": "model.layers.1.self_attn.k_proj",
+      "layer": 1,
+      "proj": "k_proj",
+      "shape": [
+        256,
+        1536
+      ],
+      "sensitivity": 8.514785321267482e-08,
+      "raw": 0.4592307692307692,
+      "sparsity": 0.4265523132329854,
+      "achieved": 0.42655181884765625,
+      "zeros": 167727
+    },
+    {
+      "name": "model.layers.1.self_attn.v_proj",
+      "layer": 1,
+      "proj": "v_proj",
+      "shape": [
+        256,
+        1536
+      ],
+      "sensitivity": 2.278390525134455e-07,
+      "raw": 0.35923076923076924,
+      "sparsity": 0.32655231323298545,
+      "achieved": 0.3265533447265625,
+      "zeros": 128406
+    },
+    {
+      "name": "model.layers.1.self_attn.o_proj",
+      "layer": 1,
+      "proj": "o_proj",
+      "shape": [
+        1536,
+        1536
+      ],
+      "sensitivity": 9.3277527923874e-08,
+      "raw": 0.4469230769230769,
+      "sparsity": 0.4142446209252931,
+      "achieved": 0.41424475775824654,
+      "zeros": 977326
+    },
+    {
+      "name": "model.layers.1.mlp.gate_proj",
+      "layer": 1,
+      "proj": "gate_proj",
+      "shape": [
+        8960,
+        1536
+      ],
+      "sensitivity": 5.033518846175866e-08,
+      "raw": 0.5961538461538461,
+      "sparsity": 0.5634753901560623,
+      "achieved": 0.5634753999255953,
+      "zeros": 7754864
+    },
+    {
+      "name": "model.layers.1.mlp.up_proj",
+      "layer": 1,
+      "proj": "up_proj",
+      "shape": [
+        8960,
+        1536
+      ],
+      "sensitivity": 5.417171067279014e-08,
+      "raw": 0.5838461538461539,
+      "sparsity": 0.5511676978483702,
+      "achieved": 0.5511677333286831,
+      "zeros": 7585479
+    },
+    {
+      "name": "model.layers.1.mlp.down_proj",
+      "layer": 1,
+      "proj": "down_proj",
+      "shape": [
+        1536,
+        8960
+      ],
+      "sensitivity": 5.961752691518996e-08,
+      "raw": 0.5684615384615385,
+      "sparsity": 0.5357830824637546,
+      "achieved": 0.5357830955868675,
+      "zeros": 7373747
+    },
+    {
+      "name": "model.layers.2.self_attn.q_proj",
+      "layer": 2,
+      "proj": "q_proj",
+      "shape": [
+        1536,
+        1536
+      ],
+      "sensitivity": 4.472334680372114e-08,
+      "raw": 0.6238461538461538,
+      "sparsity": 0.59116769784837,
+      "achieved": 0.5911678738064237,
+      "zeros": 1394740
+    },
+    {
+      "name": "model.layers.2.self_attn.k_proj",
+      "layer": 2,
+      "proj": "k_proj",
+      "shape": [
+        256,
+        1536
+      ],
+      "sensitivity": 1.2972596152849292e-07,
+      "raw": 0.3930769230769231,
+      "sparsity": 0.3603984670791393,
+      "achieved": 0.3603973388671875,
+      "zeros": 141714
+    },
+    {
+      "name": "model.layers.2.self_attn.v_proj",
+      "layer": 2,
+      "proj": "v_proj",
+      "shape": [
+        256,
+        1536
+      ],
+      "sensitivity": 2.1734642530191195e-07,
+      "raw": 0.3653846153846154,
+      "sparsity": 0.3327061593868316,
+      "achieved": 0.33270517985026044,
+      "zeros": 130825
+    },
+    {
+      "name": "model.layers.2.self_attn.o_proj",
+      "layer": 2,
+      "proj": "o_proj",
+      "shape": [
+        1536,
+        1536
+      ],
+      "sensitivity": 9.817478030527127e-08,
+      "raw": 0.43923076923076926,
+      "sparsity": 0.40655231323298546,
+      "achieved": 0.40655220879448783,
+      "zeros": 959177
+    },
+    {
+      "name": "model.layers.2.mlp.gate_proj",
+      "layer": 2,
+      "proj": "gate_proj",
+      "shape": [
+        8960,
+        1536
+      ],
+      "sensitivity": 5.3407756439582954e-08,
+      "raw": 0.5884615384615385,
+      "sparsity": 0.5557830824637546,
+      "achieved": 0.5557830810546875,
+      "zeros": 7648998
+    },
+    {
+      "name": "model.layers.2.mlp.up_proj",
+      "layer": 2,
+      "proj": "up_proj",
+      "shape": [
+        8960,
+        1536
+      ],
+      "sensitivity": 6.062816737539833e-08,
+      "raw": 0.5638461538461539,
+      "sparsity": 0.5311676978483701,
+      "achieved": 0.5311676751999628,
+      "zeros": 7310227
+    },
+    {
+      "name": "model.layers.2.mlp.down_proj",
+      "layer": 2,
+      "proj": "down_proj",
+      "shape": [
+        1536,
+        8960
+      ],
+      "sensitivity": 7.674996282958091e-08,
+      "raw": 0.48846153846153845,
+      "sparsity": 0.45578308246375465,
+      "achieved": 0.4557830810546875,
+      "zeros": 6272742
+    },
+    {
+      "name": "model.layers.3.self_attn.q_proj",
+      "layer": 3,
+      "proj": "q_proj",
+      "shape": [
+        1536,
+        1536
+      ],
+      "sensitivity": 4.690044974609009e-08,
+      "raw": 0.6146153846153846,
+      "sparsity": 0.5819369286176008,
+      "achieved": 0.5819367302788628,
+      "zeros": 1372961
+    },
+    {
+      "name": "model.layers.3.self_attn.k_proj",
+      "layer": 3,
+      "proj": "k_proj",
+      "shape": [
+        256,
+        1536
+      ],
+      "sensitivity": 1.1825167689494265e-07,
+      "raw": 0.40692307692307694,
+      "sparsity": 0.37424462092529315,
+      "achieved": 0.37424468994140625,
+      "zeros": 147159
+    },
+    {
+      "name": "model.layers.3.self_attn.v_proj",
+      "layer": 3,
+      "proj": "v_proj",
+      "shape": [
+        256,
+        1536
+      ],
+      "sensitivity": 2.3026484541333048e-07,
+      "raw": 0.35615384615384615,
+      "sparsity": 0.32347539015606236,
+      "achieved": 0.3234761555989583,
+      "zeros": 127196
+    },
+    {
+      "name": "model.layers.3.self_attn.o_proj",
+      "layer": 3,
+      "proj": "o_proj",
+      "shape": [
+        1536,
+        1536
+      ],
+      "sensitivity": 1.0651980630882463e-07,
+      "raw": 0.4330769230769231,
+      "sparsity": 0.4003984670791393,
+      "achieved": 0.40039825439453125,
+      "zeros": 944658
+    },
+    {
+      "name": "model.layers.3.mlp.gate_proj",
+      "layer": 3,
+      "proj": "gate_proj",
+      "shape": [
+        8960,
+        1536
+      ],
+      "sensitivity": 6.365286253640079e-08,
+      "raw": 0.546923076923077,
+      "sparsity": 0.5142446209252931,
+      "achieved": 0.5142445882161458,
+      "zeros": 7077322
+    },
+    {
+      "name": "model.layers.3.mlp.up_proj",
+      "layer": 3,
+      "proj": "up_proj",
+      "shape": [
+        8960,
+        1536
+      ],
+      "sensitivity": 7.211524888361964e-08,
+      "raw": 0.5038461538461538,
+      "sparsity": 0.47116769784837004,
+      "achieved": 0.471167718796503,
+      "zeros": 6484474
+    },
+    {
+      "name": "model.layers.3.mlp.down_proj",
+      "layer": 3,
+      "proj": "down_proj",
+      "shape": [
+        1536,
+        8960
+      ],
+      "sensitivity": 8.25159531814279e-08,
+      "raw": 0.4653846153846154,
+      "sparsity": 0.4327061593868316,
+      "achieved": 0.43270612444196427,
+      "zeros": 5955144
+    },
+    {
+      "name": "model.layers.4.self_attn.q_proj",
+      "layer": 4,
+      "proj": "q_proj",
+      "shape": [
+        1536,
+        1536
+      ],
+      "sensitivity": 4.85750888401526e-08,
+      "raw": 0.6069230769230769,
+      "sparsity": 0.5742446209252932,
+      "achieved": 0.5742446051703559,
+      "zeros": 1354813
+    },
+    {
+      "name": "model.layers.4.self_attn.k_proj",
+      "layer": 4,
+      "proj": "k_proj",
+      "shape": [
+        256,
+        1536
+      ],
+      "sensitivity": 1.2520601444521162e-07,
+      "raw": 0.4023076923076923,
+      "sparsity": 0.3696292363099085,
+      "achieved": 0.36962890625,
+      "zeros": 145344
+    },
+    {
+      "name": "model.layers.4.self_attn.v_proj",
+      "layer": 4,
+      "proj": "v_proj",
+      "shape": [
+        256,
+        1536
+      ],
+      "sensitivity": 2.2915136810297554e-07,
+      "raw": 0.3576923076923077,
+      "sparsity": 0.3250138516945239,
+      "achieved": 0.32501475016276044,
+      "zeros": 127801
+    },
+    {
+      "name": "model.layers.4.self_attn.o_proj",
+      "layer": 4,
+      "proj": "o_proj",
+      "shape": [
+        1536,
+        1536
+      ],
+      "sensitivity": 9.257985311705852e-08,
+      "raw": 0.44846153846153847,
+      "sparsity": 0.41578308246375467,
+      "achieved": 0.4157829284667969,
+      "zeros": 980955
+    },
+    {
+      "name": "model.layers.4.mlp.gate_proj",
+      "layer": 4,
+      "proj": "gate_proj",
+      "shape": [
+        8960,
+        1536
+      ],
+      "sensitivity": 7.234235255282329e-08,
+      "raw": 0.5007692307692307,
+      "sparsity": 0.46809077477144695,
+      "achieved": 0.4680907476515997,
+      "zeros": 6442127
+    },
+    {
+      "name": "model.layers.4.mlp.up_proj",
+      "layer": 4,
+      "proj": "up_proj",
+      "shape": [
+        8960,
+        1536
+      ],
+      "sensitivity": 8.244087013054013e-08,
+      "raw": 0.4669230769230769,
+      "sparsity": 0.4342446209252931,
+      "achieved": 0.4342446463448661,
+      "zeros": 5976318
+    },
+    {
+      "name": "model.layers.4.mlp.down_proj",
+      "layer": 4,
+      "proj": "down_proj",
+      "shape": [
+        1536,
+        8960
+      ],
+      "sensitivity": 8.597262990406307e-08,
+      "raw": 0.45615384615384613,
+      "sparsity": 0.42347539015606234,
+      "achieved": 0.4234753563290551,
+      "zeros": 5828105
+    },
+    {
+      "name": "model.layers.5.self_attn.q_proj",
+      "layer": 5,
+      "proj": "q_proj",
+      "shape": [
+        1536,
+        1536
+      ],
+      "sensitivity": 4.608621750890052e-08,
+      "raw": 0.6192307692307693,
+      "sparsity": 0.5865523132329855,
+      "achieved": 0.5865525139702691,
+      "zeros": 1383851
+    },
+    {
+      "name": "model.layers.5.self_attn.k_proj",
+      "layer": 5,
+      "proj": "k_proj",
+      "shape": [
+        256,
+        1536
+      ],
+      "sensitivity": 1.0996628674320164e-07,
+      "raw": 0.42846153846153845,
+      "sparsity": 0.39578308246375465,
+      "achieved": 0.395782470703125,
+      "zeros": 155628
+    },
+    {
+      "name": "model.layers.5.self_attn.v_proj",
+      "layer": 5,
+      "proj": "v_proj",
+      "shape": [
+        256,
+        1536
+      ],
+      "sensitivity": 2.1174946596147493e-07,
+      "raw": 0.37,
+      "sparsity": 0.3373215440022162,
+      "achieved": 0.3373209635416667,
+      "zeros": 132640
+    },
+    {
+      "name": "model.layers.5.self_attn.o_proj",
+      "layer": 5,
+      "proj": "o_proj",
+      "shape": [
+        1536,
+        1536
+      ],
+      "sensitivity": 8.570791720785564e-08,
+      "raw": 0.4576923076923077,
+      "sparsity": 0.4250138516945239,
+      "achieved": 0.4250136481391059,
+      "zeros": 1002733
+    },
+    {
+      "name": "model.layers.5.mlp.gate_proj",
+      "layer": 5,
+      "proj": "gate_proj",
+      "shape": [
+        8960,
+        1536
+      ],
+      "sensitivity": 6.753268877446317e-08,
+      "raw": 0.5238461538461539,
+      "sparsity": 0.49116769784837006,
+      "achieved": 0.49116770426432294,
+      "zeros": 6759725
+    },
+    {
+      "name": "model.layers.5.mlp.up_proj",
+      "layer": 5,
+      "proj": "up_proj",
+      "shape": [
+        8960,
+        1536
+      ],
+      "sensitivity": 7.130915946618188e-08,
+      "raw": 0.5069230769230769,
+      "sparsity": 0.4742446209252931,
+      "achieved": 0.47424461728050593,
+      "zeros": 6526820
+    },
+    {
+      "name": "model.layers.5.mlp.down_proj",
+      "layer": 5,
+      "proj": "down_proj",
+      "shape": [
+        1536,
+        8960
+      ],
+      "sensitivity": 6.61418795289137e-08,
+      "raw": 0.5284615384615384,
+      "sparsity": 0.49578308246375463,
+      "achieved": 0.4957830519903274,
+      "zeros": 6823244
+    },
+    {
+      "name": "model.layers.6.self_attn.q_proj",
+      "layer": 6,
+      "proj": "q_proj",
+      "shape": [
+        1536,
+        1536
+      ],
+      "sensitivity": 3.1135762412759505e-08,
+      "raw": 0.6453846153846154,
+      "sparsity": 0.6127061593868317,
+      "achieved": 0.6127060784233941,
+      "zeros": 1445555
+    },
+    {
+      "name": "model.layers.6.self_attn.k_proj",
+      "layer": 6,
+      "proj": "k_proj",
+      "shape": [
+        256,
+        1536
+      ],
+      "sensitivity": 8.261516626362209e-08,
+      "raw": 0.46384615384615385,
+      "sparsity": 0.43116769784837006,
+      "achieved": 0.4311676025390625,
+      "zeros": 169542
+    },
+    {
+      "name": "model.layers.6.self_attn.v_proj",
+      "layer": 6,
+      "proj": "v_proj",
+      "shape": [
+        256,
+        1536
+      ],
+      "sensitivity": 1.4948224702493462e-07,
+      "raw": 0.3853846153846154,
+      "sparsity": 0.3527061593868316,
+      "achieved": 0.3527069091796875,
+      "zeros": 138690
+    },
+    {
+      "name": "model.layers.6.self_attn.o_proj",
+      "layer": 6,
+      "proj": "o_proj",
+      "shape": [
+        1536,
+        1536
+      ],
+      "sensitivity": 5.225060206726084e-08,
+      "raw": 0.59,
+      "sparsity": 0.5573215440022161,
+      "achieved": 0.5573213365342882,
+      "zeros": 1314886
+    },
+    {
+      "name": "model.layers.6.mlp.gate_proj",
+      "layer": 6,
+      "proj": "gate_proj",
+      "shape": [
+        8960,
+        1536
+      ],
+      "sensitivity": 6.590940415662772e-08,
+      "raw": 0.5330769230769231,
+      "sparsity": 0.5003984670791393,
+      "achieved": 0.5003984723772321,
+      "zeros": 6886764
+    },
+    {
+      "name": "model.layers.6.mlp.up_proj",
+      "layer": 6,
+      "proj": "up_proj",
+      "shape": [
+        8960,
+        1536
+      ],
+      "sensitivity": 8.039911136847877e-08,
+      "raw": 0.4776923076923077,
+      "sparsity": 0.4450138516945239,
+      "achieved": 0.4450138636997768,
+      "zeros": 6124530
+    },
+    {
+      "name": "model.layers.6.mlp.down_proj",
+      "layer": 6,
+      "proj": "down_proj",
+      "shape": [
+        1536,
+        8960
+      ],
+      "sensitivity": 8.30144841756919e-08,
+      "raw": 0.4623076923076923,
+      "sparsity": 0.4296292363099085,
+      "achieved": 0.4296292259579613,
+      "zeros": 5912798
+    },
+    {
+      "name": "model.layers.7.self_attn.q_proj",
+      "layer": 7,
+      "proj": "q_proj",
+      "shape": [
+        1536,
+        1536
+      ],
+      "sensitivity": 3.914082569167476e-08,
+      "raw": 0.6346153846153846,
+      "sparsity": 0.6019369286176008,
+      "achieved": 0.601936764187283,
+      "zeros": 1420147
+    },
+    {
+      "name": "model.layers.7.self_attn.k_proj",
+      "layer": 7,
+      "proj": "k_proj",
+      "shape": [
+        256,
+        1536
+      ],
+      "sensitivity": 9.469412987073156e-08,
+      "raw": 0.4453846153846154,
+      "sparsity": 0.4127061593868316,
+      "achieved": 0.41270701090494794,
+      "zeros": 162283
+    },
+    {
+      "name": "model.layers.7.self_attn.v_proj",
+      "layer": 7,
+      "proj": "v_proj",
+      "shape": [
+        256,
+        1536
+      ],
+      "sensitivity": 1.943660663528135e-07,
+      "raw": 0.3730769230769231,
+      "sparsity": 0.3403984670791393,
+      "achieved": 0.3403981526692708,
+      "zeros": 133850
+    },
+    {
+      "name": "model.layers.7.self_attn.o_proj",
+      "layer": 7,
+      "proj": "o_proj",
+      "shape": [
+        1536,
+        1536
+      ],
+      "sensitivity": 9.737109962770774e-08,
+      "raw": 0.4407692307692308,
+      "sparsity": 0.408090774771447,
+      "achieved": 0.40809080335828996,
+      "zeros": 962807
+    },
+    {
+      "name": "model.layers.7.mlp.gate_proj",
+      "layer": 7,
+      "proj": "gate_proj",
+      "shape": [
+        8960,
+        1536
+      ],
+      "sensitivity": 6.44760547174883e-08,
+      "raw": 0.5376923076923077,
+      "sparsity": 0.505013851694524,
+      "achieved": 0.5050138201032366,
+      "zeros": 6950283
+    },
+    {
+      "name": "model.layers.7.mlp.up_proj",
+      "layer": 7,
+      "proj": "up_proj",
+      "shape": [
+        8960,
+        1536
+      ],
+      "sensitivity": 7.727293649395506e-08,
+      "raw": 0.48538461538461536,
+      "sparsity": 0.45270615938683156,
+      "achieved": 0.4527061825706845,
+      "zeros": 6230396
+    },
+    {
+      "name": "model.layers.7.mlp.down_proj",
+      "layer": 7,
+      "proj": "down_proj",
+      "shape": [
+        1536,
+        8960
+      ],
+      "sensitivity": 8.060356293526638e-08,
+      "raw": 0.4746153846153846,
+      "sparsity": 0.4419369286176008,
+      "achieved": 0.4419368925548735,
+      "zeros": 6082183
+    },
+    {
+      "name": "model.layers.8.self_attn.q_proj",
+      "layer": 8,
+      "proj": "q_proj",
+      "shape": [
+        1536,
+        1536
+      ],
+      "sensitivity": 4.435350575704433e-08,
+      "raw": 0.6253846153846154,
+      "sparsity": 0.5927061593868317,
+      "achieved": 0.592706044514974,
+      "zeros": 1398369
+    },
+    {
+      "name": "model.layers.8.self_attn.k_proj",
+      "layer": 8,
+      "proj": "k_proj",
+      "shape": [
+        256,
+        1536
+      ],
+      "sensitivity": 1.1786384845891007e-07,
+      "raw": 0.40846153846153843,
+      "sparsity": 0.37578308246375464,
+      "achieved": 0.3757832845052083,
+      "zeros": 147764
+    },
+    {
+      "name": "model.layers.8.self_attn.v_proj",
+      "layer": 8,
+      "proj": "v_proj",
+      "shape": [
+        256,
+        1536
+      ],
+      "sensitivity": 1.8297282622370403e-07,
+      "raw": 0.3776923076923077,
+      "sparsity": 0.3450138516945239,
+      "achieved": 0.34501393636067706,
+      "zeros": 135665
+    },
+    {
+      "name": "model.layers.8.self_attn.o_proj",
+      "layer": 8,
+      "proj": "o_proj",
+      "shape": [
+        1536,
+        1536
+      ],
+      "sensitivity": 9.560936575780943e-08,
+      "raw": 0.4423076923076923,
+      "sparsity": 0.4096292363099085,
+      "achieved": 0.409629397922092,
+      "zeros": 966437
+    },
+    {
+      "name": "model.layers.8.mlp.gate_proj",
+      "layer": 8,
+      "proj": "gate_proj",
+      "shape": [
+        8960,
+        1536
+      ],
+      "sensitivity": 6.117073070299739e-08,
+      "raw": 0.5607692307692308,
+      "sparsity": 0.528090774771447,
+      "achieved": 0.5280907767159598,
+      "zeros": 7267881
+    },
+    {
+      "name": "model.layers.8.mlp.up_proj",
+      "layer": 8,
+      "proj": "up_proj",
+      "shape": [
+        8960,
+        1536
+      ],
+      "sensitivity": 7.682979230594356e-08,
+      "raw": 0.48692307692307696,
+      "sparsity": 0.45424462092529316,
+      "achieved": 0.45424463181268604,
+      "zeros": 6251569
+    },
+    {
+      "name": "model.layers.8.mlp.down_proj",
+      "layer": 8,
+      "proj": "down_proj",
+      "shape": [
+        1536,
+        8960
+      ],
+      "sensitivity": 8.061984857477e-08,
+      "raw": 0.47307692307692306,
+      "sparsity": 0.44039846707913927,
+      "achieved": 0.44039844331287203,
+      "zeros": 6061010
+    },
+    {
+      "name": "model.layers.9.self_attn.q_proj",
+      "layer": 9,
+      "proj": "q_proj",
+      "shape": [
+        1536,
+        1536
+      ],
+      "sensitivity": 5.5487880956661684e-08,
+      "raw": 0.5807692307692307,
+      "sparsity": 0.548090774771447,
+      "achieved": 0.5480906168619791,
+      "zeros": 1293108
+    },
+    {
+      "name": "model.layers.9.self_attn.k_proj",
+      "layer": 9,
+      "proj": "k_proj",
+      "shape": [
+        256,
+        1536
+      ],
+      "sensitivity": 1.258828774552967e-07,
+      "raw": 0.3976923076923077,
+      "sparsity": 0.3650138516945239,
+      "achieved": 0.36501312255859375,
+      "zeros": 143529
+    },
+    {
+      "name": "model.layers.9.self_attn.v_proj",
+      "layer": 9,
+      "proj": "v_proj",
+      "shape": [
+        256,
+        1536
+      ],
+      "sensitivity": 1.8902093756878457e-07,
+      "raw": 0.37615384615384617,
+      "sparsity": 0.3434753901560624,
+      "achieved": 0.343475341796875,
+      "zeros": 135060
+    },
+    {
+      "name": "model.layers.9.self_attn.o_proj",
+      "layer": 9,
+      "proj": "o_proj",
+      "shape": [
+        1536,
+        1536
+      ],
+      "sensitivity": 9.92365087881808e-08,
+      "raw": 0.43615384615384617,
+      "sparsity": 0.4034753901560624,
+      "achieved": 0.40347544352213544,
+      "zeros": 951918
+    },
+    {
+      "name": "model.layers.9.mlp.gate_proj",
+      "layer": 9,
+      "proj": "gate_proj",
+      "shape": [
+        8960,
+        1536
+      ],
+      "sensitivity": 5.881643616589827e-08,
+      "raw": 0.5715384615384616,
+      "sparsity": 0.5388600055406778,
+      "achieved": 0.5388599940708705,
+      "zeros": 7416093
+    },
+    {
+      "name": "model.layers.9.mlp.up_proj",
+      "layer": 9,
+      "proj": "up_proj",
+      "shape": [
+        8960,
+        1536
+      ],
+      "sensitivity": 7.375948740673266e-08,
+      "raw": 0.49923076923076926,
+      "sparsity": 0.46655231323298546,
+      "achieved": 0.4665522984095982,
+      "zeros": 6420954
+    },
+    {
+      "name": "model.layers.9.mlp.down_proj",
+      "layer": 9,
+      "proj": "down_proj",
+      "shape": [
+        1536,
+        8960
+      ],
+      "sensitivity": 7.49560697954621e-08,
+      "raw": 0.4930769230769231,
+      "sparsity": 0.4603984670791393,
+      "achieved": 0.4603985014415923,
+      "zeros": 6336262
+    },
+    {
+      "name": "model.layers.10.self_attn.q_proj",
+      "layer": 10,
+      "proj": "q_proj",
+      "shape": [
+        1536,
+        1536
+      ],
+      "sensitivity": 4.996943658852615e-08,
+      "raw": 0.5992307692307692,
+      "sparsity": 0.5665523132329855,
+      "achieved": 0.566552480061849,
+      "zeros": 1336665
+    },
+    {
+      "name": "model.layers.10.self_attn.k_proj",
+      "layer": 10,
+      "proj": "k_proj",
+      "shape": [
+        256,
+        1536
+      ],
+      "sensitivity": 1.110701575157691e-07,
+      "raw": 0.4238461538461539,
+      "sparsity": 0.3911676978483701,
+      "achieved": 0.39116668701171875,
+      "zeros": 153813
+    },
+    {
+      "name": "model.layers.10.self_attn.v_proj",
+      "layer": 10,
+      "proj": "v_proj",
+      "shape": [
+        256,
+        1536
+      ],
+      "sensitivity": 2.1547339201788418e-07,
+      "raw": 0.3684615384615385,
+      "sparsity": 0.3357830824637547,
+      "achieved": 0.33578236897786456,
+      "zeros": 132035
+    },
+    {
+      "name": "model.layers.10.self_attn.o_proj",
+      "layer": 10,
+      "proj": "o_proj",
+      "shape": [
+        1536,
+        1536
+      ],
+      "sensitivity": 1.380173557663511e-07,
+      "raw": 0.38846153846153847,
+      "sparsity": 0.3557830824637547,
+      "achieved": 0.35578325059678817,
+      "zeros": 839398
+    },
+    {
+      "name": "model.layers.10.mlp.gate_proj",
+      "layer": 10,
+      "proj": "gate_proj",
+      "shape": [
+        8960,
+        1536
+      ],
+      "sensitivity": 5.407109071597915e-08,
+      "raw": 0.5853846153846154,
+      "sparsity": 0.5527061593868317,
+      "achieved": 0.5527061825706845,
+      "zeros": 7606652
+    },
+    {
+      "name": "model.layers.10.mlp.up_proj",
+      "layer": 10,
+      "proj": "up_proj",
+      "shape": [
+        8960,
+        1536
+      ],
+      "sensitivity": 7.113598599062243e-08,
+      "raw": 0.5084615384615385,
+      "sparsity": 0.4757830824637547,
+      "achieved": 0.47578306652250746,
+      "zeros": 6547993
+    },
+    {
+      "name": "model.layers.10.mlp.down_proj",
+      "layer": 10,
+      "proj": "down_proj",
+      "shape": [
+        1536,
+        8960
+      ],
+      "sensitivity": 7.085647979465648e-08,
+      "raw": 0.5115384615384615,
+      "sparsity": 0.4788600055406777,
+      "achieved": 0.4788600376674107,
+      "zeros": 6590340
+    },
+    {
+      "name": "model.layers.11.self_attn.q_proj",
+      "layer": 11,
+      "proj": "q_proj",
+      "shape": [
+        1536,
+        1536
+      ],
+      "sensitivity": 5.008587677934884e-08,
+      "raw": 0.5976923076923077,
+      "sparsity": 0.565013851694524,
+      "achieved": 0.5650138854980469,
+      "zeros": 1333035
+    },
+    {
+      "name": "model.layers.11.self_attn.k_proj",
+      "layer": 11,
+      "proj": "k_proj",
+      "shape": [
+        256,
+        1536
+      ],
+      "sensitivity": 1.2553236672374624e-07,
+      "raw": 0.3992307692307692,
+      "sparsity": 0.3665523132329854,
+      "achieved": 0.3665517171223958,
+      "zeros": 144134
+    },
+    {
+      "name": "model.layers.11.self_attn.v_proj",
+      "layer": 11,
+      "proj": "v_proj",
+      "shape": [
+        256,
+        1536
+      ],
+      "sensitivity": 2.533224119360966e-07,
+      "raw": 0.35307692307692307,
+      "sparsity": 0.32039846707913927,
+      "achieved": 0.3203989664713542,
+      "zeros": 125986
+    },
+    {
+      "name": "model.layers.11.self_attn.o_proj",
+      "layer": 11,
+      "proj": "o_proj",
+      "shape": [
+        1536,
+        1536
+      ],
+      "sensitivity": 1.3021788447531435e-07,
+      "raw": 0.3915384615384615,
+      "sparsity": 0.3588600055406777,
+      "achieved": 0.3588600158691406,
+      "zeros": 846657
+    },
+    {
+      "name": "model.layers.11.mlp.gate_proj",
+      "layer": 11,
+      "proj": "gate_proj",
+      "shape": [
+        8960,
+        1536
+      ],
+      "sensitivity": 4.992796931446719e-08,
+      "raw": 0.6007692307692307,
+      "sparsity": 0.568090774771447,
+      "achieved": 0.5680907476515997,
+      "zeros": 7818383
+    },
+    {
+      "name": "model.layers.11.mlp.up_proj",
+      "layer": 11,
+      "proj": "up_proj",
+      "shape": [
+        8960,
+        1536
+      ],
+      "sensitivity": 6.604619784411625e-08,
+      "raw": 0.53,
+      "sparsity": 0.49732154400221623,
+      "achieved": 0.4973215738932292,
+      "zeros": 6844418
+    },
+    {
+      "name": "model.layers.11.mlp.down_proj",
+      "layer": 11,
+      "proj": "down_proj",
+      "shape": [
+        1536,
+        8960
+      ],
+      "sensitivity": 7.066245188980247e-08,
+      "raw": 0.5130769230769231,
+      "sparsity": 0.4803984670791393,
+      "achieved": 0.4803984869094122,
+      "zeros": 6611513
+    },
+    {
+      "name": "model.layers.12.self_attn.q_proj",
+      "layer": 12,
+      "proj": "q_proj",
+      "shape": [
+        1536,
+        1536
+      ],
+      "sensitivity": 5.1179181781435545e-08,
+      "raw": 0.5930769230769231,
+      "sparsity": 0.5603984670791393,
+      "achieved": 0.5603985256618924,
+      "zeros": 1322146
+    },
+    {
+      "name": "model.layers.12.self_attn.k_proj",
+      "layer": 12,
+      "proj": "k_proj",
+      "shape": [
+        256,
+        1536
+      ],
+      "sensitivity": 1.1500424079713412e-07,
+      "raw": 0.4146153846153846,
+      "sparsity": 0.3819369286176008,
+      "achieved": 0.3819376627604167,
+      "zeros": 150184
+    },
+    {
+      "name": "model.layers.12.self_attn.v_proj",
+      "layer": 12,
+      "proj": "v_proj",
+      "shape": [
+        256,
+        1536
+      ],
+      "sensitivity": 1.7033477206496173e-07,
+      "raw": 0.3823076923076923,
+      "sparsity": 0.3496292363099085,
+      "achieved": 0.3496297200520833,
+      "zeros": 137480
+    },
+    {
+      "name": "model.layers.12.self_attn.o_proj",
+      "layer": 12,
+      "proj": "o_proj",
+      "shape": [
+        1536,
+        1536
+      ],
+      "sensitivity": 1.015182249375357e-07,
+      "raw": 0.4346153846153846,
+      "sparsity": 0.40193692861760083,
+      "achieved": 0.4019368489583333,
+      "zeros": 948288
+    },
+    {
+      "name": "model.layers.12.mlp.gate_proj",
+      "layer": 12,
+      "proj": "gate_proj",
+      "shape": [
+        8960,
+        1536
+      ],
+      "sensitivity": 4.855750646015622e-08,
+      "raw": 0.6084615384615385,
+      "sparsity": 0.5757830824637546,
+      "achieved": 0.5757830665225074,
+      "zeros": 7924249
+    },
+    {
+      "name": "model.layers.12.mlp.up_proj",
+      "layer": 12,
+      "proj": "up_proj",
+      "shape": [
+        8960,
+        1536
+      ],
+      "sensitivity": 6.389276308027547e-08,
+      "raw": 0.5423076923076923,
+      "sparsity": 0.5096292363099084,
+      "achieved": 0.5096292404901414,
+      "zeros": 7013803
+    },
+    {
+      "name": "model.layers.12.mlp.down_proj",
+      "layer": 12,
+      "proj": "down_proj",
+      "shape": [
+        1536,
+        8960
+      ],
+      "sensitivity": 6.422757081736563e-08,
+      "raw": 0.5407692307692308,
+      "sparsity": 0.5080907747714469,
+      "achieved": 0.5080907912481398,
+      "zeros": 6992630
+    },
+    {
+      "name": "model.layers.13.self_attn.q_proj",
+      "layer": 13,
+      "proj": "q_proj",
+      "shape": [
+        1536,
+        1536
+      ],
+      "sensitivity": 4.8179412459603554e-08,
+      "raw": 0.6130769230769231,
+      "sparsity": 0.5803984670791393,
+      "achieved": 0.5803985595703125,
+      "zeros": 1369332
+    },
+    {
+      "name": "model.layers.13.self_attn.k_proj",
+      "layer": 13,
+      "proj": "k_proj",
+      "shape": [
+        256,
+        1536
+      ],
+      "sensitivity": 1.1224817342281312e-07,
+      "raw": 0.4207692307692308,
+      "sparsity": 0.388090774771447,
+      "achieved": 0.388092041015625,
+      "zeros": 152604
+    },
+    {
+      "name": "model.layers.13.self_attn.v_proj",
+      "layer": 13,
+      "proj": "v_proj",
+      "shape": [
+        256,
+        1536
+      ],
+      "sensitivity": 2.170174155935456e-07,
+      "raw": 0.3669230769230769,
+      "sparsity": 0.3342446209252931,
+      "achieved": 0.3342437744140625,
+      "zeros": 131430
+    },
+    {
+      "name": "model.layers.13.self_attn.o_proj",
+      "layer": 13,
+      "proj": "o_proj",
+      "shape": [
+        1536,
+        1536
+      ],
+      "sensitivity": 1.2536652604921983e-07,
+      "raw": 0.40076923076923077,
+      "sparsity": 0.36809077477144697,
+      "achieved": 0.36809073554144967,
+      "zeros": 868435
+    },
+    {
+      "name": "model.layers.13.mlp.gate_proj",
+      "layer": 13,
+      "proj": "gate_proj",
+      "shape": [
+        8960,
+        1536
+      ],
+      "sensitivity": 4.6854196966705786e-08,
+      "raw": 0.6161538461538462,
+      "sparsity": 0.5834753901560623,
+      "achieved": 0.5834753853934151,
+      "zeros": 8030115
+    },
+    {
+      "name": "model.layers.13.mlp.up_proj",
+      "layer": 13,
+      "proj": "up_proj",
+      "shape": [
+        8960,
+        1536
+      ],
+      "sensitivity": 5.843103423330831e-08,
+      "raw": 0.5746153846153846,
+      "sparsity": 0.5419369286176008,
+      "achieved": 0.5419368925548735,
+      "zeros": 7458439
+    },
+    {
+      "name": "model.layers.13.mlp.down_proj",
+      "layer": 13,
+      "proj": "down_proj",
+      "shape": [
+        1536,
+        8960
+      ],
+      "sensitivity": 6.020811582629904e-08,
+      "raw": 0.5669230769230769,
+      "sparsity": 0.5342446209252931,
+      "achieved": 0.5342446463448661,
+      "zeros": 7352574
+    },
+    {
+      "name": "model.layers.14.self_attn.q_proj",
+      "layer": 14,
+      "proj": "q_proj",
+      "shape": [
+        1536,
+        1536
+      ],
+      "sensitivity": 3.7629430238439454e-08,
+      "raw": 0.6376923076923077,
+      "sparsity": 0.6050138516945238,
+      "achieved": 0.6050139533148872,
+      "zeros": 1427407
+    },
+    {
+      "name": "model.layers.14.self_attn.k_proj",
+      "layer": 14,
+      "proj": "k_proj",
+      "shape": [
+        256,
+        1536
+      ],
+      "sensitivity": 9.827535762951811e-08,
+      "raw": 0.4376923076923077,
+      "sparsity": 0.4050138516945239,
+      "achieved": 0.4050140380859375,
+      "zeros": 159258
+    },
+    {
+      "name": "model.layers.14.self_attn.v_proj",
+      "layer": 14,
+      "proj": "v_proj",
+      "shape": [
+        256,
+        1536
+      ],
+      "sensitivity": 1.4108553614278208e-07,
+      "raw": 0.3869230769230769,
+      "sparsity": 0.35424462092529313,
+      "achieved": 0.35424550374348956,
+      "zeros": 139295
+    },
+    {
+      "name": "model.layers.14.self_attn.o_proj",
+      "layer": 14,
+      "proj": "o_proj",
+      "shape": [
+        1536,
+        1536
+      ],
+      "sensitivity": 6.578060407491648e-08,
+      "raw": 0.5346153846153846,
+      "sparsity": 0.5019369286176008,
+      "achieved": 0.501937018500434,
+      "zeros": 1184218
+    },
+    {
+      "name": "model.layers.14.mlp.gate_proj",
+      "layer": 14,
+      "proj": "gate_proj",
+      "shape": [
+        8960,
+        1536
+      ],
+      "sensitivity": 4.51744917029373e-08,
+      "raw": 0.6207692307692307,
+      "sparsity": 0.588090774771447,
+      "achieved": 0.5880908057803199,
+      "zeros": 8093635
+    },
+    {
+      "name": "model.layers.14.mlp.up_proj",
+      "layer": 14,
+      "proj": "up_proj",
+      "shape": [
+        8960,
+        1536
+      ],
+      "sensitivity": 6.043522660093004e-08,
+      "raw": 0.5653846153846154,
+      "sparsity": 0.5327061593868316,
+      "achieved": 0.5327061244419643,
+      "zeros": 7331400
+    },
+    {
+      "name": "model.layers.14.mlp.down_proj",
+      "layer": 14,
+      "proj": "down_proj",
+      "shape": [
+        1536,
+        8960
+      ],
+      "sensitivity": 5.853168261182873e-08,
+      "raw": 0.573076923076923,
+      "sparsity": 0.5403984670791393,
+      "achieved": 0.540398443312872,
+      "zeros": 7437266
+    },
+    {
+      "name": "model.layers.15.self_attn.q_proj",
+      "layer": 15,
+      "proj": "q_proj",
+      "shape": [
+        1536,
+        1536
+      ],
+      "sensitivity": 3.975283391355333e-08,
+      "raw": 0.6330769230769231,
+      "sparsity": 0.6003984670791394,
+      "achieved": 0.6003985934787326,
+      "zeros": 1416518
+    },
+    {
+      "name": "model.layers.15.self_attn.k_proj",
+      "layer": 15,
+      "proj": "k_proj",
+      "shape": [
+        256,
+        1536
+      ],
+      "sensitivity": 1.1168766889113613e-07,
+      "raw": 0.42230769230769233,
+      "sparsity": 0.38962923630990853,
+      "achieved": 0.3896280924479167,
+      "zeros": 153208
+    },
+    {
+      "name": "model.layers.15.self_attn.v_proj",
+      "layer": 15,
+      "proj": "v_proj",
+      "shape": [
+        256,
+        1536
+      ],
+      "sensitivity": 2.251840385270043e-07,
+      "raw": 0.36076923076923073,
+      "sparsity": 0.32809077477144694,
+      "achieved": 0.32809193929036456,
+      "zeros": 129011
+    },
+    {
+      "name": "model.layers.15.self_attn.o_proj",
+      "layer": 15,
+      "proj": "o_proj",
+      "shape": [
+        1536,
+        1536
+      ],
+      "sensitivity": 1.5220673788007844e-07,
+      "raw": 0.38384615384615384,
+      "sparsity": 0.35116769784837004,
+      "achieved": 0.3511678907606337,
+      "zeros": 828509
+    },
+    {
+      "name": "model.layers.15.mlp.gate_proj",
+      "layer": 15,
+      "proj": "gate_proj",
+      "shape": [
+        8960,
+        1536
+      ],
+      "sensitivity": 4.401722364377747e-08,
+      "raw": 0.63,
+      "sparsity": 0.5973215440022162,
+      "achieved": 0.5973215738932292,
+      "zeros": 8220674
+    },
+    {
+      "name": "model.layers.15.mlp.up_proj",
+      "layer": 15,
+      "proj": "up_proj",
+      "shape": [
+        8960,
+        1536
+      ],
+      "sensitivity": 5.822205650929391e-08,
+      "raw": 0.5761538461538461,
+      "sparsity": 0.5434753901560623,
+      "achieved": 0.5434754144577753,
+      "zeros": 7479613
+    },
+    {
+      "name": "model.layers.15.mlp.down_proj",
+      "layer": 15,
+      "proj": "down_proj",
+      "shape": [
+        1536,
+        8960
+      ],
+      "sensitivity": 6.181611666988829e-08,
+      "raw": 0.5576923076923077,
+      "sparsity": 0.525013851694524,
+      "achieved": 0.5250138782319569,
+      "zeros": 7225535
+    },
+    {
+      "name": "model.layers.16.self_attn.q_proj",
+      "layer": 16,
+      "proj": "q_proj",
+      "shape": [
+        1536,
+        1536
+      ],
+      "sensitivity": 5.7555059385094864e-08,
+      "raw": 0.5776923076923077,
+      "sparsity": 0.545013851694524,
+      "achieved": 0.5450138515896268,
+      "zeros": 1285849
+    },
+    {
+      "name": "model.layers.16.self_attn.k_proj",
+      "layer": 16,
+      "proj": "k_proj",
+      "shape": [
+        256,
+        1536
+      ],
+      "sensitivity": 1.0825182528151345e-07,
+      "raw": 0.43153846153846154,
+      "sparsity": 0.39886000554067774,
+      "achieved": 0.3988596598307292,
+      "zeros": 156838
+    },
+    {
+      "name": "model.layers.16.self_attn.v_proj",
+      "layer": 16,
+      "proj": "v_proj",
+      "shape": [
+        256,
+        1536
+      ],
+      "sensitivity": 1.8110283406258532e-07,
+      "raw": 0.37923076923076926,
+      "sparsity": 0.34655231323298546,
+      "achieved": 0.3465525309244792,
+      "zeros": 136270
+    },
+    {
+      "name": "model.layers.16.self_attn.o_proj",
+      "layer": 16,
+      "proj": "o_proj",
+      "shape": [
+        1536,
+        1536
+      ],
+      "sensitivity": 1.2959728223904676e-07,
+      "raw": 0.39461538461538465,
+      "sparsity": 0.36193692861760085,
+      "achieved": 0.3619367811414931,
+      "zeros": 853916
+    },
+    {
+      "name": "model.layers.16.mlp.gate_proj",
+      "layer": 16,
+      "proj": "gate_proj",
+      "shape": [
+        8960,
+        1536
+      ],
+      "sensitivity": 4.505835704549099e-08,
+      "raw": 0.6223076923076923,
+      "sparsity": 0.5896292363099085,
+      "achieved": 0.5896292550223214,
+      "zeros": 8114808
+    },
+    {
+      "name": "model.layers.16.mlp.up_proj",
+      "layer": 16,
+      "proj": "up_proj",
+      "shape": [
+        8960,
+        1536
+      ],
+      "sensitivity": 6.110747108323267e-08,
+      "raw": 0.5623076923076923,
+      "sparsity": 0.5296292363099084,
+      "achieved": 0.5296292259579614,
+      "zeros": 7289054
+    },
+    {
+      "name": "model.layers.16.mlp.down_proj",
+      "layer": 16,
+      "proj": "down_proj",
+      "shape": [
+        1536,
+        8960
+      ],
+      "sensitivity": 6.197740276547847e-08,
+      "raw": 0.5561538461538461,
+      "sparsity": 0.5234753901560623,
+      "achieved": 0.5234753563290551,
+      "zeros": 7204361
+    },
+    {
+      "name": "model.layers.17.self_attn.q_proj",
+      "layer": 17,
+      "proj": "q_proj",
+      "shape": [
+        1536,
+        1536
+      ],
+      "sensitivity": 4.4055685322064164e-08,
+      "raw": 0.6284615384615384,
+      "sparsity": 0.5957830824637547,
+      "achieved": 0.5957832336425781,
+      "zeros": 1405629
+    },
+    {
+      "name": "model.layers.17.self_attn.k_proj",
+      "layer": 17,
+      "proj": "k_proj",
+      "shape": [
+        256,
+        1536
+      ],
+      "sensitivity": 1.107400322553076e-07,
+      "raw": 0.4269230769230769,
+      "sparsity": 0.3942446209252931,
+      "achieved": 0.39424387613932294,
+      "zeros": 155023
+    },
+    {
+      "name": "model.layers.17.self_attn.v_proj",
+      "layer": 17,
+      "proj": "v_proj",
+      "shape": [
+        256,
+        1536
+      ],
+      "sensitivity": 2.571001971318765e-07,
+      "raw": 0.3515384615384616,
+      "sparsity": 0.3188600055406778,
+      "achieved": 0.31886037190755206,
+      "zeros": 125381
+    },
+    {
+      "name": "model.layers.17.self_attn.o_proj",
+      "layer": 17,
+      "proj": "o_proj",
+      "shape": [
+        1536,
+        1536
+      ],
+      "sensitivity": 1.1293548141111387e-07,
+      "raw": 0.41923076923076924,
+      "sparsity": 0.38655231323298544,
+      "achieved": 0.3865521748860677,
+      "zeros": 911991
+    },
+    {
+      "name": "model.layers.17.mlp.gate_proj",
+      "layer": 17,
+      "proj": "gate_proj",
+      "shape": [
+        8960,
+        1536
+      ],
+      "sensitivity": 4.6165041567292064e-08,
+      "raw": 0.6176923076923077,
+      "sparsity": 0.5850138516945238,
+      "achieved": 0.5850138346354167,
+      "zeros": 8051288
+    },
+    {
+      "name": "model.layers.17.mlp.up_proj",
+      "layer": 17,
+      "proj": "up_proj",
+      "shape": [
+        8960,
+        1536
+      ],
+      "sensitivity": 6.134605001761884e-08,
+      "raw": 0.5592307692307692,
+      "sparsity": 0.5265523132329855,
+      "achieved": 0.5265523274739583,
+      "zeros": 7246708
+    },
+    {
+      "name": "model.layers.17.mlp.down_proj",
+      "layer": 17,
+      "proj": "down_proj",
+      "shape": [
+        1536,
+        8960
+      ],
+      "sensitivity": 6.256075835153752e-08,
+      "raw": 0.5484615384615384,
+      "sparsity": 0.5157830824637546,
+      "achieved": 0.5157831101190476,
+      "zeros": 7098496
+    },
+    {
+      "name": "model.layers.18.self_attn.q_proj",
+      "layer": 18,
+      "proj": "q_proj",
+      "shape": [
+        1536,
+        1536
+      ],
+      "sensitivity": 4.8575437006093125e-08,
+      "raw": 0.6053846153846154,
+      "sparsity": 0.5727061593868317,
+      "achieved": 0.5727060106065538,
+      "zeros": 1351183
+    },
+    {
+      "name": "model.layers.18.self_attn.k_proj",
+      "layer": 18,
+      "proj": "k_proj",
+      "shape": [
+        256,
+        1536
+      ],
+      "sensitivity": 1.1348848261150124e-07,
+      "raw": 0.41615384615384615,
+      "sparsity": 0.38347539015606236,
+      "achieved": 0.38347625732421875,
+      "zeros": 150789
+    },
+    {
+      "name": "model.layers.18.self_attn.v_proj",
+      "layer": 18,
+      "proj": "v_proj",
+      "shape": [
+        256,
+        1536
+      ],
+      "sensitivity": 2.3039478946884628e-07,
+      "raw": 0.3546153846153846,
+      "sparsity": 0.3219369286176008,
+      "achieved": 0.32193756103515625,
+      "zeros": 126591
+    },
+    {
+      "name": "model.layers.18.self_attn.o_proj",
+      "layer": 18,
+      "proj": "o_proj",
+      "shape": [
+        1536,
+        1536
+      ],
+      "sensitivity": 1.1863352966656748e-07,
+      "raw": 0.4053846153846154,
+      "sparsity": 0.3727061593868316,
+      "achieved": 0.3727060953776042,
+      "zeros": 879324
+    },
+    {
+      "name": "model.layers.18.mlp.gate_proj",
+      "layer": 18,
+      "proj": "gate_proj",
+      "shape": [
+        8960,
+        1536
+      ],
+      "sensitivity": 4.8186340251277215e-08,
+      "raw": 0.6115384615384616,
+      "sparsity": 0.5788600055406778,
+      "achieved": 0.5788600376674107,
+      "zeros": 7966596
+    },
+    {
+      "name": "model.layers.18.mlp.up_proj",
+      "layer": 18,
+      "proj": "up_proj",
+      "shape": [
+        8960,
+        1536
+      ],
+      "sensitivity": 6.211062242300613e-08,
+      "raw": 0.5546153846153846,
+      "sparsity": 0.5219369286176008,
+      "achieved": 0.5219369070870535,
+      "zeros": 7183188
+    },
+    {
+      "name": "model.layers.18.mlp.down_proj",
+      "layer": 18,
+      "proj": "down_proj",
+      "shape": [
+        1536,
+        8960
+      ],
+      "sensitivity": 6.242933636713133e-08,
+      "raw": 0.5515384615384615,
+      "sparsity": 0.5188600055406778,
+      "achieved": 0.5188600086030506,
+      "zeros": 7140842
+    },
+    {
+      "name": "model.layers.19.self_attn.q_proj",
+      "layer": 19,
+      "proj": "q_proj",
+      "shape": [
+        1536,
+        1536
+      ],
+      "sensitivity": 3.86738108204554e-08,
+      "raw": 0.6361538461538462,
+      "sparsity": 0.6034753901560623,
+      "achieved": 0.603475358751085,
+      "zeros": 1423777
+    },
+    {
+      "name": "model.layers.19.self_attn.k_proj",
+      "layer": 19,
+      "proj": "k_proj",
+      "shape": [
+        256,
+        1536
+      ],
+      "sensitivity": 1.0941212735815498e-07,
+      "raw": 0.43000000000000005,
+      "sparsity": 0.39732154400221625,
+      "achieved": 0.39732106526692706,
+      "zeros": 156233
+    },
+    {
+      "name": "model.layers.19.self_attn.v_proj",
+      "layer": 19,
+      "proj": "v_proj",
+      "shape": [
+        256,
+        1536
+      ],
+      "sensitivity": 2.1774312131128681e-07,
+      "raw": 0.3638461538461538,
+      "sparsity": 0.33116769784837,
+      "achieved": 0.3311665852864583,
+      "zeros": 130220
+    },
+    {
+      "name": "model.layers.19.self_attn.o_proj",
+      "layer": 19,
+      "proj": "o_proj",
+      "shape": [
+        1536,
+        1536
+      ],
+      "sensitivity": 7.575704330520239e-08,
+      "raw": 0.49,
+      "sparsity": 0.4573215440022162,
+      "achieved": 0.45732159084743923,
+      "zeros": 1078957
+    },
+    {
+      "name": "model.layers.19.mlp.gate_proj",
+      "layer": 19,
+      "proj": "gate_proj",
+      "shape": [
+        8960,
+        1536
+      ],
+      "sensitivity": 4.880358162040466e-08,
+      "raw": 0.6038461538461538,
+      "sparsity": 0.57116769784837,
+      "achieved": 0.571167718796503,
+      "zeros": 7860730
+    },
+    {
+      "name": "model.layers.19.mlp.up_proj",
+      "layer": 19,
+      "proj": "up_proj",
+      "shape": [
+        8960,
+        1536
+      ],
+      "sensitivity": 6.494075677210276e-08,
+      "raw": 0.5361538461538462,
+      "sparsity": 0.5034753901560625,
+      "achieved": 0.5034753708612352,
+      "zeros": 6929110
+    },
+    {
+      "name": "model.layers.19.mlp.down_proj",
+      "layer": 19,
+      "proj": "down_proj",
+      "shape": [
+        1536,
+        8960
+      ],
+      "sensitivity": 7.14011108016166e-08,
+      "raw": 0.5053846153846154,
+      "sparsity": 0.47270615938683164,
+      "achieved": 0.47270616803850446,
+      "zeros": 6505647
+    },
+    {
+      "name": "model.layers.20.self_attn.q_proj",
+      "layer": 20,
+      "proj": "q_proj",
+      "shape": [
+        1536,
+        1536
+      ],
+      "sensitivity": 4.9594071072078805e-08,
+      "raw": 0.6023076923076923,
+      "sparsity": 0.5696292363099085,
+      "achieved": 0.5696292453342013,
+      "zeros": 1343924
+    },
+    {
+      "name": "model.layers.20.self_attn.k_proj",
+      "layer": 20,
+      "proj": "k_proj",
+      "shape": [
+        256,
+        1536
+      ],
+      "sensitivity": 1.1681228073712191e-07,
+      "raw": 0.4115384615384616,
+      "sparsity": 0.3788600055406778,
+      "achieved": 0.3788604736328125,
+      "zeros": 148974
+    },
+    {
+      "name": "model.layers.20.self_attn.v_proj",
+      "layer": 20,
+      "proj": "v_proj",
+      "shape": [
+        256,
+        1536
+      ],
+      "sensitivity": 1.9387209704291308e-07,
+      "raw": 0.37461538461538463,
+      "sparsity": 0.34193692861760083,
+      "achieved": 0.34193674723307294,
+      "zeros": 134455
+    },
+    {
+      "name": "model.layers.20.self_attn.o_proj",
+      "layer": 20,
+      "proj": "o_proj",
+      "shape": [
+        1536,
+        1536
+      ],
+      "sensitivity": 1.1916943520873247e-07,
+      "raw": 0.40384615384615385,
+      "sparsity": 0.37116769784837006,
+      "achieved": 0.37116750081380206,
+      "zeros": 875694
+    },
+    {
+      "name": "model.layers.20.mlp.gate_proj",
+      "layer": 20,
+      "proj": "gate_proj",
+      "shape": [
+        8960,
+        1536
+      ],
+      "sensitivity": 5.093434651826101e-08,
+      "raw": 0.5946153846153847,
+      "sparsity": 0.5619369286176008,
+      "achieved": 0.5619369506835937,
+      "zeros": 7733691
+    },
+    {
+      "name": "model.layers.20.mlp.up_proj",
+      "layer": 20,
+      "proj": "up_proj",
+      "shape": [
+        8960,
+        1536
+      ],
+      "sensitivity": 6.371641347868717e-08,
+      "raw": 0.5438461538461539,
+      "sparsity": 0.5111676978483701,
+      "achieved": 0.5111676897321429,
+      "zeros": 7034976
+    },
+    {
+      "name": "model.layers.20.mlp.down_proj",
+      "layer": 20,
+      "proj": "down_proj",
+      "shape": [
+        1536,
+        8960
+      ],
+      "sensitivity": 7.227934162301608e-08,
+      "raw": 0.5023076923076923,
+      "sparsity": 0.46962923630990855,
+      "achieved": 0.46962926955450146,
+      "zeros": 6463301
+    },
+    {
+      "name": "model.layers.21.self_attn.q_proj",
+      "layer": 21,
+      "proj": "q_proj",
+      "shape": [
+        1536,
+        1536
+      ],
+      "sensitivity": 5.198090846647574e-08,
+      "raw": 0.5915384615384616,
+      "sparsity": 0.5588600055406778,
+      "achieved": 0.5588599310980903,
+      "zeros": 1318516
+    },
+    {
+      "name": "model.layers.21.self_attn.k_proj",
+      "layer": 21,
+      "proj": "k_proj",
+      "shape": [
+        256,
+        1536
+      ],
+      "sensitivity": 1.1344928907419671e-07,
+      "raw": 0.4176923076923077,
+      "sparsity": 0.3850138516945239,
+      "achieved": 0.3850148518880208,
+      "zeros": 151394
+    },
+    {
+      "name": "model.layers.21.self_attn.v_proj",
+      "layer": 21,
+      "proj": "v_proj",
+      "shape": [
+        256,
+        1536
+      ],
+      "sensitivity": 2.19248335042721e-07,
+      "raw": 0.36230769230769233,
+      "sparsity": 0.32962923630990854,
+      "achieved": 0.32962799072265625,
+      "zeros": 129615
+    },
+    {
+      "name": "model.layers.21.self_attn.o_proj",
+      "layer": 21,
+      "proj": "o_proj",
+      "shape": [
+        1536,
+        1536
+      ],
+      "sensitivity": 1.1518010012423474e-07,
+      "raw": 0.4130769230769231,
+      "sparsity": 0.3803984670791393,
+      "achieved": 0.38039864434136283,
+      "zeros": 897473
+    },
+    {
+      "name": "model.layers.21.mlp.gate_proj",
+      "layer": 21,
+      "proj": "gate_proj",
+      "shape": [
+        8960,
+        1536
+      ],
+      "sensitivity": 5.4976521113303534e-08,
+      "raw": 0.5823076923076923,
+      "sparsity": 0.5496292363099085,
+      "achieved": 0.5496292114257812,
+      "zeros": 7564305
+    },
+    {
+      "name": "model.layers.21.mlp.up_proj",
+      "layer": 21,
+      "proj": "up_proj",
+      "shape": [
+        8960,
+        1536
+      ],
+      "sensitivity": 6.75971705277334e-08,
+      "raw": 0.5223076923076924,
+      "sparsity": 0.48962923630990857,
+      "achieved": 0.4896292550223214,
+      "zeros": 6738552
+    },
+    {
+      "name": "model.layers.21.mlp.down_proj",
+      "layer": 21,
+      "proj": "down_proj",
+      "shape": [
+        1536,
+        8960
+      ],
+      "sensitivity": 7.459343009941222e-08,
+      "raw": 0.49615384615384617,
+      "sparsity": 0.4634753901560624,
+      "achieved": 0.4634753999255952,
+      "zeros": 6378608
+    },
+    {
+      "name": "model.layers.22.self_attn.q_proj",
+      "layer": 22,
+      "proj": "q_proj",
+      "shape": [
+        1536,
+        1536
+      ],
+      "sensitivity": 3.722739805311903e-08,
+      "raw": 0.6392307692307693,
+      "sparsity": 0.6065523132329855,
+      "achieved": 0.6065521240234375,
+      "zeros": 1431036
+    },
+    {
+      "name": "model.layers.22.self_attn.k_proj",
+      "layer": 22,
+      "proj": "k_proj",
+      "shape": [
+        256,
+        1536
+      ],
+      "sensitivity": 8.399355522215046e-08,
+      "raw": 0.46076923076923076,
+      "sparsity": 0.42809077477144697,
+      "achieved": 0.4280904134114583,
+      "zeros": 168332
+    },
+    {
+      "name": "model.layers.22.self_attn.v_proj",
+      "layer": 22,
+      "proj": "v_proj",
+      "shape": [
+        256,
+        1536
+      ],
+      "sensitivity": 1.3307138146956277e-07,
+      "raw": 0.39,
+      "sparsity": 0.3573215440022162,
+      "achieved": 0.35732269287109375,
+      "zeros": 140505
+    },
+    {
+      "name": "model.layers.22.self_attn.o_proj",
+      "layer": 22,
+      "proj": "o_proj",
+      "shape": [
+        1536,
+        1536
+      ],
+      "sensitivity": 7.539355095786959e-08,
+      "raw": 0.49153846153846154,
+      "sparsity": 0.45886000554067774,
+      "achieved": 0.4588601854112413,
+      "zeros": 1082587
+    },
+    {
+      "name": "model.layers.22.mlp.gate_proj",
+      "layer": 22,
+      "proj": "gate_proj",
+      "shape": [
+        8960,
+        1536
+      ],
+      "sensitivity": 5.594366569994236e-08,
+      "raw": 0.5792307692307692,
+      "sparsity": 0.5465523132329855,
+      "achieved": 0.5465523129417783,
+      "zeros": 7521959
+    },
+    {
+      "name": "model.layers.22.mlp.up_proj",
+      "layer": 22,
+      "proj": "up_proj",
+      "shape": [
+        8960,
+        1536
+      ],
+      "sensitivity": 6.683007569563415e-08,
+      "raw": 0.5253846153846153,
+      "sparsity": 0.49270615938683154,
+      "achieved": 0.4927061535063244,
+      "zeros": 6780898
+    },
+    {
+      "name": "model.layers.22.mlp.down_proj",
+      "layer": 22,
+      "proj": "down_proj",
+      "shape": [
+        1536,
+        8960
+      ],
+      "sensitivity": 7.753685338229843e-08,
+      "raw": 0.4838461538461538,
+      "sparsity": 0.45116769784837,
+      "achieved": 0.45116773332868304,
+      "zeros": 6209223
+    },
+    {
+      "name": "model.layers.23.self_attn.q_proj",
+      "layer": 23,
+      "proj": "q_proj",
+      "shape": [
+        1536,
+        1536
+      ],
+      "sensitivity": 3.5291716216079294e-08,
+      "raw": 0.6407692307692308,
+      "sparsity": 0.608090774771447,
+      "achieved": 0.6080907185872396,
+      "zeros": 1434666
+    },
+    {
+      "name": "model.layers.23.self_attn.k_proj",
+      "layer": 23,
+      "proj": "k_proj",
+      "shape": [
+        256,
+        1536
+      ],
+      "sensitivity": 8.843265675295697e-08,
+      "raw": 0.4530769230769231,
+      "sparsity": 0.4203984670791393,
+      "achieved": 0.42039744059244794,
+      "zeros": 165307
+    },
+    {
+      "name": "model.layers.23.self_attn.v_proj",
+      "layer": 23,
+      "proj": "v_proj",
+      "shape": [
+        256,
+        1536
+      ],
+      "sensitivity": 1.177966595378166e-07,
+      "raw": 0.41,
+      "sparsity": 0.3773215440022162,
+      "achieved": 0.37732187906901044,
+      "zeros": 148369
+    },
+    {
+      "name": "model.layers.23.self_attn.o_proj",
+      "layer": 23,
+      "proj": "o_proj",
+      "shape": [
+        1536,
+        1536
+      ],
+      "sensitivity": 6.243868000410657e-08,
+      "raw": 0.55,
+      "sparsity": 0.5173215440022163,
+      "achieved": 0.5173216925726997,
+      "zeros": 1220515
+    },
+    {
+      "name": "model.layers.23.mlp.gate_proj",
+      "layer": 23,
+      "proj": "gate_proj",
+      "shape": [
+        8960,
+        1536
+      ],
+      "sensitivity": 5.90752655682536e-08,
+      "raw": 0.57,
+      "sparsity": 0.5373215440022161,
+      "achieved": 0.5373215448288691,
+      "zeros": 7394920
+    },
+    {
+      "name": "model.layers.23.mlp.up_proj",
+      "layer": 23,
+      "proj": "up_proj",
+      "shape": [
+        8960,
+        1536
+      ],
+      "sensitivity": 6.677207409211405e-08,
+      "raw": 0.5269230769230769,
+      "sparsity": 0.49424462092529314,
+      "achieved": 0.4942446027483259,
+      "zeros": 6802071
+    },
+    {
+      "name": "model.layers.23.mlp.down_proj",
+      "layer": 23,
+      "proj": "down_proj",
+      "shape": [
+        1536,
+        8960
+      ],
+      "sensitivity": 8.042220400739097e-08,
+      "raw": 0.47615384615384615,
+      "sparsity": 0.44347539015606235,
+      "achieved": 0.4434754144577753,
+      "zeros": 6103357
+    },
+    {
+      "name": "model.layers.24.self_attn.q_proj",
+      "layer": 24,
+      "proj": "q_proj",
+      "shape": [
+        1536,
+        1536
+      ],
+      "sensitivity": 3.288396399625526e-08,
+      "raw": 0.6438461538461538,
+      "sparsity": 0.61116769784837,
+      "achieved": 0.6111679077148438,
+      "zeros": 1441926
+    },
+    {
+      "name": "model.layers.24.self_attn.k_proj",
+      "layer": 24,
+      "proj": "k_proj",
+      "shape": [
+        256,
+        1536
+      ],
+      "sensitivity": 7.10500032141681e-08,
+      "raw": 0.51,
+      "sparsity": 0.4773215440022162,
+      "achieved": 0.4773203531901042,
+      "zeros": 187690
+    },
+    {
+      "name": "model.layers.24.self_attn.v_proj",
+      "layer": 24,
+      "proj": "v_proj",
+      "shape": [
+        256,
+        1536
+      ],
+      "sensitivity": 1.2759812761942158e-07,
+      "raw": 0.3961538461538462,
+      "sparsity": 0.3634753901560624,
+      "achieved": 0.3634745279947917,
+      "zeros": 142924
+    },
+    {
+      "name": "model.layers.24.self_attn.o_proj",
+      "layer": 24,
+      "proj": "o_proj",
+      "shape": [
+        1536,
+        1536
+      ],
+      "sensitivity": 7.494436005117677e-08,
+      "raw": 0.4946153846153846,
+      "sparsity": 0.46193692861760083,
+      "achieved": 0.46193695068359375,
+      "zeros": 1089846
+    },
+    {
+      "name": "model.layers.24.mlp.gate_proj",
+      "layer": 24,
+      "proj": "gate_proj",
+      "shape": [
+        8960,
+        1536
+      ],
+      "sensitivity": 6.594531498649303e-08,
+      "raw": 0.5315384615384615,
+      "sparsity": 0.4988600055406777,
+      "achieved": 0.49886002313523065,
+      "zeros": 6865591
+    },
+    {
+      "name": "model.layers.24.mlp.up_proj",
+      "layer": 24,
+      "proj": "up_proj",
+      "shape": [
+        8960,
+        1536
+      ],
+      "sensitivity": 7.019857406476149e-08,
+      "raw": 0.5146153846153846,
+      "sparsity": 0.4819369286176008,
+      "achieved": 0.4819369361514137,
+      "zeros": 6632686
+    },
+    {
+      "name": "model.layers.24.mlp.down_proj",
+      "layer": 24,
+      "proj": "down_proj",
+      "shape": [
+        1536,
+        8960
+      ],
+      "sensitivity": 7.839285842692334e-08,
+      "raw": 0.4823076923076923,
+      "sparsity": 0.44962923630990853,
+      "achieved": 0.44962921142578127,
+      "zeros": 6188049
+    },
+    {
+      "name": "model.layers.25.self_attn.q_proj",
+      "layer": 25,
+      "proj": "q_proj",
+      "shape": [
+        1536,
+        1536
+      ],
+      "sensitivity": 3.2902281787983156e-08,
+      "raw": 0.6423076923076922,
+      "sparsity": 0.6096292363099085,
+      "achieved": 0.6096293131510416,
+      "zeros": 1438296
+    },
+    {
+      "name": "model.layers.25.self_attn.k_proj",
+      "layer": 25,
+      "proj": "k_proj",
+      "shape": [
+        256,
+        1536
+      ],
+      "sensitivity": 6.424559018114451e-08,
+      "raw": 0.5392307692307692,
+      "sparsity": 0.5065523132329854,
+      "achieved": 0.5065511067708334,
+      "zeros": 199184
+    },
+    {
+      "name": "model.layers.25.self_attn.v_proj",
+      "layer": 25,
+      "proj": "v_proj",
+      "shape": [
+        256,
+        1536
+      ],
+      "sensitivity": 7.95558534605334e-08,
+      "raw": 0.47923076923076924,
+      "sparsity": 0.44655231323298544,
+      "achieved": 0.4465535481770833,
+      "zeros": 175592
+    },
+    {
+      "name": "model.layers.25.self_attn.o_proj",
+      "layer": 25,
+      "proj": "o_proj",
+      "shape": [
+        1536,
+        1536
+      ],
+      "sensitivity": 6.370820671008914e-08,
+      "raw": 0.5453846153846154,
+      "sparsity": 0.5127061593868316,
+      "achieved": 0.5127063327365451,
+      "zeros": 1209626
+    },
+    {
+      "name": "model.layers.25.mlp.gate_proj",
+      "layer": 25,
+      "proj": "gate_proj",
+      "shape": [
+        8960,
+        1536
+      ],
+      "sensitivity": 6.958720888405878e-08,
+      "raw": 0.5161538461538462,
+      "sparsity": 0.4834753901560624,
+      "achieved": 0.48347538539341517,
+      "zeros": 6653859
+    },
+    {
+      "name": "model.layers.25.mlp.up_proj",
+      "layer": 25,
+      "proj": "up_proj",
+      "shape": [
+        8960,
+        1536
+      ],
+      "sensitivity": 7.432461757161946e-08,
+      "raw": 0.4976923076923077,
+      "sparsity": 0.4650138516945239,
+      "achieved": 0.46501384916759675,
+      "zeros": 6399781
+    },
+    {
+      "name": "model.layers.25.mlp.down_proj",
+      "layer": 25,
+      "proj": "down_proj",
+      "shape": [
+        1536,
+        8960
+      ],
+      "sensitivity": 8.115218719240147e-08,
+      "raw": 0.4715384615384615,
+      "sparsity": 0.4388600055406777,
+      "achieved": 0.43885999407087056,
+      "zeros": 6039837
+    },
+    {
+      "name": "model.layers.26.self_attn.q_proj",
+      "layer": 26,
+      "proj": "q_proj",
+      "shape": [
+        1536,
+        1536
+      ],
+      "sensitivity": 3.0163061381927037e-08,
+      "raw": 0.6469230769230769,
+      "sparsity": 0.6142446209252932,
+      "achieved": 0.6142446729871962,
+      "zeros": 1449185
+    },
+    {
+      "name": "model.layers.26.self_attn.k_proj",
+      "layer": 26,
+      "proj": "k_proj",
+      "shape": [
+        256,
+        1536
+      ],
+      "sensitivity": 6.790935458411695e-08,
+      "raw": 0.5207692307692308,
+      "sparsity": 0.48809077477144697,
+      "achieved": 0.48809051513671875,
+      "zeros": 191925
+    },
+    {
+      "name": "model.layers.26.self_attn.v_proj",
+      "layer": 26,
+      "proj": "v_proj",
+      "shape": [
+        256,
+        1536
+      ],
+      "sensitivity": 6.213900860529975e-08,
+      "raw": 0.553076923076923,
+      "sparsity": 0.5203984670791393,
+      "achieved": 0.5203984578450521,
+      "zeros": 204629
+    },
+    {
+      "name": "model.layers.26.self_attn.o_proj",
+      "layer": 26,
+      "proj": "o_proj",
+      "shape": [
+        1536,
+        1536
+      ],
+      "sensitivity": 8.1185817180085e-08,
+      "raw": 0.47000000000000003,
+      "sparsity": 0.43732154400221623,
+      "achieved": 0.4373215569390191,
+      "zeros": 1031771
+    },
+    {
+      "name": "model.layers.26.mlp.gate_proj",
+      "layer": 26,
+      "proj": "gate_proj",
+      "shape": [
+        8960,
+        1536
+      ],
+      "sensitivity": 6.94482622520809e-08,
+      "raw": 0.5176923076923077,
+      "sparsity": 0.4850138516945239,
+      "achieved": 0.48501383463541664,
+      "zeros": 6675032
+    },
+    {
+      "name": "model.layers.26.mlp.up_proj",
+      "layer": 26,
+      "proj": "up_proj",
+      "shape": [
+        8960,
+        1536
+      ],
+      "sensitivity": 7.944201740883727e-08,
+      "raw": 0.4807692307692308,
+      "sparsity": 0.448090774771447,
+      "achieved": 0.44809076218377974,
+      "zeros": 6166876
+    },
+    {
+      "name": "model.layers.26.mlp.down_proj",
+      "layer": 26,
+      "proj": "down_proj",
+      "shape": [
+        1536,
+        8960
+      ],
+      "sensitivity": 8.623550940001223e-08,
+      "raw": 0.4546153846153846,
+      "sparsity": 0.4219369286176008,
+      "achieved": 0.42193690708705356,
+      "zeros": 5806932
+    },
+    {
+      "name": "model.layers.27.self_attn.q_proj",
+      "layer": 27,
+      "proj": "q_proj",
+      "shape": [
+        1536,
+        1536
+      ],
+      "sensitivity": 2.8738478263790057e-08,
+      "raw": 0.6484615384615384,
+      "sparsity": 0.6157830824637547,
+      "achieved": 0.6157832675509982,
+      "zeros": 1452815
+    },
+    {
+      "name": "model.layers.27.self_attn.k_proj",
+      "layer": 27,
+      "proj": "k_proj",
+      "shape": [
+        256,
+        1536
+      ],
+      "sensitivity": 5.35981250493478e-08,
+      "raw": 0.5869230769230769,
+      "sparsity": 0.5542446209252931,
+      "achieved": 0.5542449951171875,
+      "zeros": 217938
+    },
+    {
+      "name": "model.layers.27.self_attn.v_proj",
+      "layer": 27,
+      "proj": "v_proj",
+      "shape": [
+        256,
+        1536
+      ],
+      "sensitivity": 6.819438880256712e-08,
+      "raw": 0.5192307692307693,
+      "sparsity": 0.4865523132329855,
+      "achieved": 0.4865519205729167,
+      "zeros": 191320
+    },
+    {
+      "name": "model.layers.27.self_attn.o_proj",
+      "layer": 27,
+      "proj": "o_proj",
+      "shape": [
+        1536,
+        1536
+      ],
+      "sensitivity": 1.1099021435256873e-07,
+      "raw": 0.42538461538461536,
+      "sparsity": 0.39270615938683157,
+      "achieved": 0.39270612928602433,
+      "zeros": 926510
+    },
+    {
+      "name": "model.layers.27.mlp.gate_proj",
+      "layer": 27,
+      "proj": "gate_proj",
+      "shape": [
+        8960,
+        1536
+      ],
+      "sensitivity": 8.961669806240025e-08,
+      "raw": 0.45153846153846156,
+      "sparsity": 0.41886000554067776,
+      "achieved": 0.4188600086030506,
+      "zeros": 5764586
+    },
+    {
+      "name": "model.layers.27.mlp.up_proj",
+      "layer": 27,
+      "proj": "up_proj",
+      "shape": [
+        8960,
+        1536
+      ],
+      "sensitivity": 9.485727048286208e-08,
+      "raw": 0.44384615384615383,
+      "sparsity": 0.41116769784837004,
+      "achieved": 0.41116768973214285,
+      "zeros": 5658720
+    },
+    {
+      "name": "model.layers.27.mlp.down_proj",
+      "layer": 27,
+      "proj": "down_proj",
+      "shape": [
+        1536,
+        8960
+      ],
+      "sensitivity": 9.21400626907598e-08,
+      "raw": 0.45,
+      "sparsity": 0.4173215440022162,
+      "achieved": 0.4173215593610491,
+      "zeros": 5743413
+    }
+  ],
+  "total_zeros": 655097856,
+  "git_commit": "0194164b292c29bf0a66cb227e03733f9dd745ec-dirty",
+  "seed": 6304,
+  "smoke": false
+}

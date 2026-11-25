@@ -1,0 +1,10 @@
+{
+  "lambda": 0.15,
+  "dev_nll_sum": 109370.76879882812,
+  "dev_tokens": 16352,
+  "dev_mean_nll": 6.688525489165125,
+  "dev_ppl": 803.1371442104285,
+  "eligible_zeros": 982646784,
+  "allocated_zeros": 982646784,
+  "build_seconds": 80.83481851600004
+}
