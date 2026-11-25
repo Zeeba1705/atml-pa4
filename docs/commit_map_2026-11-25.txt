@@ -1,0 +1,35 @@
+# old_commit new_commit subject  (2026-11-25 message-only rewrite: removed a co-author trailer; every tree identical, see decisions G5)
+6549a68d930168d8468eacc51af800e390c38bfa c19204957d61335cef8011ddce39f68ade980f64 Record prefix-bank generation run in decisions G4
+6a2df569d6a60636c3d5c4eec469077590da8b93 f732031354dee6d012506ad6d5cda719ab1b11c1 Add Colab launcher for public data and supplied prefix banks
+8d9fa79b5560466c3aa1212134acd768c77f4c77 389b5275f2a431989c690177f8e92e6d3784f500 Rename modules that shadow the standard library
+470a8cdc524cc3449ba9a3e64479d03dc4d4d4e6 157a1d6760af78ceb917a2390f2621b14ac02adf Merge GitHub's initial commit (keep our README)
+17a358c18469bcdc3f8742a57c4f283e245500c6 29d279848fe319b56866d7df4f107fe6bf783d33 Initial commit
+b3e8573768d1ab1dd9d2dacef6af33476c20af29 293deae91e2fb6dc2beffb3018c069734f556bf1 Add launcher for supplied prefix banks under pinned transformers
+50628171dde2b8c2270b56fa4150ef6ac233bdf1 3095234d5bd0377c1edd87392c32e9cba9e1602d Add data lock: upstream revisions from setup_data.py --public
+4c0826e923694bcede4f4e84466341b35098c2a4 c819c63828ed7d1954dc1feafe95bc573e0029aa Add PA4 skeleton: configs, empty modules, decisions log
+7fdaf3c48c8654d3cd6440941a8d11856461a11e 7fdaf3c48c8654d3cd6440941a8d11856461a11e Add CLAUDE4.md and code style
+653cac99514435dea682c4c394f0a716537035db 653cac99514435dea682c4c394f0a716537035db Base folder: CLAUDE.md, code style, gitignore
+d9a82b8b4e802cacef3ccd218e41925f0b57a09f 078429a5ba2370189d9c0eef74fc3224b800183b Kaggle Task 1: hide the splits symlink from git status so results don't record -dirty; refuse a dirty tree
+0194164b292c29bf0a66cb227e03733f9dd745ec 0f6cf7af67807db1068c79d85c89de966efb0716 Gradient pass: keep the FP32 gradient sum in CPU RAM (OOM on T4), fail fast on a GPU memory estimate
+34cebfca8884fbda1b2f29c9da1e030f12554a29 53d4ba9ae5def207d0cce5e2c6c0aa4ff5e4fad6 PPL test: compare pooled mean NLL absolutely and PPL relatively (failed on Kaggle torch 2.11 by 8e-7 relative)
+78d378eb7c9c2ab43e8c65ea461ac448ca31f09b 35b76c7e6633a5fb97d9f18d54d18758f6bb8e66 Kaggle Task 1: move setup/run logic into repo scripts so notebook copies never go stale
+b57f90b2cf3525f5b949ff3f27dccd52f090455f 1472dc4d1b1ed9c8a3fead0e4d6c2397308d2338 Kaggle Task 1: accept decompressed dataset uploads, fail clearly when the input is missing
+99536ef0126e1a48924bfeb6a24d95546f4eb4d3 62e7ef2f23c19e0f5b2ecb38f27e96ede12e8537 Task 1: Kaggle launcher for P3/Q3 (two T4 chains); assert Q3 budgets equal measured Q2 bytes
+cf6fe451151f3681f33d926eab06bef8545adead 0e0e1f18fcfe07eaef027da192dd43ce3960c259 Task 1: P3 nonuniform and Q3 mixed-precision conditions from frozen allocations
+f21504313da62fd8a663138d28bbea1869cd419a 7ae8a5686a04cf881caf9db1d8d51c7562c5a146 Task 1: Taylor/Fisher sensitivity pass and P3/Q3 allocation (rank rule, exact ILP)
+215d0a1a568926003a1bbc1d1d3bfca39de8aa29 e8381c7d4064ceb5ea1ab049e88c3f49b93cae27 Task 1: Q1 uniform and Q2 AWQ-style quantization conditions
+9a39c62119262b0cdc9b3a3a1a98d37de6d8b9a9 e50b2b28b22a6ddb49ea35b319745e3e5229d807 Calibration pass: input caching, block access, original-space error
+3379ba549b683ef830cf3fb67c48b0b1e50dfca6 f5a484823f84b19686e54b40d0044e65643e7636 Task 1: P1 magnitude, P2 Wanda and 2:4 pruning conditions
+4d9aa78cebe4de2388eecf6407bf4361dea0d6c5 e4408157449f84ea1ab57f07d60474134a7ea5af Task 1: sequential calibration pass
+2fd2e9a457973e4da7a39d30fd379d8512ecfa6a cd0012770495d5af930e616c1560a73a619c8d45 Find the data repo inside or next to the code repo; check data before loading
+7d8769bf307ee454fde03a380c9f9e78d30b58d1 45a1dfd5a468e6a8f5f66d3f6a323173d3cd9e18 Colab Task 1 launcher: unbuffered progress output
+7b7f37cac07084d5350cb9c0c3c375f200fa9cab a542365b790069da95a767ae3c7c4df5336ecaca Add Colab launcher for Task 1 conditions
+c102ebbc6b9d66e20ee4a9bea5fb73194e736d12 ea5f64aa5f91d48653de8d2b70b93ab4cbabf385 Task 1: condition runner (baseline) with resumable per-eval results
+25a4da92bdebe65e1f6dd86fc284bef49fbbbb71 2ab53e831e90e2085d6fa6ea4490318f6536944e Task 1: storage counts and latency measurement
+14904ef71b80a0e260c0599f3e8b8955384602b7 5a988e74ed88ba46e0b6c66064418c9a41520e3f Task 1: model/data loading, PPL and HellaSwag evaluation
+a489d20f15834026411943d40e6a9acc49a75f4b b85718980ca18a146b1bae9462a508d82d3b002c Merge branch 'main' into task1-compress
+cf70a81904b4beaeac9d84a7874493f572103e6f 4fd9df0de093cf3bdf747574614b0b09442f0811 Merge branch 'main' into task1-compress
+8461ae88b6337bf43696a73c32f8ef050373bbf7 1c08cd36b9b0e96e18b2a844b3ba709a93323d08 Merge branch 'main' into task1-compress
+0ac332686b52bd0c58c4dad8137ef4e74ffa66e7 4c7fb0b52fac1353195b8fb73b22aa42487e70c3 Merge branch 'main' into task1-compress
+f1adccf60873ab5e75067dc565a9279d3f0ea5fc 9e4e6a84f5aa10992780302fad79460b32ec6077 Merge branch 'main' into task1-compress
+2ab344272371fd1187af50efddd3413fb081a0cf 6d66052f6a2d70d6bea4ed9b00b2b40794f2c369 Task 1 Step 0: unit tests and core primitives
