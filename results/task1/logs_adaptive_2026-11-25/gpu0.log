@@ -1,0 +1,83 @@
+I0000 00:00:1795602461.456324     258 cudart_stub.cc:31] Could not find cuda drivers on your machine, GPU will not be used.
+calibrated block 7/28
+calibrated block 14/28
+calibrated block 21/28
+calibrated block 28/28
+lam 0: dev nll 2.83824 (ppl 17.086)
+calibrated block 7/28
+calibrated block 14/28
+calibrated block 21/28
+calibrated block 28/28
+lam 0.05: dev nll 2.81003 (ppl 16.610)
+calibrated block 7/28
+calibrated block 14/28
+calibrated block 21/28
+calibrated block 28/28
+lam 0.1: dev nll 2.79501 (ppl 16.363)
+calibrated block 7/28
+calibrated block 14/28
+calibrated block 21/28
+calibrated block 28/28
+lam 0.15: dev nll 2.78951 (ppl 16.273)
+calibrated block 7/28
+calibrated block 14/28
+calibrated block 21/28
+calibrated block 28/28
+lam 0.2: dev nll 2.79204 (ppl 16.314)
+frozen splits/task1/p3_allocation_s0.5.json: lambda 0.15, zeros 655097856
+I0000 00:00:1795602931.166671     333 cudart_stub.cc:31] Could not find cuda drivers on your machine, GPU will not be used.
+Using device: cuda
+condition p3_nonuniform_s0.5: done [], to run ['wikitext2', 'c4_val', 'hellaswag', 'resources']
+data root: /tmp/pa4/atml-pa4-datasets
+calibrated block 7/28
+calibrated block 14/28
+calibrated block 21/28
+calibrated block 28/28
+built p3_nonuniform_s0.5: 82.9s
+ppl window 100/437
+ppl window 200/437
+ppl window 300/437
+ppl window 400/437
+wikitext2: ppl 23.6345 over 50000 tokens
+ppl window 100/177
+c4_val: ppl 20.1874 over 50000 tokens
+hellaswag 250/2000
+hellaswag 500/2000
+hellaswag 750/2000
+hellaswag 1000/2000
+hellaswag 1250/2000
+hellaswag 1500/2000
+hellaswag 1750/2000
+hellaswag 2000/2000
+hellaswag: acc 0.4265, acc_norm 0.5840 on 2000
+prefill 512: median 124.6 ms
+prefill 2048: median 802.3 ms
+decode 64 tokens: median 2524.0 ms
+I0000 00:00:1795603268.246922     391 cudart_stub.cc:31] Could not find cuda drivers on your machine, GPU will not be used.
+Using device: cuda
+condition q3_mixed_budget_b4: done [], to run ['wikitext2', 'c4_val', 'hellaswag', 'resources']
+data root: /tmp/pa4/atml-pa4-datasets
+calibrated block 7/28
+calibrated block 14/28
+calibrated block 21/28
+calibrated block 28/28
+built q3_mixed_budget_b4: 354.1s
+ppl window 100/437
+ppl window 200/437
+ppl window 300/437
+ppl window 400/437
+wikitext2: ppl 17.6124 over 50000 tokens
+ppl window 100/177
+c4_val: ppl 15.9988 over 50000 tokens
+hellaswag 250/2000
+hellaswag 500/2000
+hellaswag 750/2000
+hellaswag 1000/2000
+hellaswag 1250/2000
+hellaswag 1500/2000
+hellaswag 1750/2000
+hellaswag 2000/2000
+hellaswag: acc 0.4850, acc_norm 0.6715 on 2000
+prefill 512: median 130.0 ms
+prefill 2048: median 822.6 ms
+decode 64 tokens: median 2530.5 ms

@@ -1,0 +1,17 @@
+I0000 00:00:1795601479.584314     146 cudart_stub.cc:31] Could not find cuda drivers on your machine, GPU will not be used.
+Using device: cuda
+gradient pass estimate 7.17 GiB of 14.56 GiB
+gradient pass 16/128
+gradient pass 32/128
+gradient pass 48/128
+gradient pass 64/128
+gradient pass 80/128
+gradient pass 96/128
+gradient pass 112/128
+gradient pass 128/128
+gradient pass done in 915s
+sensitivity: 196 units, 915.2s, loss-scale halvings 0 -> splits/task1/sensitivity.json
+I0000 00:00:1795602435.222241     208 cudart_stub.cc:31] Could not find cuda drivers on your machine, GPU will not be used.
+frozen splits/task1/q3_allocation_b4.json: {'2': 0, '3': 18, '4': 142, '8': 36}, 1147810816 <= 1147810816 bytes
+I0000 00:00:1795602448.125905     232 cudart_stub.cc:31] Could not find cuda drivers on your machine, GPU will not be used.
+frozen splits/task1/q3_allocation_b3.json: {'2': 10, '3': 117, '4': 67, '8': 2}, 982756864 <= 982756864 bytes

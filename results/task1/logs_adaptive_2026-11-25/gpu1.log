@@ -1,0 +1,77 @@
+I0000 00:00:1795602461.351660     260 cudart_stub.cc:31] Could not find cuda drivers on your machine, GPU will not be used.
+calibrated block 7/28
+calibrated block 14/28
+calibrated block 21/28
+calibrated block 28/28
+lam 0: dev nll 7.28717 (ppl 1461.426)
+calibrated block 7/28
+calibrated block 14/28
+calibrated block 21/28
+calibrated block 28/28
+lam 0.05: dev nll 7.02827 (ppl 1128.079)
+calibrated block 7/28
+calibrated block 14/28
+calibrated block 21/28
+calibrated block 28/28
+lam 0.1: dev nll 6.70337 (ppl 815.152)
+calibrated block 7/28
+calibrated block 14/28
+calibrated block 21/28
+calibrated block 28/28
+lam 0.15: dev nll 6.68853 (ppl 803.137)
+calibrated block 7/28
+calibrated block 14/28
+calibrated block 21/28
+calibrated block 28/28
+lam 0.2: dev nll 7.07916 (ppl 1186.976)
+frozen splits/task1/p3_allocation_s0.75.json: lambda 0.15, zeros 982646784
+I0000 00:00:1795602886.860429     306 cudart_stub.cc:31] Could not find cuda drivers on your machine, GPU will not be used.
+Using device: cuda
+condition p3_nonuniform_s0.75: done [], to run ['wikitext2', 'c4_val', 'hellaswag', 'resources']
+data root: /tmp/pa4/atml-pa4-datasets
+calibrated block 7/28
+calibrated block 14/28
+calibrated block 21/28
+calibrated block 28/28
+built p3_nonuniform_s0.75: 77.3s
+ppl window 100/437
+ppl window 200/437
+ppl window 300/437
+ppl window 400/437
+wikitext2: ppl 3172.5545 over 50000 tokens
+ppl window 100/177
+c4_val: ppl 1113.9095 over 50000 tokens
+hellaswag 250/512
+hellaswag 500/512
+hellaswag: acc 0.2715, acc_norm 0.2578 on 512
+prefill 512: median 112.1 ms
+prefill 2048: median 732.3 ms
+decode 64 tokens: median 2562.4 ms
+I0000 00:00:1795603073.930753     366 cudart_stub.cc:31] Could not find cuda drivers on your machine, GPU will not be used.
+Using device: cuda
+condition q3_mixed_budget_b3: done [], to run ['wikitext2', 'c4_val', 'hellaswag', 'resources']
+data root: /tmp/pa4/atml-pa4-datasets
+calibrated block 7/28
+calibrated block 14/28
+calibrated block 21/28
+calibrated block 28/28
+built q3_mixed_budget_b3: 332.6s
+ppl window 100/437
+ppl window 200/437
+ppl window 300/437
+ppl window 400/437
+wikitext2: ppl 23.9654 over 50000 tokens
+ppl window 100/177
+c4_val: ppl 20.2810 over 50000 tokens
+hellaswag 250/2000
+hellaswag 500/2000
+hellaswag 750/2000
+hellaswag 1000/2000
+hellaswag 1250/2000
+hellaswag 1500/2000
+hellaswag 1750/2000
+hellaswag 2000/2000
+hellaswag: acc 0.4455, acc_norm 0.6120 on 2000
+prefill 512: median 121.5 ms
+prefill 2048: median 760.8 ms
+decode 64 tokens: median 2607.7 ms
