@@ -224,3 +224,22 @@ def test_mixed_bits_assignment_and_bytes():
     #a 2-bit projection has at most 4 distinct values per 16-wide group
     w= model.model.layers[0].self_attn.q_proj.weight
     assert all(len(torch.unique(g)) <= 4 for g in w.reshape(-1, 16))
+
+
+def test_gradient_pass_fits_a_t4():
+    #qwen2.5-1.5b at 512 tokens: the design must leave headroom on a 14.56 GiB T4 (the first design kept a 5.2 GB
+    #fp32 gradient sum on the gpu and ran out of memory at sequence 17)
+    from task1.sensitivity import gradient_pass_gpu_bytes, GPU_FRACTION
+
+    need= gradient_pass_gpu_bytes(1543714304, 1310195712, 512, 151936, 1536, 28)
+    limit= GPU_FRACTION * 14.56 * 2 ** 30
+
+    assert need < limit
+    assert need + 4 * 1310195712 > limit   #the old layout (fp32 sum on the gpu) would have been rejected
+
+
+def test_gradient_pass_sum_on_cpu():
+    model= tiny_model()
+    out= gradient_pass(model, sequences(2, 8), torch.device("cpu"), [4], 16, torch.float32, sum_device="cpu")
+
+    assert all(u["g_sum"].device.type == "cpu" and u["g_sum"].dtype == torch.float32 for u in out["units"].values())

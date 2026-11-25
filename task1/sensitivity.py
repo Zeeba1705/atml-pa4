@@ -5,6 +5,9 @@ import os
 import time
 import argparse
 
+#less fragmentation in the long fp16 backward loop; read when cuda first initializes
+os.environ.setdefault("PYTORCH_CUDA_ALLOC_CONF", "expandable_segments:True")
+
 import torch
 import torch.nn.functional as F
 
@@ -35,8 +38,22 @@ def fisher_quant_error(g, w, bits, group_size, scale_dtype):
     return (g.float().pow(2) * dw.pow(2)).sum().item()
 
 
-def gradient_pass(model, sequences, device, bits, group_size, scale_dtype, loss_scale=1.0):
+#fraction of gpu memory the estimate may use: the oom'd first run lost ~1.9 GiB of 14.56 to fragmentation
+GPU_FRACTION= 0.75
+
+
+def gradient_pass_gpu_bytes(n_unique, n_eligible, seq_len, vocab, hidden, n_layers):
+    #resident: fp16 params + fp16 grads of eligible weights (the fp32 gradient sum lives in cpu ram);
+    #transient: fp32 logits + their grad + softmax, and per-layer saved activations (~24 hidden-sized fp16 tensors)
+    resident= 2 * n_unique + 2 * n_eligible
+    transient= 3 * 4 * seq_len * vocab + n_layers * 24 * 2 * seq_len * hidden
+
+    return resident + transient
+
+
+def gradient_pass(model, sequences, device, bits, group_size, scale_dtype, loss_scale=1.0, sum_device="cpu"):
     #per sequence (batch 1): mean next-token loss, backward to the eligible weights only
+    #the fp32 gradient sum (4 bytes per eligible weight, 5.2 GB for qwen2.5-1.5b) is kept on sum_device, not the gpu
     linears= eligible_linears(model)
     flags= [p.requires_grad for p in model.parameters()]
 
@@ -48,7 +65,7 @@ def gradient_pass(model, sequences, device, bits, group_size, scale_dtype, loss_
     for name, lin in linears:
         lin.weight.requires_grad_(True)
         units[name]= {
-            "g_sum": torch.zeros(lin.weight.shape, dtype=torch.float32, device=lin.weight.device),
+            "g_sum": torch.zeros(lin.weight.shape, dtype=torch.float32, device=sum_device),
             "sumsq": torch.zeros(lin.weight.shape[1], dtype=torch.float32, device=lin.weight.device),
             "n": 0,
             "fisher": {b: 0.0 for b in bits}
@@ -96,11 +113,14 @@ def gradient_pass(model, sequences, device, bits, group_size, scale_dtype, loss_
             with torch.no_grad():
                 for name, lin in linears:
                     g= lin.weight.grad.float() / scale
-                    units[name]["g_sum"]+= g
 
                     for b in bits:
                         units[name]["fisher"][b]+= fisher_quant_error(g, lin.weight, b, group_size, scale_dtype)
 
+                    #copy the fp16 grad (half the bytes of g) and accumulate in fp32 where the sum lives
+                    units[name]["g_sum"].add_(lin.weight.grad.to(sum_device).float(), alpha=1.0 / scale)
+
+                    del g
                     lin.weight.grad= None
 
             if (i + 1) % 16 == 0:
@@ -124,7 +144,7 @@ def summarize(model, out, sparsities, bits):
     for name, lin in eligible_linears(model):
         u= out["units"][name]
         w= lin.weight.detach()
-        g_mean= u["g_sum"] / n
+        g_mean= u["g_sum"].to(w.device) / n
         layer= int(name.split(".")[2])
 
         units.append({
@@ -183,6 +203,13 @@ def main(args):
     sens_cfg= cfg["sensitivity"]
 
     if device.type == "cuda":
+        #fail fast (before 128 backward passes) if this design can't fit the gpu
+        c= model.config
+        need= gradient_pass_gpu_bytes(unique_param_count(model), sum(m.weight.numel() for _, m in eligible_linears(model)),
+                                      len(seqs[0]["token_ids"]), c.vocab_size, c.hidden_size, c.num_hidden_layers)
+        total= torch.cuda.get_device_properties(device).total_memory
+        print(f"gradient pass estimate {need / 2**30:.2f} GiB of {total / 2**30:.2f} GiB")
+        assert need < GPU_FRACTION * total, "gradient pass would not fit this gpu"
         torch.cuda.reset_peak_memory_stats(device)
 
     start= time.perf_counter()
@@ -194,6 +221,7 @@ def main(args):
         loss_scale=sens_cfg["loss_scale"] if dtype == torch.float16 else 1.0
     )
     elapsed= time.perf_counter() - start
+    print(f"gradient pass done in {elapsed:.0f}s")
 
     summary= summarize(model, out, cfg["pruning"]["p3_sparsities"], quant["q3_allowed_bits"])
 
