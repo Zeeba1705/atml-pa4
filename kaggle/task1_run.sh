@@ -5,6 +5,10 @@ RES=/kaggle/working/results/task1
 SPL=/kaggle/working/task1_splits
 mkdir -p "$RES/logs" "$SPL"
 rm -rf splits/task1 && ln -s "$SPL" splits/task1
+#the symlink is a launcher detail, not a code change: hide it from git status so results don't record "-dirty"
+git update-index --skip-worktree splits/task1/.gitkeep
+grep -qx "splits/task1" .git/info/exclude || echo "splits/task1" >> .git/info/exclude
+test -z "$(git status --porcelain)" || { echo "code tree is dirty:"; git status --porcelain; exit 1; }
 COMMON="--data_root /tmp/pa4/atml-pa4-datasets --output_dir /tmp/pa4/outputs"
 
 run() {
