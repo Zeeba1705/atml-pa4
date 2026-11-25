@@ -32,8 +32,9 @@ def write_json(path, obj):
 def write_jsonl(path, rows):
     os.makedirs(os.path.dirname(path), exist_ok=True)
     tmp= path + ".tmp"
+    opener= gzip.open if path.endswith(".gz") else open
 
-    with open(tmp, "w") as f:
+    with opener(tmp, "wt", encoding="utf8") as f:
         for row in rows:
             f.write(json.dumps(row) + "\n")
 

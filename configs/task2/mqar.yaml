@@ -1,9 +1,10 @@
 #task 2 part B, MQAR (handout pp.7-9)
 
 data:
-  generator: atml-pa4-datasets/scripts/mqar_generator.py
-  development: atml-pa4-datasets/data/mqar/mqar_development.jsonl.gz
-  test: atml-pa4-datasets/data/mqar/mqar_test.jsonl.gz
+  #paths inside the data repo (resolved by resolve_data_root)
+  generator: scripts/mqar_generator.py
+  development: data/mqar/mqar_development.jsonl.gz
+  test: data/mqar/mqar_test.jsonl.gz
   test_per_cell: 1024
   dev_per_cell: 256
   #decision 2.4: train index = update*batch_size + b, same stream for every seed and method
@@ -39,6 +40,16 @@ final_lr_fraction: 0.15        #linear decay to 15% of peak
 grad_clip: 1.0
 eval_at: [500, 1000, 1500, 2000, 3000, 4500]   #on development set; test only at the final checkpoint
 seeds: [6304, 6305, 6306]
+precision: float32             #ours: tiny model, no autocast
+eval_batch_size: 256           #ours
+
+#--smoke: cpu, real model size, a few updates and examples
+smoke:
+  updates: 6
+  batch_size: 4
+  warmup_updates: 2
+  eval_at: [3, 6]
+  eval_examples_per_cell: 2
 
 attention:
   window: 64                   #j in [i-W+1, i]
