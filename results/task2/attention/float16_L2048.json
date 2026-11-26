@@ -1,0 +1,494 @@
+{
+  "git_commit": "d5a40daab73ebdd123fa1914d11e5ef81988d05c",
+  "seed": 6304,
+  "device": "cuda",
+  "gpu_name": "Tesla T4",
+  "dtype": "float16",
+  "attn_implementation": "sdpa",
+  "sdpa": {
+    "flash_enabled": true,
+    "mem_efficient_enabled": true,
+    "math_enabled": true,
+    "compute_capability": "7.5"
+  },
+  "torch": "2.11.0+cu130",
+  "transformers": "4.57.1",
+  "cuda": "13.0",
+  "T": 2048,
+  "shape": [
+    2,
+    4,
+    2048,
+    64
+  ],
+  "reference": "dense_fp32",
+  "sdpa_default_backend": "EFFICIENT_ATTENTION",
+  "sdpa_default_ops": [
+    "aten::_scaled_dot_product_efficient_attention",
+    "aten::scaled_dot_product_attention"
+  ],
+  "tiled_block": [
+    128,
+    128
+  ],
+  "tiled_note": "python reference; backward is autograd and stores every tile (not a fused flashattention kernel)",
+  "tile_size_verification": {
+    "32": {
+      "max_abs_err": 0.0016252994537353516,
+      "tiles_computed": 2080
+    },
+    "64": {
+      "max_abs_err": 0.0016252994537353516,
+      "tiles_computed": 528
+    },
+    "128": {
+      "max_abs_err": 0.0016252994537353516,
+      "tiles_computed": 136
+    },
+    "256": {
+      "max_abs_err": 0.0016252994537353516,
+      "tiles_computed": 36
+    }
+  },
+  "dense_score_matrix_bytes": 134217728,
+  "rows": [
+    {
+      "impl": "dense",
+      "forward": {
+        "unit": "ms",
+        "reps": 10,
+        "median": 10.762757499989561,
+        "iqr": 0.0347715000046378,
+        "q25": 10.754547999979991,
+        "q75": 10.789319499984629,
+        "all": [
+          10.808561000004602,
+          10.751424999995152,
+          10.74504700000034,
+          10.766652999990356,
+          10.79331099998626,
+          10.889582999993763,
+          10.777344999979732,
+          10.75579299998708,
+          10.754132999977628,
+          10.758861999988767
+        ]
+      },
+      "forward_memory": {
+        "peak_allocated_bytes": 452395008,
+        "peak_reserved_bytes": 1293942784,
+        "peak_above_start_bytes": 407044096
+      },
+      "forward_errors_vs_reference": {
+        "output": {
+          "max_abs": 0.0016252994537353516,
+          "mean_abs": 2.716617781463009e-05,
+          "max_rel_to_ref_max": 0.0005668619348177793
+        }
+      },
+      "finite": true,
+      "status": "ok",
+      "errors_vs_reference": {
+        "output": {
+          "max_abs": 0.0016252994537353516,
+          "mean_abs": 2.716617781463009e-05,
+          "max_rel_to_ref_max": 0.0005668619348177793
+        },
+        "dq": {
+          "max_abs": 0.001086890697479248,
+          "mean_abs": 2.740704262378478e-05,
+          "max_rel_to_ref_max": 0.00044046174593963597
+        },
+        "dk": {
+          "max_abs": 0.001298069953918457,
+          "mean_abs": 2.2117899516399834e-05,
+          "max_rel_to_ref_max": 0.0004656149217075073
+        },
+        "dv": {
+          "max_abs": 0.0021467208862304688,
+          "mean_abs": 2.1493281573532454e-05,
+          "max_rel_to_ref_max": 0.00040777367709505727
+        }
+      },
+      "forward_backward": {
+        "unit": "ms",
+        "reps": 10,
+        "median": 34.576804499991454,
+        "iqr": 0.02494400000330188,
+        "q25": 34.56618274999812,
+        "q75": 34.59112675000142,
+        "all": [
+          34.59052900001325,
+          34.57042799999499,
+          34.672931000017115,
+          34.566920000003165,
+          34.58318099998792,
+          34.565661000016235,
+          34.56593699999644,
+          34.59132599999748,
+          34.62302300002307,
+          34.546894999976985
+        ]
+      },
+      "forward_backward_memory": {
+        "peak_allocated_bytes": 997670912,
+        "peak_reserved_bytes": 1296039936,
+        "peak_above_start_bytes": 954417152
+      },
+      "backward_status": "ok"
+    },
+    {
+      "impl": "tiled",
+      "forward": {
+        "unit": "ms",
+        "reps": 10,
+        "median": 66.7874945000051,
+        "iqr": 2.5132105000196248,
+        "q25": 66.08250074998523,
+        "q75": 68.59571125000485,
+        "all": [
+          73.65969200000677,
+          67.05202300000224,
+          67.78555299999312,
+          69.19090499999925,
+          66.3107279999906,
+          66.52296600000795,
+          66.00642499998344,
+          68.86576400000877,
+          65.75844600001801,
+          65.14539399998398
+        ]
+      },
+      "forward_memory": {
+        "peak_allocated_bytes": 50874368,
+        "peak_reserved_bytes": 1300234240,
+        "peak_above_start_bytes": 5523456
+      },
+      "forward_errors_vs_reference": {
+        "output": {
+          "max_abs": 0.0016252994537353516,
+          "mean_abs": 2.4668309946329847e-05,
+          "max_rel_to_ref_max": 0.0005668619348177793
+        }
+      },
+      "finite": true,
+      "status": "ok",
+      "errors_vs_reference": {
+        "output": {
+          "max_abs": 0.0016252994537353516,
+          "mean_abs": 2.4668309946329847e-05,
+          "max_rel_to_ref_max": 0.0005668619348177793
+        },
+        "dq": {
+          "max_abs": 0.001101374626159668,
+          "mean_abs": 3.11285561370038e-05,
+          "max_rel_to_ref_max": 0.00044633134858637743
+        },
+        "dk": {
+          "max_abs": 0.0015581846237182617,
+          "mean_abs": 2.5717784153251715e-05,
+          "max_rel_to_ref_max": 0.0005589174985433766
+        },
+        "dv": {
+          "max_abs": 0.0029430389404296875,
+          "mean_abs": 2.5314544593858123e-05,
+          "max_rel_to_ref_max": 0.0005590357918770976
+        }
+      },
+      "forward_backward": {
+        "unit": "ms",
+        "reps": 10,
+        "median": 229.05807250000976,
+        "iqr": 4.912822750021917,
+        "q25": 227.40785224998916,
+        "q75": 232.32067500001108,
+        "all": [
+          229.00447000000668,
+          237.51745799998503,
+          259.4995210000093,
+          233.00277000001302,
+          229.11167500001284,
+          224.34164899999587,
+          230.27439000000527,
+          228.61161800000218,
+          225.88579199998549,
+          227.00659699998482
+        ]
+      },
+      "forward_backward_memory": {
+        "peak_allocated_bytes": 277715968,
+        "peak_reserved_bytes": 1518338048,
+        "peak_above_start_bytes": 234462208
+      },
+      "backward_status": "ok"
+    },
+    {
+      "impl": "sdpa",
+      "forward": {
+        "unit": "ms",
+        "reps": 10,
+        "median": 0.7180890000029194,
+        "iqr": 0.008865249967016098,
+        "q25": 0.7151067500146269,
+        "q75": 0.723971999981643,
+        "all": [
+          0.7159129999934066,
+          0.7204979999926309,
+          0.7200889999978699,
+          0.7148380000217003,
+          0.7160890000079689,
+          0.7104660000152307,
+          0.7314409999992222,
+          0.7086479999998119,
+          0.7251299999779803,
+          0.7491099999867856
+        ]
+      },
+      "forward_memory": {
+        "peak_allocated_bytes": 47448064,
+        "peak_reserved_bytes": 1518338048,
+        "peak_above_start_bytes": 2097152
+      },
+      "forward_errors_vs_reference": {
+        "output": {
+          "max_abs": 0.0009043216705322266,
+          "mean_abs": 1.4351610254014082e-05,
+          "max_rel_to_ref_max": 0.00031540374340088557
+        }
+      },
+      "finite": true,
+      "status": "ok",
+      "errors_vs_reference": {
+        "output": {
+          "max_abs": 0.0009043216705322266,
+          "mean_abs": 1.4351610254014082e-05,
+          "max_rel_to_ref_max": 0.00031540374340088557
+        },
+        "dq": {
+          "max_abs": 0.0012799501419067383,
+          "mean_abs": 1.8786764463317538e-05,
+          "max_rel_to_ref_max": 0.0005186989598194539
+        },
+        "dk": {
+          "max_abs": 0.0013387203216552734,
+          "mean_abs": 1.4680779207528784e-05,
+          "max_rel_to_ref_max": 0.0004801961218454685
+        },
+        "dv": {
+          "max_abs": 0.0021467208862304688,
+          "mean_abs": 1.2215335915800375e-05,
+          "max_rel_to_ref_max": 0.00040777367709505727
+        }
+      },
+      "forward_backward": {
+        "unit": "ms",
+        "reps": 10,
+        "median": 3.1508640000197374,
+        "iqr": 0.0390780000074642,
+        "q25": 3.1358229999938203,
+        "q75": 3.1749010000012845,
+        "all": [
+          3.1946470000150384,
+          3.1561610000210294,
+          3.1330649999858906,
+          3.192148000010775,
+          3.1706799999824398,
+          3.1455670000184455,
+          3.1296030000191877,
+          3.1440970000176094,
+          3.176308000007566,
+          2.735190999999304
+        ]
+      },
+      "forward_backward_memory": {
+        "peak_allocated_bytes": 64360448,
+        "peak_reserved_bytes": 1518338048,
+        "peak_above_start_bytes": 21106688
+      },
+      "backward_status": "ok"
+    },
+    {
+      "impl": "sdpa_FLASH_ATTENTION",
+      "status": "unsupported",
+      "message": "No available kernel. Aborting execution."
+    },
+    {
+      "impl": "sdpa_EFFICIENT_ATTENTION",
+      "forward": {
+        "unit": "ms",
+        "reps": 10,
+        "median": 0.5859184999934541,
+        "iqr": 0.022875250003551173,
+        "q25": 0.5767700000021136,
+        "q75": 0.5996452500056648,
+        "all": [
+          0.5746220000162339,
+          0.5726470000126938,
+          0.5753030000050785,
+          0.5906939999817951,
+          0.5902940000055423,
+          0.5811709999932191,
+          0.6300290000069708,
+          0.6026290000136214,
+          0.6285159999777079,
+          0.5815429999813659
+        ]
+      },
+      "forward_memory": {
+        "peak_allocated_bytes": 47448064,
+        "peak_reserved_bytes": 65011712,
+        "peak_above_start_bytes": 2097152
+      },
+      "forward_errors_vs_reference": {
+        "output": {
+          "max_abs": 0.0009043216705322266,
+          "mean_abs": 1.4351610254014082e-05,
+          "max_rel_to_ref_max": 0.00031540374340088557
+        }
+      },
+      "finite": true,
+      "status": "ok",
+      "errors_vs_reference": {
+        "output": {
+          "max_abs": 0.0009043216705322266,
+          "mean_abs": 1.4351610254014082e-05,
+          "max_rel_to_ref_max": 0.00031540374340088557
+        },
+        "dq": {
+          "max_abs": 0.0012799501419067383,
+          "mean_abs": 1.8786859653617625e-05,
+          "max_rel_to_ref_max": 0.0005186989598194539
+        },
+        "dk": {
+          "max_abs": 0.0013387203216552734,
+          "mean_abs": 1.4680779207528784e-05,
+          "max_rel_to_ref_max": 0.0004801961218454685
+        },
+        "dv": {
+          "max_abs": 0.0021467208862304688,
+          "mean_abs": 1.2215335915800375e-05,
+          "max_rel_to_ref_max": 0.00040777367709505727
+        }
+      },
+      "forward_backward": {
+        "unit": "ms",
+        "reps": 10,
+        "median": 2.6293015000078412,
+        "iqr": 0.02495225000842538,
+        "q25": 2.618684499992696,
+        "q75": 2.6436367500011215,
+        "all": [
+          2.6457710000045154,
+          2.626447000011467,
+          2.63723399999094,
+          2.630317000011928,
+          2.6543289999949593,
+          2.6282860000037545,
+          2.656750999989299,
+          2.616096999986439,
+          2.5773689999937233,
+          2.596261999997296
+        ]
+      },
+      "forward_backward_memory": {
+        "peak_allocated_bytes": 64360448,
+        "peak_reserved_bytes": 109051904,
+        "peak_above_start_bytes": 21106688
+      },
+      "backward_status": "ok"
+    },
+    {
+      "impl": "sdpa_CUDNN_ATTENTION",
+      "status": "unsupported",
+      "message": "No available kernel. Aborting execution."
+    },
+    {
+      "impl": "sdpa_MATH",
+      "forward": {
+        "unit": "ms",
+        "reps": 10,
+        "median": 8.614256499996031,
+        "iqr": 0.39398875002660816,
+        "q25": 8.226377499987336,
+        "q75": 8.620366250013944,
+        "all": [
+          8.6093529999971,
+          8.62091099997997,
+          8.619159999994963,
+          8.620033999989118,
+          8.621113999993213,
+          8.62047700002222,
+          8.41198300000201,
+          8.164508999982445,
+          8.154740999998467,
+          8.139903000000004
+        ]
+      },
+      "forward_memory": {
+        "peak_allocated_bytes": 380912128,
+        "peak_reserved_bytes": 404750336,
+        "peak_above_start_bytes": 335561216
+      },
+      "forward_errors_vs_reference": {
+        "output": {
+          "max_abs": 0.0009043216705322266,
+          "mean_abs": 9.748425990175821e-06,
+          "max_rel_to_ref_max": 0.00031540374340088557
+        }
+      },
+      "finite": true,
+      "status": "ok",
+      "errors_vs_reference": {
+        "output": {
+          "max_abs": 0.0009043216705322266,
+          "mean_abs": 9.748425990175821e-06,
+          "max_rel_to_ref_max": 0.00031540374340088557
+        },
+        "dq": {
+          "max_abs": 0.0008196830749511719,
+          "mean_abs": 9.22490713264071e-06,
+          "max_rel_to_ref_max": 0.00033217603126744577
+        },
+        "dk": {
+          "max_abs": 0.0008158683776855469,
+          "mean_abs": 7.307788354986858e-06,
+          "max_rel_to_ref_max": 0.00029265024558418405
+        },
+        "dv": {
+          "max_abs": 0.0017595291137695312,
+          "mean_abs": 7.622998296769512e-06,
+          "max_rel_to_ref_max": 0.000334225870386664
+        }
+      },
+      "forward_backward": {
+        "unit": "ms",
+        "reps": 10,
+        "median": 15.752804000001674,
+        "iqr": 0.09141249998378953,
+        "q25": 15.69250100001085,
+        "q75": 15.78391349999464,
+        "all": [
+          15.674310999997942,
+          15.990264999999226,
+          15.784295999992537,
+          15.691106000019772,
+          15.782766000000947,
+          15.790409000004502,
+          15.742033999998739,
+          15.76357400000461,
+          15.65243800001781,
+          15.696685999984084
+        ]
+      },
+      "forward_backward_memory": {
+        "peak_allocated_bytes": 601096192,
+        "peak_reserved_bytes": 675282944,
+        "peak_above_start_bytes": 557842432
+      },
+      "backward_status": "ok"
+    }
+  ],
+  "warmup_reps": 2,
+  "timing_reps": 10,
+  "wall_clock_seconds": 6.75683133199999
+}

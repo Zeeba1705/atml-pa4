@@ -1,0 +1,104 @@
+{
+  "git_commit": "d5a40daab73ebdd123fa1914d11e5ef81988d05c",
+  "seed": 6304,
+  "device": "cuda",
+  "gpu_name": "Tesla T4",
+  "dtype": "per file",
+  "attn_implementation": "sdpa",
+  "sdpa": {
+    "flash_enabled": true,
+    "mem_efficient_enabled": true,
+    "math_enabled": true,
+    "compute_capability": "7.5"
+  },
+  "torch": "2.11.0+cu130",
+  "transformers": "4.57.1",
+  "cuda": "13.0",
+  "T": 1024,
+  "extreme_scores": {
+    "float16": {
+      "q_scale": 300,
+      "dense": {
+        "finite": true,
+        "max_abs_err_vs_fp64": 0.4195105091866065
+      },
+      "tiled": {
+        "finite": true,
+        "max_abs_err_vs_fp64": 0.4199987904366065
+      },
+      "sdpa": {
+        "finite": true,
+        "max_abs_err_vs_fp64": 0.0018761607923485357
+      }
+    },
+    "float32": {
+      "q_scale": 300,
+      "dense": {
+        "finite": true,
+        "max_abs_err_vs_fp64": 0.00039149011669903366
+      },
+      "tiled": {
+        "finite": true,
+        "max_abs_err_vs_fp64": 0.00039149011669903366
+      },
+      "sdpa": {
+        "finite": true,
+        "max_abs_err_vs_fp64": 0.00043404783306866257
+      }
+    }
+  },
+  "all_masked_row": {
+    "float16": {
+      "dense_row_is_zero": true,
+      "sdpa_row_finite": true,
+      "sdpa_row_value_example": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "other_rows_max_abs_diff": 0.0009765625
+    },
+    "float32": {
+      "dense_row_is_zero": true,
+      "sdpa_row_finite": true,
+      "sdpa_row_value_example": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "other_rows_max_abs_diff": 7.152557373046875e-07
+    }
+  },
+  "causality": {
+    "float16": {
+      "dense": {
+        "max_change_before": 0.0,
+        "max_change_after": 2.95703125
+      },
+      "tiled": {
+        "max_change_before": 0.0,
+        "max_change_after": 2.95703125
+      },
+      "sdpa": {
+        "max_change_before": 0.0,
+        "max_change_after": 2.95703125
+      }
+    },
+    "float32": {
+      "dense": {
+        "max_change_before": 0.0,
+        "max_change_after": 2.956836700439453
+      },
+      "tiled": {
+        "max_change_before": 0.0,
+        "max_change_after": 2.9568369388580322
+      },
+      "sdpa": {
+        "max_change_before": 0.0,
+        "max_change_after": 2.956836700439453
+      }
+    }
+  }
+}

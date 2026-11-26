@@ -1,0 +1,24 @@
+Using device: cuda
+edge cases -> /kaggle/working/results/task2/attention/edge_cases.json
+  return Variable._execution_engine.run_backward(  # Calls into the C++ engine to run the backward pass
+  return F.scaled_dot_product_attention(q, k, v, is_causal=True)
+  return F.scaled_dot_product_attention(q, k, v, is_causal=True)
+  return F.scaled_dot_product_attention(q, k, v, is_causal=True)
+  return F.scaled_dot_product_attention(q, k, v, is_causal=True)
+  return F.scaled_dot_product_attention(q, k, v, is_causal=True)
+  return F.scaled_dot_product_attention(q, k, v, is_causal=True)
+  return F.scaled_dot_product_attention(q, k, v, is_causal=True)
+  return F.scaled_dot_product_attention(q, k, v, is_causal=True)
+float16 L=256 (ref dense_fp32, sdpa default EFFICIENT_ATTENTION): dense=0.54ms, tiled=2.22ms, sdpa=0.09ms, sdpa_FLASH_ATTENTION=unsupported, sdpa_EFFICIENT_ATTENTION=0.08ms, sdpa_CUDNN_ATTENTION=unsupported, sdpa_MATH=0.47ms
+float16 L=512 (ref dense_fp32, sdpa default EFFICIENT_ATTENTION): dense=0.97ms, tiled=6.06ms, sdpa=0.15ms, sdpa_FLASH_ATTENTION=unsupported, sdpa_EFFICIENT_ATTENTION=0.15ms, sdpa_CUDNN_ATTENTION=unsupported, sdpa_MATH=1.04ms
+float16 L=1024 (ref dense_fp32, sdpa default EFFICIENT_ATTENTION): dense=2.98ms, tiled=18.60ms, sdpa=0.14ms, sdpa_FLASH_ATTENTION=unsupported, sdpa_EFFICIENT_ATTENTION=0.13ms, sdpa_CUDNN_ATTENTION=unsupported, sdpa_MATH=2.16ms
+float16 L=2048 (ref dense_fp32, sdpa default EFFICIENT_ATTENTION): dense=10.76ms, tiled=66.79ms, sdpa=0.72ms, sdpa_FLASH_ATTENTION=unsupported, sdpa_EFFICIENT_ATTENTION=0.59ms, sdpa_CUDNN_ATTENTION=unsupported, sdpa_MATH=8.61ms
+float16 L=4096 (ref dense_fp32, sdpa default EFFICIENT_ATTENTION): dense=42.35ms, tiled=247.98ms, sdpa=1.85ms, sdpa_FLASH_ATTENTION=unsupported, sdpa_EFFICIENT_ATTENTION=1.10ms, sdpa_CUDNN_ATTENTION=unsupported, sdpa_MATH=31.12ms
+float16 L=8192 (ref dense_fp32, sdpa default EFFICIENT_ATTENTION): dense=168.65ms, tiled=934.30ms, sdpa=4.47ms, sdpa_FLASH_ATTENTION=unsupported, sdpa_EFFICIENT_ATTENTION=4.70ms, sdpa_CUDNN_ATTENTION=unsupported, sdpa_MATH=131.83ms
+  return F.scaled_dot_product_attention(q, k, v, is_causal=True)
+float32 L=256 (ref dense_fp32, sdpa default EFFICIENT_ATTENTION): dense=0.53ms, tiled=1.83ms, sdpa=0.09ms, sdpa_FLASH_ATTENTION=unsupported, sdpa_EFFICIENT_ATTENTION=0.09ms, sdpa_CUDNN_ATTENTION=unsupported, sdpa_MATH=0.33ms
+float32 L=512 (ref dense_fp32, sdpa default EFFICIENT_ATTENTION): dense=0.81ms, tiled=5.22ms, sdpa=0.19ms, sdpa_FLASH_ATTENTION=unsupported, sdpa_EFFICIENT_ATTENTION=0.19ms, sdpa_CUDNN_ATTENTION=unsupported, sdpa_MATH=0.63ms
+float32 L=1024 (ref dense_fp32, sdpa default EFFICIENT_ATTENTION): dense=2.66ms, tiled=16.79ms, sdpa=0.45ms, sdpa_FLASH_ATTENTION=unsupported, sdpa_EFFICIENT_ATTENTION=0.45ms, sdpa_CUDNN_ATTENTION=unsupported, sdpa_MATH=1.92ms
+float32 L=2048 (ref dense_fp32, sdpa default EFFICIENT_ATTENTION): dense=10.20ms, tiled=58.10ms, sdpa=2.05ms, sdpa_FLASH_ATTENTION=unsupported, sdpa_EFFICIENT_ATTENTION=1.43ms, sdpa_CUDNN_ATTENTION=unsupported, sdpa_MATH=7.26ms
+float32 L=4096 (ref dense_fp32, sdpa default EFFICIENT_ATTENTION): dense=40.21ms, tiled=226.96ms, sdpa=5.75ms, sdpa_FLASH_ATTENTION=unsupported, sdpa_EFFICIENT_ATTENTION=5.69ms, sdpa_CUDNN_ATTENTION=unsupported, sdpa_MATH=28.96ms
+float32 L=8192 (ref dense_fp32, sdpa default EFFICIENT_ATTENTION): dense=168.05ms, tiled=842.66ms, sdpa=24.57ms, sdpa_FLASH_ATTENTION=unsupported, sdpa_EFFICIENT_ATTENTION=24.61ms, sdpa_CUDNN_ATTENTION=unsupported, sdpa_MATH=122.51ms
