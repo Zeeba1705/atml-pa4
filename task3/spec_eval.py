@@ -8,6 +8,7 @@ import argparse
 import yaml
 import torch
 from transformers import AutoModelForCausalLM
+from peft import PeftModel
 
 from common.seed import set_seed
 from common.timing import time_fn, sync
@@ -208,13 +209,19 @@ def main(args):
     t0= time.perf_counter()
     tok= load_tokenizer(cfg, "target")
     target= load_model(cfg, "target", device, args.smoke)
-    draft= load_model(cfg, "draft", device, args.smoke) if args.draft_path is None else load_merged(args.draft_path, device)
+    if args.adapter_path:
+        #unmerged peft wrapper: only to quantify adapter overhead, not the primary speed comparison (p.14)
+        draft= PeftModel.from_pretrained(load_model(cfg, "draft", device, args.smoke), args.adapter_path).eval()
+    elif args.draft_path:
+        draft= load_merged(args.draft_path, device)
+    else:
+        draft= load_model(cfg, "draft", device, args.smoke)
     load_seconds= time.perf_counter() - t0
     eos_ids= cfg["eos_token_ids"]
     dtype= next(target.parameters()).dtype
 
     info= run_info(cfg, device, dtype, model_key="target")
-    info.update({"draft_name": args.draft_name, "draft_path": args.draft_path, "smoke": args.smoke, "max_new_tokens": max_new,
+    info.update({"draft_name": args.draft_name, "draft_path": args.draft_path, "adapter_path": args.adapter_path, "smoke": args.smoke, "max_new_tokens": max_new,
                  "temperature": cfg["temperature"], "top_p": cfg["top_p"], "eos_ids": eos_ids})
 
     path= os.path.join(out_dir, "checks.json")
@@ -246,6 +253,8 @@ def main(args):
     jobs+= [("decomp", g, 0, max_new, True, prompts, eos_ids) for g in cfg["gammas"]]
     diag= [p for p in prompts if p["domain"] == "math"][:cfg["throughput_diag"]["n_math_prompts"]]
     jobs+= [("diag", g, r, cfg["throughput_diag"]["fixed_new_tokens"] if not args.smoke else max_new, False, diag, []) for g in cfg["gammas"] for r in range(reps)]
+
+    jobs= [j for j in jobs if j[0] in args.passes.split(",")]
 
     for kind, gamma, rep, n_new, timed, ps, eos in jobs:
         path= os.path.join(out_dir, f"{kind}_g{gamma}_r{rep}.jsonl")
@@ -291,6 +300,16 @@ if __name__ == "__main__":
         "--draft_path",
         type=str,
         default=None
+    )
+    parser.add_argument(
+        "--adapter_path",
+        type=str,
+        default=None
+    )
+    parser.add_argument(
+        "--passes",
+        type=str,
+        default="main,decomp,diag"
     )
     parser.add_argument(
         "--data_root",

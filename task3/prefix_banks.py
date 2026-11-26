@@ -85,7 +85,7 @@ def main(args):
     else:
         #student own-rollout bank: --bank student_<run>, --draft_path = that run's merged checkpoint
         assert args.bank.startswith("student_") and args.draft_path, "student banks need --draft_path"
-        model= load_merged(args.draft_path, device) if not args.smoke else load_model(cfg, "draft", device, True)
+        model= load_merged(args.draft_path, device)
         producer= args.draft_path
 
     offset= b["seed_offsets"].get(args.bank, args.seed_offset)

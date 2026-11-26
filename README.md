@@ -110,10 +110,21 @@ python -m task3.prefix_banks --bank teacher_pure --device cuda
 python -m task3.prefix_banks --bank exact_spec_original_gamma4 --device cuda
 python -m task3.teacher_pool --device cuda
 
+# steps 3-4: forward-kl distillation, 40,000 scored tokens, resumes from outputs/task3/distill/<run>/last.pt
+python -m task3.distill --method off_policy --seed 6304 --device cuda    # needs the teacher pool
+python -m task3.distill --method on_policy --seed 6304 --device cuda
+
+# step 6: merge into a fresh fp16 backbone (+ merged-vs-unmerged logit check), own-rollout bank, merged-draft spec eval
+python -m task3.merge --name off_policy_s6304 --device cuda
+python -m task3.prefix_banks --bank student_off_policy_s6304 --draft_path outputs/task3/merged/off_policy_s6304 --seed_offset 1001
+python -m task3.spec_eval --draft_name off_policy_s6304 --draft_path outputs/task3/merged/off_policy_s6304
+python -m task3.spec_eval --draft_name unmerged_off_policy_s6304 --adapter_path outputs/task3/adapters/off_policy_s6304 --passes main
+
 # cpu smoke: add --smoke to any of these (tiny random qwen2 with the real tokenizer, 3 prompts)
 ```
 
-Kaggle: `kaggle/task3.ipynb` (`STAGE= "1"`) runs the spec eval on GPU 0 and banks + teacher pool on GPU 1 via `kaggle/task3_run.sh`.
+Kaggle: `kaggle/task3.ipynb` via `kaggle/task3_run.sh`. `STAGE= "1"`: spec eval of the original draft (GPU 0), banks + teacher pool (GPU 1).
+`STAGE= "2"`: off-policy chain (GPU 0) and on-policy chain (GPU 1): distill both seeds, merge, own-rollout banks, merged-draft spec eval.
 
 ## Kaggle notebooks
 
