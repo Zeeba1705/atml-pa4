@@ -1,0 +1,17 @@
+Using device: cuda
+`torch_dtype` is deprecated! Use `dtype` instead!
+checks ok, worst prob diff 3.39e-03
+step costs L=64: target 41.37 ms, draft 32.87 ms, c=0.795, v={'2': 1.005565826832258, '4': 0.9209178281263618}
+step costs L=256: target 42.44 ms, draft 32.64 ms, c=0.769, v={'2': 0.9134861733194725, '4': 0.9020404569838207}
+step costs L=512: target 40.77 ms, draft 34.60 ms, c=0.849, v={'2': 0.9353002102653603, '4': 0.9979091193689827}
+step costs L=1024: target 40.20 ms, draft 35.44 ms, c=0.882, v={'2': 1.0060040005934185, '4': 1.0845551092658323}
+original main gamma=2 rep=0: accepted/examined=0.871, target passes/token=0.390, median tok/s ratio=0.917, 418s
+original main gamma=2 rep=1: accepted/examined=0.872, target passes/token=0.390, median tok/s ratio=0.928, 421s
+original main gamma=4 rep=0: accepted/examined=0.866, target passes/token=0.275, median tok/s ratio=0.837, 439s
+original main gamma=4 rep=1: accepted/examined=0.870, target passes/token=0.272, median tok/s ratio=0.838, 446s
+original decomp gamma=2 rep=0: accepted/examined=0.859, target passes/token=0.395, median tok/s ratio=0.908, 407s
+original decomp gamma=4 rep=0: accepted/examined=0.876, target passes/token=0.271, median tok/s ratio=0.841, 413s
+original diag gamma=2 rep=0: accepted/examined=0.894, target passes/token=0.376, median tok/s ratio=1.002, 126s
+original diag gamma=2 rep=1: accepted/examined=0.892, target passes/token=0.379, median tok/s ratio=1.015, 130s
+original diag gamma=4 rep=0: accepted/examined=0.867, target passes/token=0.271, median tok/s ratio=0.904, 139s
+original diag gamma=4 rep=1: accepted/examined=0.877, target passes/token=0.264, median tok/s ratio=0.902, 134s

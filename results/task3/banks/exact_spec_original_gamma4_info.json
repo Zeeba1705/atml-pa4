@@ -1,0 +1,31 @@
+{
+  "git_commit": "090fe274370bdc30d978a148fa1b99b2475fce09",
+  "seed": 6304,
+  "device": "cuda",
+  "gpu_name": "Tesla T4",
+  "dtype": "float16",
+  "attn_implementation": "sdpa",
+  "sdpa": {
+    "flash_enabled": true,
+    "mem_efficient_enabled": true,
+    "math_enabled": true,
+    "compute_capability": "7.5"
+  },
+  "torch": "2.11.0+cu130",
+  "transformers": "4.57.1",
+  "cuda": "13.0",
+  "model": "Qwen/Qwen2.5-1.5B-Instruct",
+  "model_revision": "989aa7980e4cf806f80c7fef2b1adb7bc71aa306",
+  "bank": "exact_spec_original_gamma4",
+  "producing_checkpoint": "Qwen/Qwen2.5-1.5B-Instruct + Qwen/Qwen2.5-0.5B-Instruct (gamma 4)",
+  "n_prompts": 120,
+  "n_records": 3449,
+  "seed_offset": 456,
+  "max_new_tokens": 192,
+  "mean_response_length": 100.15833333333333,
+  "eos_fraction": 0.6166666666666667,
+  "generation_seconds": 555.897403015,
+  "path": "/kaggle/working/outputs/task3/banks/exact_spec_original_gamma4.jsonl.gz",
+  "sha256": "e624da2d32d29bc71ef21e4ec668808bc137d1098f359b0c5dd31dc21bc4bb2c",
+  "smoke": false
+}

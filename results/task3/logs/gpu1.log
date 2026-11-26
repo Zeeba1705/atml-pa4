@@ -1,0 +1,29 @@
+Using device: cuda
+`torch_dtype` is deprecated! Use `dtype` instead!
+teacher_pure: 20/120 prompts, 150s
+teacher_pure: 40/120 prompts, 294s
+teacher_pure: 60/120 prompts, 442s
+teacher_pure: 80/120 prompts, 461s
+teacher_pure: 100/120 prompts, 475s
+teacher_pure: 120/120 prompts, 495s
+teacher_pure: 3499 records from 120 prompts -> /kaggle/working/outputs/task3/banks/teacher_pure.jsonl.gz
+Using device: cuda
+`torch_dtype` is deprecated! Use `dtype` instead!
+exact_spec_original_gamma4: 20/120 prompts, 165s
+exact_spec_original_gamma4: 40/120 prompts, 329s
+exact_spec_original_gamma4: 60/120 prompts, 490s
+exact_spec_original_gamma4: 80/120 prompts, 514s
+exact_spec_original_gamma4: 100/120 prompts, 533s
+exact_spec_original_gamma4: 120/120 prompts, 556s
+exact_spec_original_gamma4: 3449 records from 120 prompts -> /kaggle/working/outputs/task3/banks/exact_spec_original_gamma4.jsonl.gz
+Using device: cuda
+`torch_dtype` is deprecated! Use `dtype` instead!
+teacher pool 100/800, 724s
+teacher pool 200/800, 1451s
+teacher pool 300/800, 2191s
+teacher pool 400/800, 2891s
+teacher pool 500/800, 3602s
+teacher pool 600/800, 3665s
+teacher pool 700/800, 3731s
+teacher pool 800/800, 3791s
+teacher pool: 800 responses, {'math': 90271, 'short': 4526} tokens, 3791s -> /kaggle/working/outputs/task3/teacher_pool.jsonl.gz
