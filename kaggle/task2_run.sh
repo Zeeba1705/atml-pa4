@@ -46,13 +46,18 @@ PYTHONUNBUFFERED=1 python -m task2.mqar_data --workers "$(nproc)" --output_dir "
 test -f "$SPL/mqar_data_check.json" || { echo "data check failed"; exit 1; }
 
 #seed-major order: every mechanism's first seed finishes before any second seed starts
+#ONLY (from the notebook, optional): run only the runs whose name starts with it, e.g. ONLY="b3_"
 JOBS=$(python -c "
+import os
 from common.io_utils import load_config
 c= load_config('configs/task2/mqar.yaml')
+only= os.environ.get('ONLY', '')
 for s in c['seeds']:
     for r in c['runs']:
-        print(r['name'], s)
+        if r['name'].startswith(only):
+            print(r['name'], s)
 ")
+[ -n "$JOBS" ] || { echo "no runs match ONLY=$ONLY"; exit 1; }
 echo "$(echo "$JOBS" | wc -l) jobs on $NW workers"
 
 worker() {
@@ -75,3 +80,4 @@ echo "sweep finished"
 #training streams are rebuilt deterministically in minutes; drop them so the output download stays small
 rm -rf "$OUT/task2/mqar_streams"
 python -m kaggle.task2_summary --results_dir "$RES"
+if [ -f "$RES/task2/logs/failed.log" ]; then cat "$RES/task2/logs/failed.log"; exit 1; fi

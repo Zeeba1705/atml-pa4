@@ -104,7 +104,7 @@ python -m task2.kv_bench --device cuda           # packed encode/decode + decode
 python -m task2.bench_mqar_inference --device cuda   # T in {256,1024,4096,8192} -> results/task2/mqar_inference/
 # cpu smoke: add --smoke (tiny random qwen2, real tokenizer, 2 cases)
 ```
-Kaggle: `kaggle/task2.ipynb` with `PARTS= "C"`.
+Kaggle: `kaggle/task2.ipynb` with `PARTS= "C"`. B3: `PARTS= "B"`, `ONLY= "b3_"` (or `python -m task2.train_mqar --run_name b3_gated_linear_K16_mixed --seed 6304`).
 
 ## Task 3 — distillation and speculative decoding
 
@@ -116,6 +116,7 @@ TODO
 
 ## Attribution
 
+- B3 gated linear attention (`task2/mqar_model.py::gated_linear_attention`) is our implementation of the data-dependent scalar decay / write-gate idea from RetNet (Sun et al., 2023), Mamba-2 (Dao & Gu, 2024) and Gated Linear Attention (Yang et al., 2024); no code copied.
 - `task1/evaluate_hellaswag.py::preprocess` and the query/choice construction are copied from
   lm-evaluation-harness 0.4.13 (`lm_eval/tasks/hellaswag/utils.py`, task `hellaswag` v1.0), MIT licence.
 - `task1/awq.py::awq_scales` follows the scale formula of the llm-awq reference implementation
