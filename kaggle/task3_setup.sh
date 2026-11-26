@@ -3,7 +3,14 @@
 #needs the private dataset with the *_locked.jsonl(.gz) files (same one as task 1); optional inputs: the supplied
 #prefix_banks_locked.jsonl(.gz) and the output of an earlier task 3 version (teacher pool, banks, adapters)
 set -e
+#a session without a gpu (accelerator left at None, or no gpu granted) must stop here with a clear message
+if ! command -v nvidia-smi >/dev/null || ! nvidia-smi -L >/dev/null 2>&1; then
+  echo "NO GPU IN THIS SESSION: set Settings -> Accelerator -> GPU T4 x2 (and check no other GPU session is using your quota)"
+  exit 1
+fi
 nvidia-smi --query-gpu=index,name,memory.total --format=csv
+NGPU=$(nvidia-smi -L | wc -l)
+[ "$NGPU" -ge 2 ] || { echo "ONLY $NGPU GPU: task 3 stages use two T4s, pick GPU T4 x2"; exit 1; }
 cd /tmp/pa4
 rm -rf atml-pa4-datasets
 git clone -q https://github.com/AbDu11aHHH/atml-pa4-datasets.git
