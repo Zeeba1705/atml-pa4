@@ -6,7 +6,7 @@ attn_implementation: sdpa
 decoding: greedy
 max_new_tokens: 16             #ours, answer is 5 digit tokens
 answer_regex: "\\d{5}"         #ours, first match = prediction
-data: atml-pa4-datasets/data/kv_retrieval/kv_retrieval_cases.jsonl.gz
+data: data/kv_retrieval/kv_retrieval_cases.jsonl.gz   #inside the data repo (resolve_data_root)
 num_cases: 180
 question_marker: QUESTION_BEGIN   #suffix = marker through end of generation prompt (decision 2.7)
 
@@ -39,3 +39,11 @@ bench:   #p.10 c5
   context_lengths: [2048, 4096]
   warmup_reps: 2
   timing_reps: 10
+
+#--smoke: tiny random qwen2 with the real tokenizer, head_dim 64 so token-wise 64-channel groups exist, 2 cases
+smoke_model:
+  hidden_size: 256
+  intermediate_size: 256
+  num_hidden_layers: 2
+  num_attention_heads: 4
+  num_key_value_heads: 2
