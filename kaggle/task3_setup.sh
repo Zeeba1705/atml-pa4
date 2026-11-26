@@ -15,6 +15,10 @@ cd /tmp/pa4
 rm -rf atml-pa4-datasets
 git clone -q https://github.com/AbDu11aHHH/atml-pa4-datasets.git
 pip install -q transformers==4.57.1 huggingface_hub==0.36.2 peft==0.21.2 pyyaml
+#kaggle ships torchao 0.10; peft 0.21.2 raises ImportError on any torchao < 0.16 when it builds lora layers.
+#we never use torchao, so remove it
+pip uninstall -y -q torchao || true
+python -c "import importlib.util as u; assert u.find_spec('torchao') is None, 'torchao still installed'"
 
 HIT=$(find -L /kaggle/input \( -name 'gsm8k_train_locked.jsonl.gz' -o -name 'gsm8k_train_locked.jsonl' \) | head -1)
 LOCK=$(find -L /kaggle/input -name local_source_revisions.json | head -1)

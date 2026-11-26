@@ -61,4 +61,6 @@ fi
 
 echo "stage $STAGE finished"
 ls -R "$OUT/task3" | head -40
-cat "$RES/task3/logs/failed.log" 2>/dev/null
+#exit status = whether any job failed (failed.log only exists if one did)
+if [ -f "$RES/task3/logs/failed.log" ]; then cat "$RES/task3/logs/failed.log"; exit 1; fi
+echo "no failures"
