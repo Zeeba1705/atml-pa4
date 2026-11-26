@@ -96,6 +96,16 @@ Kaggle: `kaggle/task2.ipynb` with `PARTS= "A"` runs the Part A benchmark alone o
 Outputs per run in `results/task2/mqar/<run>_s<seed>/`: `config.json`, `train_log.jsonl.gz`, `<run>_history.json` (dev curves),
 `test_metrics.json` (+ `test_window_mask_metrics.json` for dense), `test_predictions.jsonl.gz`.
 
+### Task 2 Part C — KV cache, and the MQAR forward-only sweep
+```bash
+python -m pytest tests/test_task2_kv.py -q
+python -m task2.kv_eval --device cuda            # 180 cases x {fp16, 2 evictions, 2 int4 layouts, hybrid} -> results/task2/kv/cases/*.json
+python -m task2.kv_bench --device cuda           # packed encode/decode + decode step, batch 1/8, both lengths -> results/task2/kv_bench/
+python -m task2.bench_mqar_inference --device cuda   # T in {256,1024,4096,8192} -> results/task2/mqar_inference/
+# cpu smoke: add --smoke (tiny random qwen2, real tokenizer, 2 cases)
+```
+Kaggle: `kaggle/task2.ipynb` with `PARTS= "C"`.
+
 ## Task 3 — distillation and speculative decoding
 
 TODO
