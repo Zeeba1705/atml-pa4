@@ -1,0 +1,266 @@
+{
+  "git_commit": "e77a8822c339c07f1f4be1d57d36e4abc3ef3f9a",
+  "seed": 6304,
+  "device": "cuda",
+  "gpu_name": "Tesla T4",
+  "dtype": "float32",
+  "attn_implementation": "sdpa",
+  "sdpa": {
+    "flash_enabled": true,
+    "mem_efficient_enabled": true,
+    "math_enabled": true,
+    "compute_capability": "7.5"
+  },
+  "torch": "2.11.0+cu130",
+  "transformers": "4.57.1",
+  "cuda": "13.0",
+  "T": 1024,
+  "batch_size": 2,
+  "smoke": false,
+  "warmup": 2,
+  "reps": 10,
+  "inputs": "fixed random embeddings (seed 6304 + T), untrained model (seed 6304), fp32",
+  "labels": "window/local_dilated = sdpa with a dense boolean mask (correctness implementation, not a sparse kernel)",
+  "results": {
+    "dense": {
+      "attention": "dense",
+      "impl": "dense",
+      "T": 1024,
+      "batch_size": 2,
+      "pairs": {
+        "per_head": [
+          524800,
+          524800,
+          524800,
+          524800
+        ],
+        "total": 2099200,
+        "per_query_max": [
+          1024,
+          1024,
+          1024,
+          1024
+        ]
+      },
+      "theoretical_state_fp32": {
+        "per_layer": 1048576,
+        "total": 2097152,
+        "bytes_per_value": 4
+      },
+      "latency_ms": {
+        "unit": "ms",
+        "reps": 10,
+        "median": 3.101945499992098,
+        "iqr": 0.026556249949294397,
+        "q25": 3.089209999998843,
+        "q75": 3.1157662499481376,
+        "all": [
+          3.1089929999552623,
+          3.0667990000097234,
+          3.0718360000037137,
+          3.096439999978884,
+          3.196424999998726,
+          3.1011099999886937,
+          3.0868000000054963,
+          3.1027809999955025,
+          3.134885999998005,
+          3.1180239999457626
+        ]
+      },
+      "peak_allocated_bytes": 24427008,
+      "allocated_before_call_bytes": 12892672,
+      "peak_reserved_bytes": 31457280,
+      "dense_mask_materialized_bytes": null,
+      "linear_score_tensor_bytes": null,
+      "status": "ok"
+    },
+    "window": {
+      "attention": "window",
+      "impl": "window",
+      "T": 1024,
+      "batch_size": 2,
+      "pairs": {
+        "per_head": [
+          63520,
+          63520,
+          63520,
+          63520
+        ],
+        "total": 254080,
+        "per_query_max": [
+          64,
+          64,
+          64,
+          64
+        ]
+      },
+      "theoretical_state_fp32": {
+        "per_layer": 65536,
+        "total": 131072,
+        "bytes_per_value": 4
+      },
+      "latency_ms": {
+        "unit": "ms",
+        "reps": 10,
+        "median": 4.474256500003548,
+        "iqr": 0.37728950002247075,
+        "q25": 4.451975749987014,
+        "q75": 4.829265250009485,
+        "all": [
+          4.851104000010764,
+          4.859624000005169,
+          4.897306000032131,
+          4.763749000005646,
+          4.451024999980291,
+          4.442020999988472,
+          4.459823999980017,
+          4.399579999983416,
+          4.454828000007183,
+          4.48868900002708
+        ]
+      },
+      "peak_allocated_bytes": 45267456,
+      "allocated_before_call_bytes": 21281280,
+      "peak_reserved_bytes": 48234496,
+      "dense_mask_materialized_bytes": 4194304,
+      "linear_score_tensor_bytes": null,
+      "status": "ok"
+    },
+    "local_dilated": {
+      "attention": "local_dilated",
+      "impl": "local_dilated",
+      "T": 1024,
+      "batch_size": 2,
+      "pairs": {
+        "per_head": [
+          63520,
+          63520,
+          57472,
+          57472
+        ],
+        "total": 241984,
+        "per_query_max": [
+          64,
+          64,
+          64,
+          64
+        ]
+      },
+      "theoretical_state_fp32": {
+        "per_layer": 162304,
+        "total": 324608,
+        "bytes_per_value": 4
+      },
+      "latency_ms": {
+        "unit": "ms",
+        "reps": 10,
+        "median": 4.465594999999212,
+        "iqr": 0.009846249980682842,
+        "q25": 4.457529999996268,
+        "q75": 4.467376249976951,
+        "all": [
+          4.486853000003066,
+          4.442754000024252,
+          4.461439000010614,
+          4.446189000020695,
+          4.466648000004625,
+          4.4807090000063,
+          4.46458999999777,
+          4.456226999991486,
+          4.466600000000653,
+          4.467618999967726
+        ]
+      },
+      "peak_allocated_bytes": 53656064,
+      "allocated_before_call_bytes": 29669888,
+      "peak_reserved_bytes": 69206016,
+      "dense_mask_materialized_bytes": 4194304,
+      "linear_score_tensor_bytes": null,
+      "status": "ok"
+    },
+    "linear_parallel": {
+      "attention": "linear",
+      "impl": "linear_parallel",
+      "T": 1024,
+      "batch_size": 2,
+      "pairs": {
+        "per_head": null,
+        "total": null,
+        "note": "no pairwise scores in the recurrent form; state is d x d per head"
+      },
+      "theoretical_state_fp32": {
+        "per_layer": 16896,
+        "total": 33792,
+        "bytes_per_value": 4
+      },
+      "latency_ms": {
+        "unit": "ms",
+        "reps": 10,
+        "median": 3.7326290000123663,
+        "iqr": 0.9520192499792302,
+        "q25": 3.309927250015221,
+        "q75": 4.261946499994451,
+        "all": [
+          4.283238999960304,
+          4.260787000021082,
+          4.262332999985574,
+          4.340989000013451,
+          4.149038000036853,
+          3.308618000005481,
+          3.313855000044441,
+          3.3162199999878794,
+          3.3076650000225527,
+          3.2975199999896176
+        ]
+      },
+      "peak_allocated_bytes": 106084864,
+      "allocated_before_call_bytes": 29669888,
+      "peak_reserved_bytes": 121634816,
+      "dense_mask_materialized_bytes": null,
+      "linear_score_tensor_bytes": 33554432,
+      "status": "ok"
+    },
+    "linear_recurrent": {
+      "attention": "linear",
+      "impl": "linear_recurrent",
+      "T": 1024,
+      "batch_size": 2,
+      "pairs": {
+        "per_head": null,
+        "total": null,
+        "note": "no pairwise scores in the recurrent form; state is d x d per head"
+      },
+      "theoretical_state_fp32": {
+        "per_layer": 16896,
+        "total": 33792,
+        "bytes_per_value": 4
+      },
+      "latency_ms": {
+        "unit": "ms",
+        "reps": 10,
+        "median": 406.72254849999945,
+        "iqr": 52.611846500013826,
+        "q25": 368.9123737499784,
+        "q75": 421.52422024999225,
+        "all": [
+          533.2468029999973,
+          407.4921700000118,
+          379.4249249999666,
+          469.0759309999635,
+          361.5405570000121,
+          365.40818999998237,
+          426.1489310000002,
+          405.9529269999871,
+          407.6500879999685,
+          364.06173500000705
+        ]
+      },
+      "peak_allocated_bytes": 41204224,
+      "allocated_before_call_bytes": 29669888,
+      "peak_reserved_bytes": 54525952,
+      "dense_mask_materialized_bytes": null,
+      "linear_score_tensor_bytes": null,
+      "status": "ok"
+    }
+  }
+}

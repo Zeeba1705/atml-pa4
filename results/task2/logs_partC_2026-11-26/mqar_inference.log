@@ -1,0 +1,21 @@
+Using device: cuda
+T=256 dense: 0.96 ms, peak 14596608
+T=256 window: 1.00 ms, peak 15120896
+T=256 local_dilated: 1.04 ms, peak 15645184
+T=256 linear_parallel: 1.42 ms, peak 18856448
+T=256 linear_recurrent: 96.00 ms, peak 15645184
+T=1024 dense: 3.10 ms, peak 24427008
+T=1024 window: 4.47 ms, peak 45267456
+T=1024 local_dilated: 4.47 ms, peak 53656064
+T=1024 linear_parallel: 3.73 ms, peak 106084864
+T=1024 linear_recurrent: 406.72 ms, peak 41204224
+T=4096 dense: 17.15 ms, peak 63748608
+T=4096 window: 25.31 ms, peak 445430272
+T=4096 local_dilated: 25.40 ms, peak 579648000
+T=4096 linear_parallel: 34.38 ms, peak 1405925888
+T=4096 linear_recurrent: 1590.15 ms, peak 332184064
+T=8192 dense: 40.63 ms, peak 116177408
+T=8192 window: 94.68 ms, peak 1684847104
+T=8192 local_dilated: 95.42 ms, peak 2221718016
+T=8192 linear_parallel: 143.57 ms, peak 5518440960
+T=8192 linear_recurrent: 2960.49 ms, peak 1189919232

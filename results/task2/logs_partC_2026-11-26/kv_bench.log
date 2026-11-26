@@ -1,0 +1,14 @@
+Using device: cuda
+`torch_dtype` is deprecated! Use `dtype` instead!
+len 2048 (L=2633) B=1 int4_channel_k: pack 23.99 ms, unpack 13.92 ms, step+unpack 55.59 ms vs fp16 step 37.45 ms
+len 2048 (L=2633) B=1 int4_token: pack 25.73 ms, unpack 13.92 ms, step+unpack 53.91 ms vs fp16 step 37.45 ms
+len 2048 (L=2633) B=1 int2_channel_k: pack 25.83 ms, unpack 16.08 ms, step+unpack 53.80 ms vs fp16 step 37.45 ms
+len 2048 (L=2633) B=8 int4_channel_k: pack 139.57 ms, unpack 86.16 ms, step+unpack 226.05 ms vs fp16 step 138.79 ms
+len 2048 (L=2633) B=8 int4_token: pack 140.27 ms, unpack 78.59 ms, step+unpack 218.02 ms vs fp16 step 138.79 ms
+len 2048 (L=2633) B=8 int2_channel_k: pack 140.18 ms, unpack 84.93 ms, step+unpack 223.97 ms vs fp16 step 138.79 ms
+len 4096 (L=5217) B=1 int4_channel_k: pack 38.71 ms, unpack 22.92 ms, step+unpack 78.53 ms vs fp16 step 56.30 ms
+len 4096 (L=5217) B=1 int4_token: pack 38.67 ms, unpack 20.76 ms, step+unpack 75.81 ms vs fp16 step 56.30 ms
+len 4096 (L=5217) B=1 int2_channel_k: pack 38.12 ms, unpack 22.20 ms, step+unpack 77.73 ms vs fp16 step 56.30 ms
+len 4096 (L=5217) B=8 int4_channel_k: pack 280.58 ms, unpack 172.25 ms, step+unpack 455.08 ms vs fp16 step 293.52 ms
+len 4096 (L=5217) B=8 int4_token: pack 274.16 ms, unpack 153.25 ms, step+unpack 435.73 ms vs fp16 step 293.52 ms
+len 4096 (L=5217) B=8 int2_channel_k: pack 267.78 ms, unpack 162.76 ms, step+unpack 445.68 ms vs fp16 step 293.52 ms

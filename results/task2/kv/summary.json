@@ -1,0 +1,40 @@
+{
+  "git_commit": "e77a8822c339c07f1f4be1d57d36e4abc3ef3f9a",
+  "seed": 6304,
+  "device": "cuda",
+  "gpu_name": "Tesla T4",
+  "dtype": "float16",
+  "attn_implementation": "sdpa",
+  "sdpa": {
+    "flash_enabled": true,
+    "mem_efficient_enabled": true,
+    "math_enabled": true,
+    "compute_capability": "7.5"
+  },
+  "torch": "2.11.0+cu130",
+  "transformers": "4.57.1",
+  "cuda": "13.0",
+  "model": "Qwen/Qwen2.5-1.5B-Instruct",
+  "model_revision": "989aa7980e4cf806f80c7fef2b1adb7bc71aa306",
+  "smoke": false,
+  "n_cases": 180,
+  "methods": [
+    "fp16",
+    "evict_sink_recent",
+    "evict_question",
+    "int4_token",
+    "int4_channel_k",
+    "hybrid_int2"
+  ],
+  "max_new_tokens": 16,
+  "c1_checks_passed": true,
+  "accuracy": {
+    "fp16": 1.0,
+    "evict_sink_recent": 0.3333333333333333,
+    "evict_question": 0.9833333333333333,
+    "int4_token": 0.0,
+    "int4_channel_k": 1.0,
+    "hybrid_int2": 0.9944444444444445
+  },
+  "labels": "quantized caches are fake-quantized (dequantized fp16 values in the cache); bytes are the packed-format count, see kv_bench for real packing"
+}
