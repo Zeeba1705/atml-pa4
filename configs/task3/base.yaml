@@ -7,11 +7,13 @@ adapter_dtype: float32
 optimizer_state_dtype: float32
 vocab_size: 151936             #kl over the full common logit vocabulary, asserted equal for both models
 
+#paths inside the data repo (resolved by resolve_data_root)
 data:
-  gsm8k_train: atml-pa4-datasets/data/public_locked/gsm8k_train_locked.jsonl.gz
-  gsm8k_test: atml-pa4-datasets/data/public_locked/gsm8k_test_locked.jsonl.gz
-  short_train: atml-pa4-datasets/data/short_form/short_train.jsonl
-  short_test: atml-pa4-datasets/data/short_form/short_test.jsonl
+  gsm8k_train: data/public_locked/gsm8k_train_locked.jsonl.gz
+  gsm8k_test: data/public_locked/gsm8k_test_locked.jsonl.gz
+  short_train: data/short_form/short_train.jsonl
+  short_test: data/short_form/short_test.jsonl
+  prefix_banks: data/prefix_banks/prefix_banks_locked.jsonl.gz
   prompt_format: raw question as single user message, default chat template   #decision 3.2, matches setup_data banks
 
 lora:
