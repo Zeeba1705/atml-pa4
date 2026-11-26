@@ -4,7 +4,7 @@ huggingface_hub==0.36.2
 
 #to be pinned once smoke tests pass; torch comes from the kaggle image (version recorded at runtime)
 datasets>=3,<5
-peft
+peft==0.21.2
 pyyaml
 numpy
 scipy

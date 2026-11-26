@@ -16,7 +16,6 @@ throughput_diag:
   fixed_new_tokens: 64             #ignores eos, timing only
 counterbalance: alternate_order
 timing: per_phase_synchronized     #decision 3.6, overhead measured and reported
-num_eval_prompts: 120              #60 gsm8k test + 30 familiar + 30 shifted
 
 banks:
   supplied: data/prefix_banks/prefix_banks_locked.jsonl.gz   #teacher, original_draft (rep penalty 1.1, decision G1)

@@ -98,7 +98,22 @@ Outputs per run in `results/task2/mqar/<run>_s<seed>/`: `config.json`, `train_lo
 
 ## Task 3 — distillation and speculative decoding
 
-TODO
+```bash
+# step 1: exactness on the 3-symbol markov toy (100,000 samples per run, correct sampler + residual-is-p control)
+python -m task3.toy_markov                       # -> results/task3/markov_chi2.json (cpu)
+
+# steps 1-2: real-model checks, step costs, paired target-only vs speculative (120 prompts, gamma 2/4, 2 reps)
+python -m task3.spec_eval --draft_name original --device cuda
+
+# generated prefix banks (same rule as setup_data.py) and the off-policy teacher pool
+python -m task3.prefix_banks --bank teacher_pure --device cuda
+python -m task3.prefix_banks --bank exact_spec_original_gamma4 --device cuda
+python -m task3.teacher_pool --device cuda
+
+# cpu smoke: add --smoke to any of these (tiny random qwen2 with the real tokenizer, 3 prompts)
+```
+
+Kaggle: `kaggle/task3.ipynb` (`STAGE= "1"`) runs the spec eval on GPU 0 and banks + teacher pool on GPU 1 via `kaggle/task3_run.sh`.
 
 ## Kaggle notebooks
 

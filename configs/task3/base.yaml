@@ -22,6 +22,8 @@ lora:
   dropout: 0.0
   target_modules: [q_proj, k_proj, v_proj, o_proj]
 
+num_eval_prompts: 120          #p.13: 60 gsm8k test + 30 familiar + 30 shifted (held out from training)
+
 seeds: [6304, 6305]
 methods: [off_policy, on_policy]
 

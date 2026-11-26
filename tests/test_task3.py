@@ -187,3 +187,22 @@ def test_target_only_reference_matches_chain():
     out, stats= target_generate(MarkovRunner(chain), [BOS], max_new=5, eos_ids=[], gen=torch.Generator().manual_seed(0))
 
     assert out == [1, 0, 2, 1, 0] and stats["target_passes"] == 5
+
+
+def test_bank_positions_match_supplied_rule():
+    #the loop from setup_data.prefix_banks (course script), copied verbatim for comparison
+    import random
+    from task3.prefix_banks import select_positions
+
+    bins= [((1, 16), 8), ((17, 32), 8), ((33, 64), 16), ((65, 192), 16)]
+
+    for seq_len in [5, 20, 100, 192]:
+        rng= random.Random(f"PA4-banks-v1:6304:GSM8K-0003:teacher")
+        positions= []
+        for lo, hi, n in [(1, 16, 8), (17, 32, 8), (33, 64, 16), (65, 192, 16)]:
+            candidates= list(range(lo, min(hi, seq_len) + 1))
+            positions.extend(sorted(rng.sample(candidates, min(n, len(candidates)))))
+
+        assert select_positions(seq_len, "GSM8K-0003", "teacher", bins) == positions
+
+    assert len(select_positions(192, "x", "teacher", bins)) == 48 and len(select_positions(20, "x", "teacher", bins)) == 12
