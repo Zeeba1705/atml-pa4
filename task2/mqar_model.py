@@ -1,12 +1,12 @@
 #task 2b mqar model (handout p.7): 2 pre-norm blocks, d=128, 4 heads x 32, 4x mlp, learned token emb + sinusoidal pos
-#only the attention operator changes between methods; every method has the same parameters
+#only the attention operator changes between methods; every b1/b2 method has the same parameters (b3 adds 0.47%)
 import math
 
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
-ATTENTIONS= ["dense", "window", "local_dilated", "linear"]
+ATTENTIONS= ["dense", "window", "local_dilated", "linear", "gated_linear"]   #gated_linear = b3 (decision 2.23)
 
 
 def sinusoidal_positions(T, d):
@@ -37,7 +37,7 @@ def dilated_mask(T, step, max_offset):
 
 def head_masks(attention, T, acfg, num_heads):
     #(H, T, T) boolean masks; None where the operator needs no explicit mask
-    if attention in ["dense", "linear"]:
+    if attention in ["dense", "linear", "gated_linear"]:
         return None
 
     win= window_mask(T, acfg["window"])
@@ -87,6 +87,48 @@ def linear_attention_recurrent(q, k, v, eps):
     return torch.stack(out, dim=2), (s, z)
 
 
+def gated_linear_attention(q, k, v, log_g, beta, eps):
+    #b3 (decision 2.23): elu+1 linear attention with selective state updates, s_t = g_t s_{t-1} + beta_t phi(k_t) v_t^T,
+    #z_t = g_t z_{t-1} + beta_t phi(k_t); scalar forget gate g_t and write gate beta_t per head and token (input-dependent,
+    #retnet / mamba-2 / gla-style). exact parallel form: weight of key j at query t = beta_j exp(A_t - A_j), A = cumsum log g,
+    #exponent <= 0 for j <= t, so it is stable. log_g, beta: (B, H, T)
+    fq= elu_feature(q)
+    fk= elu_feature(k)
+    T= q.shape[-2]
+    causal= torch.ones(T, T, device=q.device, dtype=torch.bool).tril()
+    A= log_g.cumsum(-1)
+    decay= torch.exp((A[..., :, None] - A[..., None, :]).masked_fill(~causal, float("-inf")))
+
+    scores= (fq @ fk.transpose(-1, -2)) * decay * beta[..., None, :]
+    den= scores.sum(dim=-1, keepdim=True) + eps
+
+    return (scores @ v) / den
+
+
+def gated_linear_attention_recurrent(q, k, v, log_g, beta, eps):
+    #the constant-state recurrence the parallel form must equal
+    fq= elu_feature(q)
+    fk= elu_feature(k)
+    B, H, T, d= q.shape
+    g= log_g.exp()
+
+    s= torch.zeros(B, H, d, v.shape[-1], dtype=q.dtype, device=q.device)
+    z= torch.zeros(B, H, d, dtype=q.dtype, device=q.device)
+    out= []
+
+    for t in range(T):
+        s= g[:, :, t, None, None] * s + beta[:, :, t, None, None] * fk[:, :, t, :, None] * v[:, :, t, None, :]
+        z= g[:, :, t, None] * z + beta[:, :, t, None] * fk[:, :, t]
+        num= (fq[:, :, t, None, :] @ s).squeeze(-2)
+        den= (fq[:, :, t] * z).sum(dim=-1, keepdim=True) + eps
+        out.append(num / den)
+
+    return torch.stack(out, dim=2), (s, z)
+
+
+FORGET_BIAS_INIT= math.log(255.0)   #ours, fixed before training: initial g = 1 - 1/256, a horizon of about T
+
+
 class Attention(nn.Module):
     def __init__(self, d, num_heads, eps):
         super().__init__()
@@ -96,6 +138,7 @@ class Attention(nn.Module):
         self.eps= eps
         self.qkv= nn.Linear(d, 3 * d)
         self.out= nn.Linear(d, d)
+        self.gate= None   #set by MQARModel for gated_linear only, after all shared weights are initialized
 
     def forward(self, x, attention, mask):
         B, T, d= x.shape
@@ -110,6 +153,9 @@ class Attention(nn.Module):
             a= F.scaled_dot_product_attention(q, k, v, attn_mask=mask)
         elif attention == "linear":
             a= linear_attention(q, k, v, self.eps)
+        elif attention == "gated_linear":
+            gl= self.gate(x).view(B, T, 2, self.num_heads).permute(2, 0, 3, 1)      #2 x (B, H, T)
+            a= gated_linear_attention(q, k, v, F.logsigmoid(gl[0]), torch.sigmoid(gl[1]), self.eps)
         else:
             raise ValueError(attention)
 
@@ -149,6 +195,15 @@ class MQARModel(nn.Module):
         self.head= nn.Linear(d, num_classes)
         self.masks= {}
 
+        if attention == "gated_linear":
+            #created last so every shared weight initializes exactly as in the linear model at the same seed
+            for block in self.blocks:
+                gate= nn.Linear(d, 2 * mcfg["num_heads"])
+                with torch.no_grad():
+                    gate.bias[:mcfg["num_heads"]]= FORGET_BIAS_INIT
+                    gate.bias[mcfg["num_heads"]:]= 0.0
+                block.attn.gate= gate
+
     def embed(self, tokens):
         return self.tok_emb(tokens) + self.pos[:tokens.shape[1]]
 
@@ -178,7 +233,7 @@ class MQARModel(nn.Module):
 
 def attended_pairs(attention, T, acfg, num_heads):
     #theoretical (query, key) pairs per head over a length-T sequence, causal
-    if attention == "linear":
+    if attention in ["linear", "gated_linear"]:
         return {"per_head": None, "total": None, "note": "no pairwise scores in the recurrent form; state is d x d per head"}
 
     if attention == "dense":
@@ -207,7 +262,8 @@ def state_bytes(attention, T, mcfg, acfg, bytes_per):
     H= mcfg["num_heads"]
     dh= mcfg["head_dim"]
 
-    if attention == "linear":
+    if attention in ["linear", "gated_linear"]:
+        #gates are computed from the current token, not stored: same persistent state as linear
         per_layer= H * (dh * dh + dh) * bytes_per
     else:
         keep= []

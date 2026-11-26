@@ -163,7 +163,7 @@ if __name__ == "__main__":
     parser.add_argument(
         "--attention",
         type=str,
-        choices=["dense", "window", "local_dilated", "linear"],
+        choices=["dense", "window", "local_dilated", "linear", "gated_linear"],
         default=None
     )
     parser.add_argument(

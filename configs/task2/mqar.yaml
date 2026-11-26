@@ -77,6 +77,7 @@ runs:   #B1/B2 required (pp.9); B3 added after decision, K=16, 3 seeds, within 5
   - {name: linear_K16_mixed, attention: linear, K: 16, regime: mixed}
   - {name: dilated_K4_mixed, attention: local_dilated, K: 4, regime: mixed}
   - {name: dilated_K16_mixed, attention: local_dilated, K: 16, regime: mixed}
+  - {name: b3_gated_linear_K16_mixed, attention: gated_linear, K: 16, regime: mixed}   #b3 (decision 2.23), comparator linear_K16_mixed
 
 test_time_window_control: [dense_K4_mixed, dense_K8_mixed, dense_K16_mixed, dense_K16_near]   #ours, all dense models
 

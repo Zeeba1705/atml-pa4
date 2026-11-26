@@ -208,3 +208,47 @@ def test_evaluate_model_rows():
 
     assert len(rows) == 12
     assert all(0 <= r["pred"] < 64 and r["distance"] == r["query_position"] - r["source_position"] for r in rows)
+
+
+def test_b3_gated_linear_parallel_equals_recurrence_and_reduces_to_linear():
+    from task2.mqar_model import gated_linear_attention, gated_linear_attention_recurrent, linear_attention
+
+    torch.manual_seed(5)
+    q, k, v= torch.randn(3, 2, 4, 20, 8, dtype=torch.float64).unbind(0)
+    log_g= torch.nn.functional.logsigmoid(torch.randn(2, 4, 20, dtype=torch.float64) + 2)
+    beta= torch.sigmoid(torch.randn(2, 4, 20, dtype=torch.float64))
+
+    par= gated_linear_attention(q, k, v, log_g, beta, 1e-6)
+    rec, _= gated_linear_attention_recurrent(q, k, v, log_g, beta, 1e-6)
+    assert torch.allclose(par, rec, atol=1e-10)
+    #g = 1, beta = 1: plain elu+1 linear attention
+    ones= torch.ones(2, 4, 20, dtype=torch.float64)
+    assert torch.allclose(gated_linear_attention(q, k, v, ones.log(), ones, 1e-6), linear_attention(q, k, v, 1e-6), atol=1e-10)
+    #causal: changing the future changes nothing before it
+    k2, v2, g2= k.clone(), v.clone(), log_g.clone()
+    k2[..., 12:, :]+= 3.0
+    v2[..., 12:, :]-= 2.0
+    g2[..., 12:]-= 1.0
+    assert torch.allclose(gated_linear_attention(q, k2, v2, g2, beta, 1e-6)[..., :12, :], par[..., :12, :], atol=1e-10)
+
+
+def test_b3_params_within_5_percent_same_shared_init_and_state():
+    from task2.mqar_model import FORGET_BIAS_INIT
+
+    torch.manual_seed(6304)
+    lin= MQARModel(CFG["model"], CFG["attention"], CFG["seq_len"], CFG["num_classes"], attention="linear")
+    torch.manual_seed(6304)
+    gated= MQARModel(CFG["model"], CFG["attention"], CFG["seq_len"], CFG["num_classes"], attention="gated_linear")
+
+    n_lin= sum(p.numel() for p in lin.parameters())
+    n_gated= sum(p.numel() for p in gated.parameters())
+    assert n_gated - n_lin == 2 * (128 * 8 + 8) and (n_gated - n_lin) / n_lin < 0.05
+    shared= dict(lin.named_parameters())
+    for name, p in gated.named_parameters():
+        if ".gate." not in name:
+            assert torch.equal(p, shared[name]), name
+    assert torch.allclose(gated.blocks[0].attn.gate.bias[:4], torch.full((4,), FORGET_BIAS_INIT))
+    assert state_bytes("gated_linear", 256, CFG["model"], CFG["attention"], 4) == state_bytes("linear", 256, CFG["model"], CFG["attention"], 4)
+
+    tokens= torch.randint(0, 256, (2, 256))
+    assert gated(tokens).shape == (2, 256, CFG["num_classes"])
