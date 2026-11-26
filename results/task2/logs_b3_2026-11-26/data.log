@@ -1,0 +1,9 @@
+development: 2304 records validated
+test: 9216 records validated
+built K=4 mixed: 144000 examples in 39s -> /kaggle/working/outputs/task2/mqar_streams/train_K4_mixed_n144000.npz
+built K=4 near: 144000 examples in 23s -> /kaggle/working/outputs/task2/mqar_streams/train_K4_near_n144000.npz
+built K=8 mixed: 144000 examples in 64s -> /kaggle/working/outputs/task2/mqar_streams/train_K8_mixed_n144000.npz
+built K=8 near: 144000 examples in 32s -> /kaggle/working/outputs/task2/mqar_streams/train_K8_near_n144000.npz
+built K=16 mixed: 144000 examples in 104s -> /kaggle/working/outputs/task2/mqar_streams/train_K16_mixed_n144000.npz
+built K=16 near: 144000 examples in 44s -> /kaggle/working/outputs/task2/mqar_streams/train_K16_near_n144000.npz
+data check ok -> /kaggle/working/task2_splits/mqar_data_check.json

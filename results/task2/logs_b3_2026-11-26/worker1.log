@@ -1,0 +1,19 @@
+Using device: cuda
+b3_gated_linear_K16_mixed_s6305: gated_linear K=16 mixed, 439888 params
+speed 62.3 ms/update, about 4.7 min of training left
+update 500: loss=4.1662, query_acc=0.0168, lr=7.53e-04
+dev at 500: own cell K16_mixed acc=0.0151 loss=4.1675
+update 1000: loss=3.4514, query_acc=0.0632, lr=6.73e-04
+dev at 1000: own cell K16_mixed acc=0.0601 loss=3.4077
+update 1500: loss=3.1419, query_acc=0.0633, lr=5.94e-04
+dev at 1500: own cell K16_mixed acc=0.0640 loss=3.1153
+update 2000: loss=2.9202, query_acc=0.0620, lr=5.15e-04
+dev at 2000: own cell K16_mixed acc=0.0618 loss=2.9068
+update 2500: loss=2.8522, query_acc=0.0638, lr=4.36e-04
+update 3000: loss=2.8326, query_acc=0.0621, lr=3.57e-04
+dev at 3000: own cell K16_mixed acc=0.0647 loss=2.8320
+update 3500: loss=2.8220, query_acc=0.0638, lr=2.78e-04
+update 4000: loss=2.8163, query_acc=0.0636, lr=1.99e-04
+update 4500: loss=2.8105, query_acc=0.0631, lr=1.20e-04
+dev at 4500: own cell K16_mixed acc=0.0640 loss=2.8095
+test (gated_linear): K4_far=0.247, K4_mixed=0.246, K4_near=0.250, K8_far=0.125, K8_mixed=0.125, K8_near=0.125, K16_far=0.063, K16_mixed=0.064, K16_near=0.065
