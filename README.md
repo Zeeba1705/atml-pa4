@@ -120,11 +120,20 @@ python -m task3.prefix_banks --bank student_off_policy_s6304 --draft_path output
 python -m task3.spec_eval --draft_name off_policy_s6304 --draft_path outputs/task3/merged/off_policy_s6304
 python -m task3.spec_eval --draft_name unmerged_off_policy_s6304 --adapter_path outputs/task3/adapters/off_policy_s6304 --passes main
 
+# step 5: forward/reverse kl, tv, greedy agreement, 1-tv for original + 4 merged drafts on every prefix bank
+python -m task3.align_metrics --device cuda          # -> results/task3/align/<bank>.jsonl.gz
+
+# step 7: standalone quality (caps 512 math / 32 short, 2 paired reps), also the target as a reference
+python -m task3.standalone_eval --model_name original --device cuda
+python -m task3.standalone_eval --model_name target --device cuda
+python -m task3.standalone_eval --model_name off_policy_s6304 --draft_path outputs/task3/merged/off_policy_s6304 --device cuda
+
 # cpu smoke: add --smoke to any of these (tiny random qwen2 with the real tokenizer, 3 prompts)
 ```
 
 Kaggle: `kaggle/task3.ipynb` via `kaggle/task3_run.sh`. `STAGE= "1"`: spec eval of the original draft (GPU 0), banks + teacher pool (GPU 1).
 `STAGE= "2"`: off-policy chain (GPU 0) and on-policy chain (GPU 1): distill both seeds, merge, own-rollout banks, merged-draft spec eval.
+`STAGE= "3"` (attach the stage-2 output and the supplied `prefix_banks_locked.jsonl.gz`): alignment metrics + standalone original/off-policy (GPU 0), standalone target/on-policy (GPU 1).
 
 ## Kaggle notebooks
 

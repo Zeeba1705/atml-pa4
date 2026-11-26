@@ -4,6 +4,8 @@
 #     gpu 1 = generated prefix banks (teacher_pure, exact_spec_original_gamma4), then the off-policy teacher pool
 #  2: gpu 0 = (teacher pool if not attached) -> off-policy s6304, s6305 -> merge -> own-rollout banks -> merged spec eval
 #        -> one unmerged-adapter timing run; gpu 1 = on-policy s6304, s6305 -> merge -> own-rollout banks -> merged spec eval
+#  3: needs stage 2 output (merged students, banks) + the supplied prefix banks: gpu 0 = alignment metrics on all banks,
+#     then standalone quality of original + off-policy students; gpu 1 = standalone quality of target + on-policy students
 #every script skips finished files, so rerunning a stage continues it
 cd /tmp/pa4/atml-pa4
 RES=/kaggle/working/results
@@ -55,6 +57,20 @@ if [ "$STAGE" = "2" ]; then
     run gpu0 0 task3.spec_eval --draft_name unmerged_off_policy_s6304 --adapter_path "$OUT/task3/adapters/off_policy_s6304" --passes main ) &
   A=$!
   student_chain 1 gpu1 on_policy 1003 &
+  B=$!
+  wait $A; wait $B
+fi
+
+if [ "$STAGE" = "3" ]; then
+  for n in off_policy_s6304 off_policy_s6305 on_policy_s6304 on_policy_s6305; do
+    test -f "$OUT/task3/merged/$n/config.json" || { echo "MISSING merged student $n: attach the stage 2 output"; exit 1; }
+  done
+  ( run gpu0 0 task3.align_metrics
+    run gpu0 0 task3.standalone_eval --model_name original
+    for n in off_policy_s6304 off_policy_s6305; do run gpu0 0 task3.standalone_eval --model_name $n --draft_path "$OUT/task3/merged/$n"; done ) &
+  A=$!
+  ( run gpu1 1 task3.standalone_eval --model_name target
+    for n in on_policy_s6304 on_policy_s6305; do run gpu1 1 task3.standalone_eval --model_name $n --draft_path "$OUT/task3/merged/$n"; done ) &
   B=$!
   wait $A; wait $B
 fi
