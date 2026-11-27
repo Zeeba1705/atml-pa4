@@ -1,0 +1,145 @@
+{
+  "git_commit": "0627a57580de7d971583e1bcab2451cdfc6e2e85",
+  "seed": 6304,
+  "device": "cuda",
+  "gpu_name": "Tesla T4",
+  "dtype": "float16",
+  "attn_implementation": "sdpa",
+  "sdpa": {
+    "flash_enabled": true,
+    "mem_efficient_enabled": true,
+    "math_enabled": true,
+    "compute_capability": "7.5"
+  },
+  "torch": "2.11.0+cu130",
+  "transformers": "4.57.1",
+  "cuda": "13.0",
+  "model": "Qwen/Qwen2.5-1.5B-Instruct",
+  "model_revision": "989aa7980e4cf806f80c7fef2b1adb7bc71aa306",
+  "method": "on_policy",
+  "smoke": false,
+  "lora": {
+    "r": 8,
+    "alpha": 16,
+    "dropout": 0.0,
+    "target_modules": [
+      "q_proj",
+      "k_proj",
+      "v_proj",
+      "o_proj"
+    ]
+  },
+  "config": {
+    "seed": 6304,
+    "pinned": {
+      "transformers": "4.57.1",
+      "huggingface_hub": "0.36.2"
+    },
+    "data_repo": "atml-pa4-datasets",
+    "data_lock_source": "atml-pa4-datasets/data/local_source_revisions.json",
+    "data_lock_copy": "splits/data_lock/local_source_revisions.json",
+    "output_dir_kaggle": "/kaggle/working/outputs",
+    "output_dir_local": "outputs",
+    "results_dir": "results",
+    "models": {
+      "task1_base": "Qwen/Qwen2.5-1.5B",
+      "target": "Qwen/Qwen2.5-1.5B-Instruct",
+      "draft": "Qwen/Qwen2.5-0.5B-Instruct"
+    },
+    "model_revision_keys": {
+      "task1_base": "model_base",
+      "target": "model_target",
+      "draft": "model_draft"
+    },
+    "dtype_gpu": "float16",
+    "dtype_smoke": "float32",
+    "attn_implementation": "sdpa",
+    "generation_overrides": {
+      "repetition_penalty": 1.0,
+      "top_k": 0,
+      "top_p": 1.0
+    },
+    "eos_token_ids": [
+      151645,
+      151643
+    ],
+    "smoke": {
+      "num_hidden_layers": 2,
+      "hidden_size": 64,
+      "intermediate_size": 128,
+      "num_attention_heads": 4,
+      "num_key_value_heads": 2,
+      "max_examples": 4,
+      "max_steps": 3
+    },
+    "teacher": "Qwen/Qwen2.5-1.5B-Instruct",
+    "student": "Qwen/Qwen2.5-0.5B-Instruct",
+    "backbone_dtype": "float16",
+    "adapter_dtype": "float32",
+    "optimizer_state_dtype": "float32",
+    "vocab_size": 151936,
+    "data": {
+      "gsm8k_train": "data/public_locked/gsm8k_train_locked.jsonl.gz",
+      "gsm8k_test": "data/public_locked/gsm8k_test_locked.jsonl.gz",
+      "short_train": "data/short_form/short_train.jsonl",
+      "short_test": "data/short_form/short_test.jsonl",
+      "prefix_banks": "data/prefix_banks/prefix_banks_locked.jsonl.gz",
+      "prompt_format": "raw question as single user message, default chat template"
+    },
+    "lora": {
+      "r": 8,
+      "alpha": 16,
+      "dropout": 0.0,
+      "target_modules": [
+        "q_proj",
+        "k_proj",
+        "v_proj",
+        "o_proj"
+      ]
+    },
+    "num_eval_prompts": 120,
+    "seeds": [
+      6304,
+      6305
+    ],
+    "methods": [
+      "off_policy",
+      "on_policy"
+    ],
+    "quota": {
+      "math_tokens": 30000,
+      "short_tokens": 10000,
+      "total_tokens": 40000
+    },
+    "response_caps": {
+      "math": 192,
+      "short": 32
+    },
+    "sampling": {
+      "temperature": 1.0,
+      "top_p": 1.0
+    },
+    "schedule": "alternate_categories_seeded_permutation",
+    "teacher_pool_samples_per_prompt": 1,
+    "microbatch": 1,
+    "update_every_scored_tokens": 256,
+    "optimizer": {
+      "name": "AdamW",
+      "lr": 0.0003,
+      "weight_decay": 0.01
+    },
+    "grad_clip": 1.0,
+    "autocast": "float16",
+    "grad_scaler": "dynamic",
+    "kl_normalization": "supervised_tokens_per_update",
+    "objective": "forward_kl_teacher_student"
+  },
+  "quotas": {
+    "math": 30000,
+    "short": 10000
+  },
+  "caps": {
+    "math": 192,
+    "short": 32
+  }
+}

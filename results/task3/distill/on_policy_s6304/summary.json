@@ -1,0 +1,61 @@
+{
+  "git_commit": "0627a57580de7d971583e1bcab2451cdfc6e2e85",
+  "seed": 6304,
+  "device": "cuda",
+  "gpu_name": "Tesla T4",
+  "dtype": "float16",
+  "attn_implementation": "sdpa",
+  "sdpa": {
+    "flash_enabled": true,
+    "mem_efficient_enabled": true,
+    "math_enabled": true,
+    "compute_capability": "7.5"
+  },
+  "torch": "2.11.0+cu130",
+  "transformers": "4.57.1",
+  "cuda": "13.0",
+  "model": "Qwen/Qwen2.5-1.5B-Instruct",
+  "model_revision": "989aa7980e4cf806f80c7fef2b1adb7bc71aa306",
+  "method": "on_policy",
+  "smoke": false,
+  "lora": {
+    "r": 8,
+    "alpha": 16,
+    "dropout": 0.0,
+    "target_modules": [
+      "q_proj",
+      "k_proj",
+      "v_proj",
+      "o_proj"
+    ]
+  },
+  "n_updates": 157,
+  "skipped_updates": 1,
+  "scored_tokens": {
+    "math": 30000,
+    "short": 10000
+  },
+  "n_presentations": 840,
+  "truncated_presentations": 2,
+  "eos_fraction_by_category": {
+    "math": 0.2147239263803681,
+    "short": 0.7444608567208272
+  },
+  "mean_response_length_by_category": {
+    "math": 184.13496932515338,
+    "short": 14.78138847858198
+  },
+  "times_seconds": {
+    "teacher_scoring": 38.04584548600536,
+    "student_rollout": 2229.3149368649906,
+    "student_forward_backward": 172.72782817801016,
+    "optimizer_step": 1.140272773999527
+  },
+  "teacher_pool_generation_seconds": null,
+  "wall_clock_seconds": 2446.507467404,
+  "student_params": 495114112,
+  "adapter_params": 1081344,
+  "peak_allocated_bytes": 5321665024,
+  "final_loss_scale": 32768.0,
+  "adapter_dir": "/kaggle/working/outputs/task3/adapters/on_policy_s6304"
+}

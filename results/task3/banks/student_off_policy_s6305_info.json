@@ -1,0 +1,31 @@
+{
+  "git_commit": "0627a57580de7d971583e1bcab2451cdfc6e2e85",
+  "seed": 6304,
+  "device": "cuda",
+  "gpu_name": "Tesla T4",
+  "dtype": "float16",
+  "attn_implementation": "sdpa",
+  "sdpa": {
+    "flash_enabled": true,
+    "mem_efficient_enabled": true,
+    "math_enabled": true,
+    "compute_capability": "7.5"
+  },
+  "torch": "2.11.0+cu130",
+  "transformers": "4.57.1",
+  "cuda": "13.0",
+  "model": "Qwen/Qwen2.5-1.5B-Instruct",
+  "model_revision": "989aa7980e4cf806f80c7fef2b1adb7bc71aa306",
+  "bank": "student_off_policy_s6305",
+  "producing_checkpoint": "/kaggle/working/outputs/task3/merged/off_policy_s6305",
+  "n_prompts": 120,
+  "n_records": 3456,
+  "seed_offset": 1002,
+  "max_new_tokens": 192,
+  "mean_response_length": 97.75833333333334,
+  "eos_fraction": 0.625,
+  "generation_seconds": 410.618500694,
+  "path": "/kaggle/working/outputs/task3/banks/student_off_policy_s6305.jsonl.gz",
+  "sha256": "f594adbfbe0e77700635bcde3253ff5bf23643cdeb5514e275607484271c61b4",
+  "smoke": false
+}

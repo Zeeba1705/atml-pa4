@@ -1,0 +1,58 @@
+{
+  "git_commit": "0627a57580de7d971583e1bcab2451cdfc6e2e85",
+  "seed": 6304,
+  "device": "cuda",
+  "gpu_name": "Tesla T4",
+  "dtype": "float16",
+  "attn_implementation": "sdpa",
+  "sdpa": {
+    "flash_enabled": true,
+    "mem_efficient_enabled": true,
+    "math_enabled": true,
+    "compute_capability": "7.5"
+  },
+  "torch": "2.11.0+cu130",
+  "transformers": "4.57.1",
+  "cuda": "13.0",
+  "model": "Qwen/Qwen2.5-1.5B-Instruct",
+  "model_revision": "989aa7980e4cf806f80c7fef2b1adb7bc71aa306",
+  "draft_name": "on_policy_s6305",
+  "draft_path": "/kaggle/working/outputs/task3/merged/on_policy_s6305",
+  "adapter_path": null,
+  "smoke": false,
+  "max_new_tokens": 64,
+  "temperature": 1.0,
+  "top_p": 1.0,
+  "eos_ids": [
+    151645,
+    151643
+  ],
+  "agreement": {
+    "strings_checked": 4,
+    "prompts_checked": 120,
+    "logit_vocab": 151936,
+    "eos_token_ids": [
+      151643,
+      151645
+    ]
+  },
+  "split_prefill_max_abs_prob_diff": {
+    "GSM8K-0000/target": 0.002954423427581787,
+    "GSM8K-0000/draft": 0.002137988805770874,
+    "GSM8K-0001/target": 0.00043320655822753906,
+    "GSM8K-0001/draft": 0.0008226633071899414,
+    "GSM8K-0002/target": 0.0030559897422790527,
+    "GSM8K-0002/draft": 0.00018447637557983398
+  },
+  "post_generation_max_abs_prob_diff": {
+    "GSM8K-0000/target": 0.0007079243659973145,
+    "GSM8K-0000/draft": 0.0001425221562385559,
+    "GSM8K-0001/target": 1.536321360617876e-05,
+    "GSM8K-0001/draft": 0.0017847716808319092,
+    "GSM8K-0002/target": 2.187490463256836e-05,
+    "GSM8K-0002/draft": 0.0003336668014526367
+  },
+  "worst": 0.0030559897422790527,
+  "tolerance": 0.02,
+  "model_load_seconds": 5.09485614300138
+}

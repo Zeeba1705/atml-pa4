@@ -1,0 +1,47 @@
+{
+  "git_commit": "0627a57580de7d971583e1bcab2451cdfc6e2e85",
+  "seed": 6304,
+  "device": "cuda",
+  "gpu_name": "Tesla T4",
+  "dtype": "float16",
+  "attn_implementation": "sdpa",
+  "sdpa": {
+    "flash_enabled": true,
+    "mem_efficient_enabled": true,
+    "math_enabled": true,
+    "compute_capability": "7.5"
+  },
+  "torch": "2.11.0+cu130",
+  "transformers": "4.57.1",
+  "cuda": "13.0",
+  "model": "Qwen/Qwen2.5-0.5B-Instruct",
+  "model_revision": "7ae557604adf67be50417f59c2c2f167def9a775",
+  "name": "off_policy_s6305",
+  "adapter_dir": "/kaggle/working/outputs/task3/adapters/off_policy_s6305",
+  "merged_dir": "/kaggle/working/outputs/task3/merged/off_policy_s6305",
+  "smoke": false,
+  "check_prompts": [
+    "GSM8K-0000",
+    "GSM8K-0001",
+    "GSM8K-0002",
+    "GSM8K-0003",
+    "GSM8K-0004",
+    "GSM8K-0005",
+    "GSM8K-0006",
+    "GSM8K-0007"
+  ],
+  "max_abs_logit_error": 0.234375,
+  "per_prompt_max_abs_logit_error": [
+    0.21875,
+    0.234375,
+    0.146484375,
+    0.146484375,
+    0.1484375,
+    0.146484375,
+    0.1484375,
+    0.1484375
+  ],
+  "merge_seconds": 0.046247924999988754,
+  "total_seconds": 4.564094359999899,
+  "merged_params": 494032768
+}

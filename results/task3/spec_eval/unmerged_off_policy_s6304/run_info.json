@@ -1,0 +1,32 @@
+{
+  "git_commit": "0627a57580de7d971583e1bcab2451cdfc6e2e85",
+  "seed": 6304,
+  "device": "cuda",
+  "gpu_name": "Tesla T4",
+  "dtype": "float16",
+  "attn_implementation": "sdpa",
+  "sdpa": {
+    "flash_enabled": true,
+    "mem_efficient_enabled": true,
+    "math_enabled": true,
+    "compute_capability": "7.5"
+  },
+  "torch": "2.11.0+cu130",
+  "transformers": "4.57.1",
+  "cuda": "13.0",
+  "model": "Qwen/Qwen2.5-1.5B-Instruct",
+  "model_revision": "989aa7980e4cf806f80c7fef2b1adb7bc71aa306",
+  "draft_name": "unmerged_off_policy_s6304",
+  "draft_path": null,
+  "adapter_path": "/kaggle/working/outputs/task3/adapters/off_policy_s6304",
+  "smoke": false,
+  "max_new_tokens": 64,
+  "temperature": 1.0,
+  "top_p": 1.0,
+  "eos_ids": [
+    151645,
+    151643
+  ],
+  "model_load_seconds": 6.09340065699962,
+  "warm_setup_seconds": 2.0160057029997915
+}
