@@ -128,6 +128,9 @@ python -m task3.standalone_eval --model_name original --device cuda
 python -m task3.standalone_eval --model_name target --device cuda
 python -m task3.standalone_eval --model_name off_policy_s6304 --draft_path outputs/task3/merged/off_policy_s6304 --device cuda
 
+# cpu: all tables and figures (paired bootstrap over prompts, 2,000 resamples) -> results/task3/tables, figures, summary.csv
+python -m task3.make_tables
+
 # cpu smoke: add --smoke to any of these (tiny random qwen2 with the real tokenizer, 3 prompts)
 ```
 
