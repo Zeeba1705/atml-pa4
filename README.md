@@ -106,6 +106,11 @@ python -m task2.bench_mqar_inference --device cuda   # T in {256,1024,4096,8192}
 ```
 Kaggle: `kaggle/task2.ipynb` with `PARTS= "C"`. B3: `PARTS= "B"`, `ONLY= "b3_"` (or `python -m task2.train_mqar --run_name b3_gated_linear_K16_mixed --seed 6304`).
 
+### Task 2 tables and figures (CPU, ~10 s)
+```bash
+python -m task2.make_tables    # -> results/task2/tables/*.csv, results/task2/summary.csv, results/task2/figures/*.png
+```
+
 ## Task 3 — distillation and speculative decoding
 
 TODO
