@@ -63,6 +63,11 @@ Colab: `colab/task1.ipynb` (edit `CONDITIONS` in cell 0, Runtime → Run all; re
 Pruning conditions also write `compression_layers.jsonl` (per-projection output error on calibration activations,
 nonzero fraction, Wanda score quantiles).
 
+Tables and figures (CPU, ~10 s; the case finder decodes window text with the locally cached tokenizer if present):
+```bash
+python -m task1.make_tables    # -> results/task1/tables/*.csv, results/task1/summary.csv, results/task1/figures/*.png
+```
+
 ## Task 2 — attention and KV memory
 
 TODO
