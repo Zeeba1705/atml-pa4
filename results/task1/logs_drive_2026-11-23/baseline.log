@@ -1,0 +1,45 @@
+I0000 00:00:1795461794.329612    1359 cpu_feature_guard.cc:227] This TensorFlow binary is optimized to use available CPU instructions in performance-critical operations.
+To enable the following instructions: AVX2 AVX512F FMA, in other operations, rebuild TensorFlow with the appropriate compiler flags.
+I0000 00:00:1795461797.259726    1359 cudart_stub.cc:31] Could not find cuda drivers on your machine, GPU will not be used.
+Using device: cuda
+condition baseline: done [], to run ['wikitext2', 'c4_val', 'hellaswag', 'resources']
+Traceback (most recent call last):
+  File "<frozen runpy>", line 203, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "/content/atml-pa4/task1/run_condition.py", line 166, in <module>
+    main(args)
+    ~~~~^^^^^^
+  File "/content/atml-pa4/task1/run_condition.py", line 71, in main
+    windows= load_windows(cfg, args.data_root, eval_name)
+  File "/content/atml-pa4/task1/load.py", line 93, in load_windows
+    windows= read_jsonl(data_path(cfg, data_root, suite))
+                        ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+  File "/content/atml-pa4/task1/load.py", line 87, in data_path
+    assert os.path.exists(path), f"missing {path}, run setup_data.py --public (README)"
+           ~~~~~~~~~~~~~~^^^^^^
+AssertionError: missing atml-pa4-datasets/data/public_locked/wikitext2_test_windows_locked.jsonl.gz, run setup_data.py --public (README)
+I0000 00:00:1795462226.844705    1055 cpu_feature_guard.cc:227] This TensorFlow binary is optimized to use available CPU instructions in performance-critical operations.
+To enable the following instructions: AVX2 AVX512F FMA, in other operations, rebuild TensorFlow with the appropriate compiler flags.
+I0000 00:00:1795462229.386004    1055 cudart_stub.cc:31] Could not find cuda drivers on your machine, GPU will not be used.
+Using device: cuda
+condition baseline: done [], to run ['wikitext2', 'c4_val', 'hellaswag', 'resources']
+data root: /content/atml-pa4-datasets
+ppl window 100/437
+ppl window 200/437
+ppl window 300/437
+ppl window 400/437
+wikitext2: ppl 16.1073 over 50000 tokens
+ppl window 100/177
+c4_val: ppl 14.9623 over 50000 tokens
+hellaswag 250/2000
+hellaswag 500/2000
+hellaswag 750/2000
+hellaswag 1000/2000
+hellaswag 1250/2000
+hellaswag 1500/2000
+hellaswag 1750/2000
+hellaswag 2000/2000
+hellaswag: acc 0.5045, acc_norm 0.6940 on 2000
+prefill 512: median 101.3 ms
+prefill 2048: median 391.3 ms
+decode 64 tokens: median 1943.0 ms

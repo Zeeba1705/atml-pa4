@@ -1,0 +1,24 @@
+I0000 00:00:1795468227.444629   16575 cpu_feature_guard.cc:227] This TensorFlow binary is optimized to use available CPU instructions in performance-critical operations.
+To enable the following instructions: AVX2 AVX512F FMA, in other operations, rebuild TensorFlow with the appropriate compiler flags.
+I0000 00:00:1795468229.977805   16575 cudart_stub.cc:31] Could not find cuda drivers on your machine, GPU will not be used.
+Using device: cuda
+condition q1_uniform_b8: done [], to run ['wikitext2', 'c4_val', 'hellaswag', 'resources']
+data root: /content/atml-pa4-datasets
+calibrated block 7/28
+calibrated block 14/28
+calibrated block 21/28
+calibrated block 28/28
+built q1_uniform_b8: 72.9s
+ppl window 100/437
+ppl window 200/437
+ppl window 300/437
+ppl window 400/437
+wikitext2: ppl 16.0846 over 50000 tokens
+ppl window 100/177
+c4_val: ppl 14.9677 over 50000 tokens
+hellaswag 250/512
+hellaswag 500/512
+hellaswag: acc 0.4629, acc_norm 0.5820 on 512
+prefill 512: median 99.4 ms
+prefill 2048: median 388.1 ms
+decode 64 tokens: median 1924.0 ms

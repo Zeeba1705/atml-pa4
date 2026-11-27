@@ -1,0 +1,219 @@
+{
+  "git_commit": "215d0a1a568926003a1bbc1d1d3bfca39de8aa29",
+  "seed": 6304,
+  "device": "cuda",
+  "gpu_name": "Tesla T4",
+  "dtype": "float16",
+  "attn_implementation": "sdpa",
+  "sdpa": {
+    "flash_enabled": true,
+    "mem_efficient_enabled": true,
+    "math_enabled": true,
+    "compute_capability": "7.5"
+  },
+  "torch": "2.14.1+cu130",
+  "transformers": "4.57.1",
+  "cuda": "13.0",
+  "model": "Qwen/Qwen2.5-1.5B",
+  "model_revision": "8faed761d45a263340a0528343f099c05c9a4323",
+  "config": {
+    "seed": 6304,
+    "pinned": {
+      "transformers": "4.57.1",
+      "huggingface_hub": "0.36.2"
+    },
+    "data_repo": "atml-pa4-datasets",
+    "data_lock_source": "atml-pa4-datasets/data/local_source_revisions.json",
+    "data_lock_copy": "splits/data_lock/local_source_revisions.json",
+    "output_dir_kaggle": "/kaggle/working/outputs",
+    "output_dir_local": "outputs",
+    "results_dir": "results",
+    "models": {
+      "task1_base": "Qwen/Qwen2.5-1.5B",
+      "target": "Qwen/Qwen2.5-1.5B-Instruct",
+      "draft": "Qwen/Qwen2.5-0.5B-Instruct"
+    },
+    "model_revision_keys": {
+      "task1_base": "model_base",
+      "target": "model_target",
+      "draft": "model_draft"
+    },
+    "dtype_gpu": "float16",
+    "dtype_smoke": "float32",
+    "attn_implementation": "sdpa",
+    "generation_overrides": {
+      "repetition_penalty": 1.0,
+      "top_k": 0,
+      "top_p": 1.0
+    },
+    "eos_token_ids": [
+      151645,
+      151643
+    ],
+    "smoke": {
+      "num_hidden_layers": 2,
+      "hidden_size": 64,
+      "intermediate_size": 128,
+      "num_attention_heads": 4,
+      "num_key_value_heads": 2,
+      "max_examples": 4,
+      "max_steps": 3
+    },
+    "model": "Qwen/Qwen2.5-1.5B",
+    "dtype": "float16",
+    "eligible_projections": [
+      "q_proj",
+      "k_proj",
+      "v_proj",
+      "o_proj",
+      "gate_proj",
+      "up_proj",
+      "down_proj"
+    ],
+    "data": {
+      "calibration": "data/public_locked/c4_calibration_locked.jsonl.gz",
+      "development": "data/public_locked/c4_development_locked.jsonl.gz",
+      "wikitext2": "data/public_locked/wikitext2_test_windows_locked.jsonl.gz",
+      "c4_val": "data/public_locked/c4_validation_windows_locked.jsonl.gz",
+      "hellaswag": "data/public_locked/hellaswag_val_locked.jsonl.gz"
+    },
+    "calibration_sequences": 128,
+    "development_sequences": 32,
+    "sequence_length": 512,
+    "calibration_mode": "sequential",
+    "ppl_scored_tokens": 50000,
+    "hellaswag": {
+      "n_full": 2000,
+      "n_diagnostic": 512,
+      "task_version": "lm-eval hellaswag 1.0",
+      "acc_norm": "characters",
+      "full_conditions": [
+        "baseline",
+        "p1_magnitude_s0.5",
+        "p2_wanda_s0.5",
+        "p3_nonuniform_s0.5",
+        "q1_uniform_b4",
+        "q1_uniform_b3",
+        "q2_awq_b4",
+        "q2_awq_b3",
+        "q3_mixed_budget_b4",
+        "q3_mixed_budget_b3"
+      ]
+    },
+    "pruning": {
+      "p1_sparsities": [
+        0.25,
+        0.5,
+        0.75
+      ],
+      "p2_sparsities": [
+        0.25,
+        0.5,
+        0.75
+      ],
+      "p3_sparsities": [
+        0.5,
+        0.75
+      ],
+      "p3_min_unit_sparsity": 0.1,
+      "p3_max_unit_sparsity": 0.85,
+      "mask": "per_output_row",
+      "exact_zero_count": true,
+      "two_four": {
+        "n": 2,
+        "m": 4,
+        "sparsity": 0.5
+      }
+    },
+    "quantization": {
+      "q_bits": [
+        8,
+        4,
+        3
+      ],
+      "q3_allowed_bits": [
+        2,
+        3,
+        4,
+        8
+      ],
+      "q3_budgets_from": [
+        "q2_awq_b4",
+        "q2_awq_b3"
+      ],
+      "group_size": 128,
+      "symmetric": false,
+      "range": "minmax",
+      "rounding": "round_half_even",
+      "scale_dtype": "float16",
+      "zero_point": "integer_packed_b_bits",
+      "packing": "lsb_first_bitstream_row_major_byte_padded_per_tensor",
+      "awq_alpha_grid": [
+        0.0,
+        0.05,
+        0.1,
+        0.15,
+        0.2,
+        0.25,
+        0.3,
+        0.35,
+        0.4,
+        0.45,
+        0.5,
+        0.55,
+        0.6,
+        0.65,
+        0.7,
+        0.75,
+        0.8,
+        0.85,
+        0.9,
+        0.95,
+        1.0
+      ],
+      "awq_folds": {
+        "input_layernorm": [
+          "q_proj",
+          "k_proj",
+          "v_proj"
+        ],
+        "post_attention_layernorm": [
+          "gate_proj",
+          "up_proj"
+        ],
+        "up_proj": [
+          "down_proj"
+        ]
+      },
+      "awq_unfolded_fp16_scales": [
+        "o_proj"
+      ]
+    },
+    "sparse_storage_estimate": {
+      "mask_bits_per_eligible_weight": 1,
+      "value_bits_per_nonzero": 16,
+      "byte_aligned": true
+    },
+    "resources": {
+      "prefill_lengths": [
+        512,
+        2048
+      ],
+      "decode_tokens": 64,
+      "batch_size": 1,
+      "warmup_reps": 2,
+      "timing_reps": 5,
+      "latency_prompt": "first tokens of concatenated c4_val windows"
+    },
+    "bootstrap_resamples": 2000
+  },
+  "condition": "q2_awq_b8",
+  "smoke": false,
+  "eval": "hellaswag",
+  "n_examples": 512,
+  "acc": 0.462890625,
+  "acc_norm": 0.58203125,
+  "wall_clock_seconds": 31.45718774800025,
+  "peak_allocated_bytes": 3783756288,
+  "peak_reserved_bytes": 6014631936
+}
