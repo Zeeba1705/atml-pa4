@@ -1,0 +1,15 @@
+run,attention,n_params,pairs_T256_total,pairs_T256_per_head,pairs_T256_per_query_max,pairs_note,state_bytes_T256_fp32_per_layer,state_bytes_T256_fp32_total
+b3_gated_linear_K16_mixed,gated_linear,439888,,,,no pairwise scores in the recurrent form; state is d x d per head,16896,33792
+dense_K16_mixed,dense,437824,131584,"[32896, 32896, 32896, 32896]","[256, 256, 256, 256]",,262144,524288
+dense_K16_near,dense,437824,131584,"[32896, 32896, 32896, 32896]","[256, 256, 256, 256]",,262144,524288
+dense_K4_mixed,dense,437824,131584,"[32896, 32896, 32896, 32896]","[256, 256, 256, 256]",,262144,524288
+dense_K8_mixed,dense,437824,131584,"[32896, 32896, 32896, 32896]","[256, 256, 256, 256]",,262144,524288
+dilated_K16_mixed,local_dilated,437824,45376,"[14368, 14368, 8320, 8320]","[64, 64, 64, 64]",,162304,324608
+dilated_K4_mixed,local_dilated,437824,45376,"[14368, 14368, 8320, 8320]","[64, 64, 64, 64]",,162304,324608
+linear_K16_mixed,linear,437824,,,,no pairwise scores in the recurrent form; state is d x d per head,16896,33792
+linear_K4_mixed,linear,437824,,,,no pairwise scores in the recurrent form; state is d x d per head,16896,33792
+linear_K8_mixed,linear,437824,,,,no pairwise scores in the recurrent form; state is d x d per head,16896,33792
+window_K16_mixed,window,437824,57472,"[14368, 14368, 14368, 14368]","[64, 64, 64, 64]",,65536,131072
+window_K16_near,window,437824,57472,"[14368, 14368, 14368, 14368]","[64, 64, 64, 64]",,65536,131072
+window_K4_near,window,437824,57472,"[14368, 14368, 14368, 14368]","[64, 64, 64, 64]",,65536,131072
+window_K8_near,window,437824,57472,"[14368, 14368, 14368, 14368]","[64, 64, 64, 64]",,65536,131072

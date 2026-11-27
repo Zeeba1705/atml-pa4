@@ -1,0 +1,9 @@
+dtype,impl,extreme_q_scale,extreme_finite,extreme_max_abs_err_vs_fp64,causality_max_change_before_perturbed_pos,causality_max_change_after_perturbed_pos,dense_row_is_zero,sdpa_row_finite,sdpa_row_value_example,other_rows_max_abs_diff
+float16,dense,300,True,0.4195105091866065,0.0,2.95703125,,,,
+float16,tiled,300,True,0.4199987904366065,0.0,2.95703125,,,,
+float16,sdpa,300,True,0.0018761607923485357,0.0,2.95703125,,,,
+float16,all_masked_row,,,,,,True,True,"[0.0, 0.0, 0.0, 0.0]",0.0009765625
+float32,dense,300,True,0.00039149011669903366,0.0,2.956836700439453,,,,
+float32,tiled,300,True,0.00039149011669903366,0.0,2.9568369388580322,,,,
+float32,sdpa,300,True,0.00043404783306866257,0.0,2.956836700439453,,,,
+float32,all_masked_row,,,,,,True,True,"[0.0, 0.0, 0.0, 0.0]",7.152557373046875e-07

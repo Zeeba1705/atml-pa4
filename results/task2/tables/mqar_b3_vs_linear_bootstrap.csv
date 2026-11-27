@@ -1,0 +1,37 @@
+comparison,test_cell,seed_pairing,n_examples,acc_b3_gated_linear_K16_mixed,acc_linear_K16_mixed,mean_diff,ci_low,ci_high,p_two_sided,note
+b3_gated_linear_K16_mixed - linear_K16_mixed,K4_near,6304,1024,0.2458,0.7312,-0.4854,-0.5,-0.4709,0.0,
+b3_gated_linear_K16_mixed - linear_K16_mixed,K4_near,6305,1024,0.2502,0.9993,-0.749,-0.7568,-0.7402,0.0,
+b3_gated_linear_K16_mixed - linear_K16_mixed,K4_near,6306,1024,0.2483,0.3479,-0.0996,-0.1135,-0.0864,0.0,
+b3_gated_linear_K16_mixed - linear_K16_mixed,K4_near,mean over 3 seeds,1024,0.2481,0.6928,-0.4447,-0.4521,-0.4371,0.0,examples resampled; seed variation not in this interval (see per-seed rows)
+b3_gated_linear_K16_mixed - linear_K16_mixed,K4_mixed,6304,1024,0.251,0.7332,-0.4822,-0.4971,-0.4678,0.0,
+b3_gated_linear_K16_mixed - linear_K16_mixed,K4_mixed,6305,1024,0.2461,0.9998,-0.7537,-0.7598,-0.7478,0.0,
+b3_gated_linear_K16_mixed - linear_K16_mixed,K4_mixed,6306,1024,0.2502,0.3052,-0.0549,-0.0659,-0.0442,0.0,
+b3_gated_linear_K16_mixed - linear_K16_mixed,K4_mixed,mean over 3 seeds,1024,0.2491,0.6794,-0.4303,-0.4367,-0.4242,0.0,examples resampled; seed variation not in this interval (see per-seed rows)
+b3_gated_linear_K16_mixed - linear_K16_mixed,K4_far,6304,1024,0.2483,0.7366,-0.4883,-0.5015,-0.4758,0.0,
+b3_gated_linear_K16_mixed - linear_K16_mixed,K4_far,6305,1024,0.2473,1.0,-0.7527,-0.7578,-0.7483,0.0,
+b3_gated_linear_K16_mixed - linear_K16_mixed,K4_far,6306,1024,0.2498,0.3035,-0.0537,-0.0625,-0.0454,0.0,
+b3_gated_linear_K16_mixed - linear_K16_mixed,K4_far,mean over 3 seeds,1024,0.2485,0.68,-0.4316,-0.4374,-0.4261,0.0,examples resampled; seed variation not in this interval (see per-seed rows)
+b3_gated_linear_K16_mixed - linear_K16_mixed,K8_near,6304,1024,0.1261,0.6276,-0.5015,-0.5122,-0.4905,0.0,
+b3_gated_linear_K16_mixed - linear_K16_mixed,K8_near,6305,1024,0.1248,0.9985,-0.8738,-0.8785,-0.869,0.0,
+b3_gated_linear_K16_mixed - linear_K16_mixed,K8_near,6306,1024,0.1193,0.2224,-0.1031,-0.1121,-0.0948,0.0,
+b3_gated_linear_K16_mixed - linear_K16_mixed,K8_near,mean over 3 seeds,1024,0.1234,0.6162,-0.4928,-0.498,-0.4879,0.0,examples resampled; seed variation not in this interval (see per-seed rows)
+b3_gated_linear_K16_mixed - linear_K16_mixed,K8_mixed,6304,1024,0.1279,0.6416,-0.5137,-0.5244,-0.5037,0.0,
+b3_gated_linear_K16_mixed - linear_K16_mixed,K8_mixed,6305,1024,0.1251,0.999,-0.8739,-0.8778,-0.8699,0.0,
+b3_gated_linear_K16_mixed - linear_K16_mixed,K8_mixed,6306,1024,0.1252,0.2156,-0.0903,-0.0986,-0.0828,0.0,
+b3_gated_linear_K16_mixed - linear_K16_mixed,K8_mixed,mean over 3 seeds,1024,0.1261,0.6187,-0.4926,-0.4973,-0.4882,0.0,examples resampled; seed variation not in this interval (see per-seed rows)
+b3_gated_linear_K16_mixed - linear_K16_mixed,K8_far,6304,1024,0.1228,0.65,-0.5272,-0.5371,-0.5171,0.0,
+b3_gated_linear_K16_mixed - linear_K16_mixed,K8_far,6305,1024,0.1254,0.9995,-0.8741,-0.8773,-0.8708,0.0,
+b3_gated_linear_K16_mixed - linear_K16_mixed,K8_far,6306,1024,0.1283,0.2065,-0.0782,-0.0859,-0.0712,0.0,
+b3_gated_linear_K16_mixed - linear_K16_mixed,K8_far,mean over 3 seeds,1024,0.1255,0.6187,-0.4932,-0.4976,-0.489,0.0,examples resampled; seed variation not in this interval (see per-seed rows)
+b3_gated_linear_K16_mixed - linear_K16_mixed,K16_near,6304,1024,0.0659,0.4603,-0.3943,-0.4014,-0.3869,0.0,
+b3_gated_linear_K16_mixed - linear_K16_mixed,K16_near,6305,1024,0.0652,0.9978,-0.9326,-0.9357,-0.9294,0.0,
+b3_gated_linear_K16_mixed - linear_K16_mixed,K16_near,6306,1024,0.0641,0.1641,-0.0999,-0.1056,-0.0945,0.0,
+b3_gated_linear_K16_mixed - linear_K16_mixed,K16_near,mean over 3 seeds,1024,0.0651,0.5407,-0.4756,-0.4787,-0.4724,0.0,examples resampled; seed variation not in this interval (see per-seed rows)
+b3_gated_linear_K16_mixed - linear_K16_mixed,K16_mixed,6304,1024,0.0648,0.4676,-0.4028,-0.4102,-0.3957,0.0,
+b3_gated_linear_K16_mixed - linear_K16_mixed,K16_mixed,6305,1024,0.0643,0.9983,-0.934,-0.9375,-0.9306,0.0,
+b3_gated_linear_K16_mixed - linear_K16_mixed,K16_mixed,6306,1024,0.0656,0.1604,-0.0948,-0.1006,-0.0897,0.0,
+b3_gated_linear_K16_mixed - linear_K16_mixed,K16_mixed,mean over 3 seeds,1024,0.0649,0.5421,-0.4772,-0.4804,-0.4739,0.0,examples resampled; seed variation not in this interval (see per-seed rows)
+b3_gated_linear_K16_mixed - linear_K16_mixed,K16_far,6304,1024,0.0662,0.4741,-0.408,-0.4151,-0.4009,0.0,
+b3_gated_linear_K16_mixed - linear_K16_mixed,K16_far,6305,1024,0.0628,0.9982,-0.9354,-0.9388,-0.9321,0.0,
+b3_gated_linear_K16_mixed - linear_K16_mixed,K16_far,6306,1024,0.0648,0.1587,-0.0939,-0.0994,-0.0884,0.0,
+b3_gated_linear_K16_mixed - linear_K16_mixed,K16_far,mean over 3 seeds,1024,0.0646,0.5437,-0.4791,-0.4822,-0.4758,0.0,examples resampled; seed variation not in this interval (see per-seed rows)

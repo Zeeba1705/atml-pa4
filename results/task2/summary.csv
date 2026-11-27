@@ -1,0 +1,32 @@
+part,item,metric,value,sd
+B,b3_gated_linear_K16_mixed,test K16_mixed acc (mean of 3 seeds),0.0649,0.0007
+B,dense_K16_mixed,test K16_mixed acc (mean of 3 seeds),1.0,0.0
+B,dense_K16_near,test K16_mixed acc (mean of 3 seeds),0.9995,0.0006
+B,dense_K4_mixed,test K4_mixed acc (mean of 3 seeds),1.0,0.0
+B,dense_K8_mixed,test K8_mixed acc (mean of 3 seeds),1.0,0.0
+B,dilated_K16_mixed,test K16_mixed acc (mean of 3 seeds),0.0614,0.0016
+B,dilated_K4_mixed,test K4_mixed acc (mean of 3 seeds),0.4165,0.2202
+B,linear_K16_mixed,test K16_mixed acc (mean of 3 seeds),0.5421,0.4239
+B,linear_K4_mixed,test K4_mixed acc (mean of 3 seeds),0.9927,0.0037
+B,linear_K8_mixed,test K8_mixed acc (mean of 3 seeds),0.6482,0.438
+B,window_K16_mixed,test K16_mixed acc (mean of 3 seeds),0.0419,0.0014
+B,window_K16_near,test K16_mixed acc (mean of 3 seeds),0.2244,0.0008
+B,window_K4_near,test K4_mixed acc (mean of 3 seeds),0.2604,0.0016
+B,window_K8_near,test K8_mixed acc (mean of 3 seeds),0.242,0.0004
+C,fp16,accuracy,1.0,
+C,fp16,fraction_of_fp16_mean,1.0,
+C,evict_sink_recent,accuracy,0.3333,
+C,evict_sink_recent,fraction_of_fp16_mean,0.2867,
+C,evict_question,accuracy,0.9833,
+C,evict_question,fraction_of_fp16_mean,0.2869,
+C,int4_token,accuracy,0.0,
+C,int4_token,fraction_of_fp16_mean,0.2869,
+C,int4_channel_k,accuracy,1.0,
+C,int4_channel_k,fraction_of_fp16_mean,0.2869,
+C,hybrid_int2,accuracy,0.9944,
+C,hybrid_int2,fraction_of_fp16_mean,0.2786,
+B,dense,forward ms at T=8192,40.6282,
+B,window,forward ms at T=8192,94.6802,
+B,local_dilated,forward ms at T=8192,95.4227,
+B,linear_parallel,forward ms at T=8192,143.5723,
+B,linear_recurrent,forward ms at T=8192,2960.4934,

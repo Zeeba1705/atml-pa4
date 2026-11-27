@@ -1,0 +1,38 @@
+case,code,method,correct,prediction,response,n_generated,stopped_eos,ref_answer_nll,evidence_retained_mean
+KV-2048-end-2-00,99331,fp16,True,99331,99331,6,True,0.0008,
+KV-2048-end-2-00,99331,evict_sink_recent,True,99331,99331,6,True,0.0011,1.0
+KV-2048-end-2-00,99331,evict_question,True,99331,99331,6,True,0.0006,0.9821
+KV-2048-end-2-00,99331,int4_token,False,,8845 warehouse river river river airport river river river  river airport river,16,False,25.6313,
+KV-2048-end-2-00,99331,int4_channel_k,True,99331,99331,6,True,0.0006,
+KV-2048-end-2-00,99331,hybrid_int2,True,99331,99331,6,True,0.0009,0.9437
+KV-2048-middle-2-00,49115,fp16,True,49115,49115,6,True,0.0169,
+KV-2048-middle-2-00,49115,evict_sink_recent,False,12345,12345,6,True,12.2983,0.0
+KV-2048-middle-2-00,49115,evict_question,True,49115,49115,6,True,0.0098,0.9061
+KV-2048-middle-2-00,49115,int4_token,False,, river river     river  river  river  river  river ,16,False,26.1356,
+KV-2048-middle-2-00,49115,int4_channel_k,True,49115,49115,6,True,0.0186,
+KV-2048-middle-2-00,49115,hybrid_int2,True,49115,49115,6,True,0.0155,0.828
+KV-2048-start-2-00,68251,fp16,True,68251,68251,6,True,0.0048,
+KV-2048-start-2-00,68251,evict_sink_recent,False,12345,12345,6,True,12.4988,0.0
+KV-2048-start-2-00,68251,evict_question,True,68251,68251,6,True,0.004,0.9074
+KV-2048-start-2-00,68251,int4_token,False,,  warehouse  river river river  warehouse river river airport river river river river river,16,False,18.4339,
+KV-2048-start-2-00,68251,int4_channel_k,True,68251,68251,6,True,0.006,
+KV-2048-start-2-00,68251,hybrid_int2,True,68251,68251,6,True,0.0045,0.8472
+KV-4096-end-2-00,26084,fp16,True,26084,26084,6,True,0.0022,
+KV-4096-end-2-00,26084,evict_sink_recent,True,26084,26084,6,True,0.0009,1.0
+KV-4096-end-2-00,26084,evict_question,True,26084,26084,6,True,0.0014,0.9801
+KV-4096-end-2-00,26084,int4_token,False,,     warehouse warehouse river  river884    ,16,False,18.2246,
+KV-4096-end-2-00,26084,int4_channel_k,True,26084,26084,6,True,0.0012,
+KV-4096-end-2-00,26084,hybrid_int2,True,26084,26084,6,True,0.003,0.9512
+KV-4096-middle-2-00,89891,fp16,True,89891,89891,6,True,0.0057,
+KV-4096-middle-2-00,89891,evict_sink_recent,False,12345,12345,6,True,11.715,0.0
+KV-4096-middle-2-00,89891,evict_question,True,89891,89891,6,True,0.0036,0.953
+KV-4096-middle-2-00,89891,int4_token,False,, warehouse  warehouse warehouse warehouse warehouse warehouse  warehouse warehouse warehouse warehouse warehouse warehouse warehouse warehouse,16,False,23.7219,
+KV-4096-middle-2-00,89891,int4_channel_k,True,89891,89891,6,True,0.0114,
+KV-4096-middle-2-00,89891,hybrid_int2,True,89891,89891,6,True,0.0079,0.9127
+KV-4096-start-2-00,17679,fp16,True,17679,17679,6,True,0.0021,
+KV-4096-start-2-00,17679,evict_sink_recent,False,12345,12345,6,True,14.8319,0.0
+KV-4096-start-2-00,17679,evict_question,True,17679,17679,6,True,0.0017,0.9081
+KV-4096-start-2-00,17679,int4_token,False,11111,"    river river
+ river  river 111111",16,False,18.1632,
+KV-4096-start-2-00,17679,int4_channel_k,True,17679,17679,6,True,0.0091,
+KV-4096-start-2-00,17679,hybrid_int2,True,17679,17679,6,True,0.0018,0.8538
