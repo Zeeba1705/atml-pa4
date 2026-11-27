@@ -140,7 +140,24 @@ Kaggle: `kaggle/task3.ipynb` via `kaggle/task3_run.sh`. `STAGE= "1"`: spec eval 
 
 ## Kaggle notebooks
 
-TODO
+All GPU work ran on thin launchers (no experiment logic). Kaggle settings for every notebook: **Accelerator GPU T4 x2**,
+**Internet on**, run with **Save Version → Save & Run All (Commit)**; results appear in the version's Output tab.
+Each notebook clones the branch named in its first code cell (`BRANCH`), runs `kaggle/taskN_setup.sh`
+(pinned installs, data checks), runs `python -m pytest tests -q`, then `kaggle/taskN_run.sh` (two jobs, one per T4),
+then prints a short summary. The setup/run scripts live on each task's branch, so fixes arrive with `git pull`.
+
+| Notebook | First cell | Input datasets | What it runs | Outputs |
+|---|---|---|---|---|
+| `colab/setup_banks.ipynb` (Colab T4) | – | – | `setup_data.py --public` with the committed revision lock, then the supplied prefix banks via `kaggle/supplied_banks.py` | `MyDrive/atml-pa4-data/` (public_locked, prefix_banks, lock) |
+| `colab/task1.ipynb` (Colab T4) | `CONDITIONS`, `ADAPTIVE`, `EVALS` | Drive `atml-pa4-data` | Task 1 conditions; baseline, P1, P2, 2:4, Q1 and Q2 were run here (decision 1.13) | `MyDrive/atml-pa4-results/task1/` |
+| `kaggle/task1.ipynb` | `EVALS`, `NAMES` | private dataset with the 7 `*_locked.jsonl.gz` + `local_source_revisions.json` | GPU 0: sensitivity → P3 50 % (dev sweep, then eval) → Q3 INT4 budget; GPU 1: P3 75 % and Q3 INT3 budget | `results/task1/`, `task1_splits/` |
+| `kaggle/task2.ipynb` | `PARTS` (`A`, `B`, `AB`, `C`), `ONLY` (run-name prefix) | none (MQAR files come from the data repo; KV cases too) | A: operator benchmark alone on GPU 0. B: 39 B1/B2 runs + B3 (2 workers per T4, finished runs skipped, resume from last checkpoint). C: `kv_eval` (GPU 0) ∥ MQAR forward sweep (GPU 1), then `kv_bench` | `results/task2/`, `task2_splits/`, `outputs/task2/mqar/` |
+| `kaggle/task3.ipynb` | `STAGE` (`1`, `2`, `3`) | same private dataset as Task 1; stage 2 optionally stage 1's output; stage 3 stage 2's output + `prefix_banks_locked.jsonl.gz` | 1: model checks, step costs, original-draft spec eval (GPU 0) ∥ generated banks + teacher pool (GPU 1). 2: off-policy chain (GPU 0) ∥ on-policy chain (GPU 1): distill both seeds → merge → own-rollout banks → merged spec eval (+ one unmerged timing). 3: alignment + standalone original/off-policy (GPU 0) ∥ standalone target/on-policy (GPU 1) | `results/task3/`, `outputs/task3/` |
+
+A run's cell exits non-zero if any job wrote `failed.log`, so a "failed" version always means a real failure (its
+log is in `results/<task>/logs/`). Results were copied from the Output tab into `results/` and committed with
+their logs (`results/<task>/logs_*`). Every table and figure is then made on CPU with `python -m taskN.make_tables`.
+`kaggle/setup.ipynb`, `kaggle/run_queue.py` and `kaggle/probe_env.py` are empty placeholders and were not used.
 
 ## Attribution
 
