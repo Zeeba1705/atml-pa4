@@ -1,0 +1,113 @@
+{
+  "git_commit": "c288929c26698d96ea8541c1cc69375390022555",
+  "seed": 6304,
+  "device": "cuda",
+  "gpu_name": "Tesla T4",
+  "dtype": "float16",
+  "attn_implementation": "sdpa",
+  "sdpa": {
+    "flash_enabled": true,
+    "mem_efficient_enabled": true,
+    "math_enabled": true,
+    "compute_capability": "7.5"
+  },
+  "torch": "2.11.0+cu130",
+  "transformers": "4.57.1",
+  "cuda": "13.0",
+  "model": "Qwen/Qwen2.5-0.5B-Instruct",
+  "model_revision": "7ae557604adf67be50417f59c2c2f167def9a775",
+  "model_name": "original",
+  "draft_path": null,
+  "smoke": false,
+  "caps": {
+    "math": 512,
+    "short": 32
+  },
+  "reps": 2,
+  "seed_rule": "6304 + 10007*j + 7000 + 100*rep",
+  "temperature": 1.0,
+  "top_p": 1.0,
+  "scoring": "decision 3.16",
+  "generation_seconds_this_run": 1300.3060145250001,
+  "peak_allocated_bytes": 1022374400,
+  "by_split": {
+    "math": {
+      "n": 120,
+      "accuracy": 0.39166666666666666,
+      "truncated": 0.14166666666666666,
+      "mean_tokens": 312.44166666666666,
+      "extractable": 1.0,
+      "correct_and_not_truncated": 0.38333333333333336
+    },
+    "familiar": {
+      "n": 60,
+      "accuracy": 0.31666666666666665,
+      "truncated": 0.36666666666666664,
+      "mean_tokens": 16.366666666666667,
+      "compliant": 0.3333333333333333,
+      "accuracy_lenient": 0.8166666666666667
+    },
+    "shifted": {
+      "n": 60,
+      "accuracy": 0.8833333333333333,
+      "truncated": 0.05,
+      "mean_tokens": 5.4,
+      "compliant": 0.8833333333333333,
+      "accuracy_lenient": 0.95
+    }
+  },
+  "by_split_per_rep": {
+    "0": {
+      "math": {
+        "n": 60,
+        "accuracy": 0.4,
+        "truncated": 0.15,
+        "mean_tokens": 308.81666666666666,
+        "extractable": 1.0,
+        "correct_and_not_truncated": 0.38333333333333336
+      },
+      "familiar": {
+        "n": 30,
+        "accuracy": 0.3333333333333333,
+        "truncated": 0.23333333333333334,
+        "mean_tokens": 14.333333333333334,
+        "compliant": 0.3333333333333333,
+        "accuracy_lenient": 0.9
+      },
+      "shifted": {
+        "n": 30,
+        "accuracy": 0.9666666666666667,
+        "truncated": 0.0,
+        "mean_tokens": 3.3333333333333335,
+        "compliant": 0.9666666666666667,
+        "accuracy_lenient": 1.0
+      }
+    },
+    "1": {
+      "math": {
+        "n": 60,
+        "accuracy": 0.38333333333333336,
+        "truncated": 0.13333333333333333,
+        "mean_tokens": 316.06666666666666,
+        "extractable": 1.0,
+        "correct_and_not_truncated": 0.38333333333333336
+      },
+      "familiar": {
+        "n": 30,
+        "accuracy": 0.3,
+        "truncated": 0.5,
+        "mean_tokens": 18.4,
+        "compliant": 0.3333333333333333,
+        "accuracy_lenient": 0.7333333333333333
+      },
+      "shifted": {
+        "n": 30,
+        "accuracy": 0.8,
+        "truncated": 0.1,
+        "mean_tokens": 7.466666666666667,
+        "compliant": 0.8,
+        "accuracy_lenient": 0.9
+      }
+    }
+  }
+}

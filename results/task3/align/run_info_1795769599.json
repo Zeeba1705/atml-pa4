@@ -1,0 +1,41 @@
+{
+  "git_commit": "c288929c26698d96ea8541c1cc69375390022555",
+  "seed": 6304,
+  "device": "cuda",
+  "gpu_name": "Tesla T4",
+  "dtype": "float16",
+  "attn_implementation": "sdpa",
+  "sdpa": {
+    "flash_enabled": true,
+    "mem_efficient_enabled": true,
+    "math_enabled": true,
+    "compute_capability": "7.5"
+  },
+  "torch": "2.11.0+cu130",
+  "transformers": "4.57.1",
+  "cuda": "13.0",
+  "model": "Qwen/Qwen2.5-1.5B-Instruct",
+  "model_revision": "989aa7980e4cf806f80c7fef2b1adb7bc71aa306",
+  "drafts": [
+    "original",
+    "off_policy_s6304",
+    "off_policy_s6305",
+    "on_policy_s6304",
+    "on_policy_s6305"
+  ],
+  "banks_scored": [
+    "exact_spec_original_gamma4",
+    "student_off_policy_s6304",
+    "student_off_policy_s6305",
+    "student_on_policy_s6304",
+    "student_on_policy_s6305",
+    "supplied_original_draft",
+    "supplied_teacher",
+    "teacher_pure"
+  ],
+  "banks_missing": [],
+  "smoke": false,
+  "metrics": "fkl = KL(p_target || q_draft), rkl = KL(q || p), tv, greedy agreement, 1 - tv; temperature 1, full vocab, fp32",
+  "denominator": "one next-token distribution per bank record (token-weighted means)",
+  "peak_allocated_bytes": 8295047168
+}

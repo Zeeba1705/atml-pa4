@@ -1,0 +1,157 @@
+Using device: cuda
+`torch_dtype` is deprecated! Use `dtype` instead!
+teacher_pure: 20/120 prompts, 150s
+teacher_pure: 40/120 prompts, 294s
+teacher_pure: 60/120 prompts, 442s
+teacher_pure: 80/120 prompts, 461s
+teacher_pure: 100/120 prompts, 475s
+teacher_pure: 120/120 prompts, 495s
+teacher_pure: 3499 records from 120 prompts -> /kaggle/working/outputs/task3/banks/teacher_pure.jsonl.gz
+Using device: cuda
+`torch_dtype` is deprecated! Use `dtype` instead!
+exact_spec_original_gamma4: 20/120 prompts, 165s
+exact_spec_original_gamma4: 40/120 prompts, 329s
+exact_spec_original_gamma4: 60/120 prompts, 490s
+exact_spec_original_gamma4: 80/120 prompts, 514s
+exact_spec_original_gamma4: 100/120 prompts, 533s
+exact_spec_original_gamma4: 120/120 prompts, 556s
+exact_spec_original_gamma4: 3449 records from 120 prompts -> /kaggle/working/outputs/task3/banks/exact_spec_original_gamma4.jsonl.gz
+Using device: cuda
+`torch_dtype` is deprecated! Use `dtype` instead!
+teacher pool 100/800, 724s
+teacher pool 200/800, 1451s
+teacher pool 300/800, 2191s
+teacher pool 400/800, 2891s
+teacher pool 500/800, 3602s
+teacher pool 600/800, 3665s
+teacher pool 700/800, 3731s
+teacher pool 800/800, 3791s
+teacher pool: 800 responses, {'math': 90271, 'short': 4526} tokens, 3791s -> /kaggle/working/outputs/task3/teacher_pool.jsonl.gz
+Using device: cuda
+`torch_dtype` is deprecated! Use `dtype` instead!
+speed 67.4 ms per scored token, about 43.5 min left
+on_policy_s6304 update 20: kl/token=0.1992, scored 5120/40000, 308s
+on_policy_s6304 update 40: kl/token=0.2320, scored 10240/40000, 608s
+on_policy_s6304 update 60: kl/token=0.1794, scored 15360/40000, 897s
+on_policy_s6304 update 80: kl/token=0.1562, scored 20480/40000, 1198s
+on_policy_s6304 update 100: kl/token=0.1839, scored 25600/40000, 1502s
+on_policy_s6304 update 120: kl/token=0.1732, scored 30720/40000, 1794s
+on_policy_s6304 update 140: kl/token=0.1686, scored 35840/40000, 2145s
+on_policy_s6304: 157 updates (1 skipped), 840 presentations, 2447s -> /kaggle/working/outputs/task3/adapters/on_policy_s6304
+Using device: cuda
+`torch_dtype` is deprecated! Use `dtype` instead!
+speed 58.7 ms per scored token, about 37.9 min left
+on_policy_s6305 update 20: kl/token=0.2389, scored 5120/40000, 295s
+on_policy_s6305 update 40: kl/token=0.1605, scored 10240/40000, 586s
+on_policy_s6305 update 60: kl/token=0.1682, scored 15360/40000, 882s
+on_policy_s6305 update 80: kl/token=0.1727, scored 20480/40000, 1165s
+on_policy_s6305 update 100: kl/token=0.1887, scored 25600/40000, 1448s
+on_policy_s6305 update 120: kl/token=0.1561, scored 30720/40000, 1739s
+on_policy_s6305 update 140: kl/token=0.1780, scored 35840/40000, 2075s
+on_policy_s6305: 157 updates (1 skipped), 810 presentations, 2365s -> /kaggle/working/outputs/task3/adapters/on_policy_s6305
+Using device: cuda
+`torch_dtype` is deprecated! Use `dtype` instead!
+on_policy_s6304: merged in 0.04s, max |logit diff| merged vs unmerged 1.797e-01 -> /kaggle/working/outputs/task3/merged/on_policy_s6304
+Using device: cuda
+`torch_dtype` is deprecated! Use `dtype` instead!
+student_on_policy_s6304: 20/120 prompts, 128s
+student_on_policy_s6304: 40/120 prompts, 255s
+student_on_policy_s6304: 60/120 prompts, 380s
+student_on_policy_s6304: 80/120 prompts, 406s
+student_on_policy_s6304: 100/120 prompts, 421s
+student_on_policy_s6304: 120/120 prompts, 426s
+student_on_policy_s6304: 3480 records from 120 prompts -> /kaggle/working/outputs/task3/banks/student_on_policy_s6304.jsonl.gz
+Using device: cuda
+`torch_dtype` is deprecated! Use `dtype` instead!
+on_policy_s6305: merged in 0.04s, max |logit diff| merged vs unmerged 1.719e-01 -> /kaggle/working/outputs/task3/merged/on_policy_s6305
+Using device: cuda
+`torch_dtype` is deprecated! Use `dtype` instead!
+student_on_policy_s6305: 20/120 prompts, 134s
+student_on_policy_s6305: 40/120 prompts, 265s
+student_on_policy_s6305: 60/120 prompts, 388s
+student_on_policy_s6305: 80/120 prompts, 405s
+student_on_policy_s6305: 100/120 prompts, 424s
+student_on_policy_s6305: 120/120 prompts, 428s
+student_on_policy_s6305: 3479 records from 120 prompts -> /kaggle/working/outputs/task3/banks/student_on_policy_s6305.jsonl.gz
+Using device: cuda
+`torch_dtype` is deprecated! Use `dtype` instead!
+checks ok, worst prob diff 3.06e-03
+step costs L=64: target 39.33 ms, draft 33.16 ms, c=0.843, v={'2': 1.0328292797479337, '4': 1.0284525832150675}
+step costs L=256: target 39.32 ms, draft 33.78 ms, c=0.859, v={'2': 1.0391349725524621, '4': 1.0249657763586442}
+step costs L=512: target 37.93 ms, draft 33.25 ms, c=0.877, v={'2': 1.037899925743525, '4': 1.0050869263610884}
+step costs L=1024: target 39.74 ms, draft 32.07 ms, c=0.807, v={'2': 0.9658892668887639, '4': 0.97023333868666}
+on_policy_s6304 main gamma=2 rep=0: accepted/examined=0.875, target passes/token=0.387, median tok/s ratio=0.949, 414s
+on_policy_s6304 main gamma=2 rep=1: accepted/examined=0.877, target passes/token=0.389, median tok/s ratio=0.931, 415s
+on_policy_s6304 main gamma=4 rep=0: accepted/examined=0.886, target passes/token=0.264, median tok/s ratio=0.864, 425s
+on_policy_s6304 main gamma=4 rep=1: accepted/examined=0.873, target passes/token=0.272, median tok/s ratio=0.841, 432s
+on_policy_s6304 decomp gamma=2 rep=0: accepted/examined=0.867, target passes/token=0.391, median tok/s ratio=0.940, 404s
+on_policy_s6304 decomp gamma=4 rep=0: accepted/examined=0.886, target passes/token=0.265, median tok/s ratio=0.871, 417s
+on_policy_s6304 diag gamma=2 rep=0: accepted/examined=0.901, target passes/token=0.375, median tok/s ratio=1.040, 124s
+on_policy_s6304 diag gamma=2 rep=1: accepted/examined=0.873, target passes/token=0.385, median tok/s ratio=0.997, 127s
+on_policy_s6304 diag gamma=4 rep=0: accepted/examined=0.890, target passes/token=0.259, median tok/s ratio=0.921, 131s
+on_policy_s6304 diag gamma=4 rep=1: accepted/examined=0.896, target passes/token=0.255, median tok/s ratio=0.941, 131s
+Using device: cuda
+`torch_dtype` is deprecated! Use `dtype` instead!
+checks ok, worst prob diff 3.06e-03
+step costs L=64: target 38.58 ms, draft 32.94 ms, c=0.854, v={'2': 1.0146324432881233, '4': 0.9460854334433442}
+step costs L=256: target 39.77 ms, draft 33.54 ms, c=0.843, v={'2': 1.024929713374221, '4': 0.9401781199169864}
+step costs L=512: target 38.94 ms, draft 33.00 ms, c=0.847, v={'2': 0.9879546884528574, '4': 0.9574657005063976}
+step costs L=1024: target 39.67 ms, draft 33.42 ms, c=0.842, v={'2': 1.021523647199096, '4': 1.037070460843173}
+on_policy_s6305 main gamma=2 rep=0: accepted/examined=0.860, target passes/token=0.396, median tok/s ratio=0.913, 408s
+on_policy_s6305 main gamma=2 rep=1: accepted/examined=0.856, target passes/token=0.398, median tok/s ratio=0.916, 416s
+on_policy_s6305 main gamma=4 rep=0: accepted/examined=0.861, target passes/token=0.278, median tok/s ratio=0.826, 419s
+on_policy_s6305 main gamma=4 rep=1: accepted/examined=0.871, target passes/token=0.272, median tok/s ratio=0.855, 424s
+on_policy_s6305 decomp gamma=2 rep=0: accepted/examined=0.856, target passes/token=0.395, median tok/s ratio=0.921, 394s
+on_policy_s6305 decomp gamma=4 rep=0: accepted/examined=0.873, target passes/token=0.272, median tok/s ratio=0.857, 416s
+on_policy_s6305 diag gamma=2 rep=0: accepted/examined=0.882, target passes/token=0.382, median tok/s ratio=1.006, 123s
+on_policy_s6305 diag gamma=2 rep=1: accepted/examined=0.859, target passes/token=0.393, median tok/s ratio=0.974, 124s
+on_policy_s6305 diag gamma=4 rep=0: accepted/examined=0.876, target passes/token=0.266, median tok/s ratio=0.885, 131s
+on_policy_s6305 diag gamma=4 rep=1: accepted/examined=0.894, target passes/token=0.252, median tok/s ratio=0.933, 127s
+Using device: cuda
+`torch_dtype` is deprecated! Use `dtype` instead!
+target rep 0: 20/120 prompts, 230s
+target rep 0: 40/120 prompts, 462s
+target rep 0: 60/120 prompts, 688s
+target rep 0: 80/120 prompts, 703s
+target rep 0: 100/120 prompts, 715s
+target rep 0: 120/120 prompts, 723s
+target rep 0: math acc 0.617, familiar acc 0.367, shifted acc 0.700
+target rep 1: 20/120 prompts, 1000s
+target rep 1: 40/120 prompts, 1231s
+target rep 1: 60/120 prompts, 1447s
+target rep 1: 80/120 prompts, 1462s
+target rep 1: 100/120 prompts, 1473s
+target rep 1: 120/120 prompts, 1482s
+target rep 1: math acc 0.550, familiar acc 0.333, shifted acc 0.700
+Using device: cuda
+`torch_dtype` is deprecated! Use `dtype` instead!
+on_policy_s6304 rep 0: 20/120 prompts, 250s
+on_policy_s6304 rep 0: 40/120 prompts, 455s
+on_policy_s6304 rep 0: 60/120 prompts, 662s
+on_policy_s6304 rep 0: 80/120 prompts, 675s
+on_policy_s6304 rep 0: 100/120 prompts, 685s
+on_policy_s6304 rep 0: 120/120 prompts, 690s
+on_policy_s6304 rep 0: math acc 0.250, familiar acc 0.333, shifted acc 0.800
+on_policy_s6304 rep 1: 20/120 prompts, 909s
+on_policy_s6304 rep 1: 40/120 prompts, 1136s
+on_policy_s6304 rep 1: 60/120 prompts, 1350s
+on_policy_s6304 rep 1: 80/120 prompts, 1363s
+on_policy_s6304 rep 1: 100/120 prompts, 1371s
+on_policy_s6304 rep 1: 120/120 prompts, 1375s
+on_policy_s6304 rep 1: math acc 0.367, familiar acc 0.333, shifted acc 0.767
+Using device: cuda
+`torch_dtype` is deprecated! Use `dtype` instead!
+on_policy_s6305 rep 0: 20/120 prompts, 281s
+on_policy_s6305 rep 0: 40/120 prompts, 520s
+on_policy_s6305 rep 0: 60/120 prompts, 750s
+on_policy_s6305 rep 0: 80/120 prompts, 764s
+on_policy_s6305 rep 0: 100/120 prompts, 772s
+on_policy_s6305 rep 0: 120/120 prompts, 776s
+on_policy_s6305 rep 0: math acc 0.150, familiar acc 0.333, shifted acc 0.833
+on_policy_s6305 rep 1: 20/120 prompts, 1037s
+on_policy_s6305 rep 1: 40/120 prompts, 1308s
+on_policy_s6305 rep 1: 60/120 prompts, 1562s
+on_policy_s6305 rep 1: 80/120 prompts, 1574s
+on_policy_s6305 rep 1: 100/120 prompts, 1582s
+on_policy_s6305 rep 1: 120/120 prompts, 1587s
+on_policy_s6305 rep 1: math acc 0.200, familiar acc 0.333, shifted acc 0.800

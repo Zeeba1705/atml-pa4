@@ -1,0 +1,232 @@
+Using device: cuda
+`torch_dtype` is deprecated! Use `dtype` instead!
+checks ok, worst prob diff 3.39e-03
+step costs L=64: target 41.37 ms, draft 32.87 ms, c=0.795, v={'2': 1.005565826832258, '4': 0.9209178281263618}
+step costs L=256: target 42.44 ms, draft 32.64 ms, c=0.769, v={'2': 0.9134861733194725, '4': 0.9020404569838207}
+step costs L=512: target 40.77 ms, draft 34.60 ms, c=0.849, v={'2': 0.9353002102653603, '4': 0.9979091193689827}
+step costs L=1024: target 40.20 ms, draft 35.44 ms, c=0.882, v={'2': 1.0060040005934185, '4': 1.0845551092658323}
+original main gamma=2 rep=0: accepted/examined=0.871, target passes/token=0.390, median tok/s ratio=0.917, 418s
+original main gamma=2 rep=1: accepted/examined=0.872, target passes/token=0.390, median tok/s ratio=0.928, 421s
+original main gamma=4 rep=0: accepted/examined=0.866, target passes/token=0.275, median tok/s ratio=0.837, 439s
+original main gamma=4 rep=1: accepted/examined=0.870, target passes/token=0.272, median tok/s ratio=0.838, 446s
+original decomp gamma=2 rep=0: accepted/examined=0.859, target passes/token=0.395, median tok/s ratio=0.908, 407s
+original decomp gamma=4 rep=0: accepted/examined=0.876, target passes/token=0.271, median tok/s ratio=0.841, 413s
+original diag gamma=2 rep=0: accepted/examined=0.894, target passes/token=0.376, median tok/s ratio=1.002, 126s
+original diag gamma=2 rep=1: accepted/examined=0.892, target passes/token=0.379, median tok/s ratio=1.015, 130s
+original diag gamma=4 rep=0: accepted/examined=0.867, target passes/token=0.271, median tok/s ratio=0.904, 139s
+original diag gamma=4 rep=1: accepted/examined=0.877, target passes/token=0.264, median tok/s ratio=0.902, 134s
+Using device: cuda
+/kaggle/working/outputs/task3/teacher_pool.jsonl.gz exists, skipping
+Using device: cuda
+`torch_dtype` is deprecated! Use `dtype` instead!
+speed 4.0 ms per scored token, about 2.6 min left
+off_policy_s6304 update 20: kl/token=0.1080, scored 5120/40000, 17s
+off_policy_s6304 update 40: kl/token=0.1060, scored 10240/40000, 33s
+off_policy_s6304 update 60: kl/token=0.0997, scored 15360/40000, 48s
+off_policy_s6304 update 80: kl/token=0.1081, scored 20480/40000, 64s
+off_policy_s6304 update 100: kl/token=0.1051, scored 25600/40000, 79s
+off_policy_s6304 update 120: kl/token=0.0906, scored 30720/40000, 95s
+off_policy_s6304 update 140: kl/token=0.1293, scored 35840/40000, 150s
+off_policy_s6304: 157 updates (0 skipped), 829 presentations, 212s -> /kaggle/working/outputs/task3/adapters/off_policy_s6304
+Using device: cuda
+`torch_dtype` is deprecated! Use `dtype` instead!
+speed 3.2 ms per scored token, about 2.1 min left
+off_policy_s6305 update 20: kl/token=0.1314, scored 5120/40000, 15s
+off_policy_s6305 update 40: kl/token=0.1083, scored 10240/40000, 30s
+off_policy_s6305 update 60: kl/token=0.1057, scored 15360/40000, 46s
+off_policy_s6305 update 80: kl/token=0.0799, scored 20480/40000, 60s
+off_policy_s6305 update 100: kl/token=0.1022, scored 25600/40000, 75s
+off_policy_s6305 update 120: kl/token=0.0987, scored 30720/40000, 90s
+off_policy_s6305 update 140: kl/token=0.1331, scored 35840/40000, 146s
+off_policy_s6305: 157 updates (1 skipped), 833 presentations, 206s -> /kaggle/working/outputs/task3/adapters/off_policy_s6305
+Using device: cuda
+`torch_dtype` is deprecated! Use `dtype` instead!
+off_policy_s6304: merged in 0.04s, max |logit diff| merged vs unmerged 2.031e-01 -> /kaggle/working/outputs/task3/merged/off_policy_s6304
+Using device: cuda
+`torch_dtype` is deprecated! Use `dtype` instead!
+student_off_policy_s6304: 20/120 prompts, 130s
+student_off_policy_s6304: 40/120 prompts, 249s
+student_off_policy_s6304: 60/120 prompts, 372s
+student_off_policy_s6304: 80/120 prompts, 390s
+student_off_policy_s6304: 100/120 prompts, 399s
+student_off_policy_s6304: 120/120 prompts, 403s
+student_off_policy_s6304: 3334 records from 120 prompts -> /kaggle/working/outputs/task3/banks/student_off_policy_s6304.jsonl.gz
+Using device: cuda
+`torch_dtype` is deprecated! Use `dtype` instead!
+off_policy_s6305: merged in 0.05s, max |logit diff| merged vs unmerged 2.344e-01 -> /kaggle/working/outputs/task3/merged/off_policy_s6305
+Using device: cuda
+`torch_dtype` is deprecated! Use `dtype` instead!
+student_off_policy_s6305: 20/120 prompts, 132s
+student_off_policy_s6305: 40/120 prompts, 257s
+student_off_policy_s6305: 60/120 prompts, 375s
+student_off_policy_s6305: 80/120 prompts, 394s
+student_off_policy_s6305: 100/120 prompts, 407s
+student_off_policy_s6305: 120/120 prompts, 411s
+student_off_policy_s6305: 3456 records from 120 prompts -> /kaggle/working/outputs/task3/banks/student_off_policy_s6305.jsonl.gz
+Using device: cuda
+`torch_dtype` is deprecated! Use `dtype` instead!
+checks ok, worst prob diff 3.06e-03
+step costs L=64: target 39.04 ms, draft 32.51 ms, c=0.833, v={'2': 1.0470874911766337, '4': 1.0827931962061874}
+step costs L=256: target 39.66 ms, draft 34.11 ms, c=0.860, v={'2': 0.9691167153093015, '4': 0.9845136498432158}
+step costs L=512: target 39.59 ms, draft 33.57 ms, c=0.848, v={'2': 1.0672340577573092, '4': 1.0716667748285964}
+step costs L=1024: target 40.56 ms, draft 34.78 ms, c=0.858, v={'2': 1.0598050690028977, '4': 1.0384628514243137}
+off_policy_s6304 main gamma=2 rep=0: accepted/examined=0.870, target passes/token=0.389, median tok/s ratio=0.948, 419s
+off_policy_s6304 main gamma=2 rep=1: accepted/examined=0.867, target passes/token=0.391, median tok/s ratio=0.930, 415s
+off_policy_s6304 main gamma=4 rep=0: accepted/examined=0.878, target passes/token=0.269, median tok/s ratio=0.857, 428s
+off_policy_s6304 main gamma=4 rep=1: accepted/examined=0.874, target passes/token=0.272, median tok/s ratio=0.877, 433s
+off_policy_s6304 decomp gamma=2 rep=0: accepted/examined=0.872, target passes/token=0.389, median tok/s ratio=0.945, 401s
+off_policy_s6304 decomp gamma=4 rep=0: accepted/examined=0.884, target passes/token=0.266, median tok/s ratio=0.885, 425s
+off_policy_s6304 diag gamma=2 rep=0: accepted/examined=0.890, target passes/token=0.378, median tok/s ratio=1.001, 125s
+off_policy_s6304 diag gamma=2 rep=1: accepted/examined=0.881, target passes/token=0.383, median tok/s ratio=0.990, 126s
+off_policy_s6304 diag gamma=4 rep=0: accepted/examined=0.871, target passes/token=0.266, median tok/s ratio=0.870, 133s
+off_policy_s6304 diag gamma=4 rep=1: accepted/examined=0.889, target passes/token=0.257, median tok/s ratio=0.909, 132s
+Using device: cuda
+`torch_dtype` is deprecated! Use `dtype` instead!
+checks ok, worst prob diff 3.21e-03
+step costs L=64: target 37.66 ms, draft 31.85 ms, c=0.846, v={'2': 1.0517105227114016, '4': 1.0104399466260012}
+step costs L=256: target 40.81 ms, draft 34.56 ms, c=0.847, v={'2': 0.9125061559740519, '4': 0.9752997253516487}
+step costs L=512: target 38.48 ms, draft 32.34 ms, c=0.840, v={'2': 1.0355861311547119, '4': 0.9741549800589885}
+step costs L=1024: target 38.37 ms, draft 32.02 ms, c=0.834, v={'2': 1.0388607219836863, '4': 0.9963423823199488}
+off_policy_s6305 main gamma=2 rep=0: accepted/examined=0.875, target passes/token=0.388, median tok/s ratio=0.938, 409s
+off_policy_s6305 main gamma=2 rep=1: accepted/examined=0.855, target passes/token=0.396, median tok/s ratio=0.922, 415s
+off_policy_s6305 main gamma=4 rep=0: accepted/examined=0.879, target passes/token=0.269, median tok/s ratio=0.851, 419s
+off_policy_s6305 main gamma=4 rep=1: accepted/examined=0.883, target passes/token=0.265, median tok/s ratio=0.876, 427s
+off_policy_s6305 decomp gamma=2 rep=0: accepted/examined=0.876, target passes/token=0.388, median tok/s ratio=0.947, 391s
+off_policy_s6305 decomp gamma=4 rep=0: accepted/examined=0.886, target passes/token=0.264, median tok/s ratio=0.887, 417s
+off_policy_s6305 diag gamma=2 rep=0: accepted/examined=0.900, target passes/token=0.374, median tok/s ratio=1.008, 123s
+off_policy_s6305 diag gamma=2 rep=1: accepted/examined=0.884, target passes/token=0.382, median tok/s ratio=0.972, 123s
+off_policy_s6305 diag gamma=4 rep=0: accepted/examined=0.882, target passes/token=0.263, median tok/s ratio=0.888, 131s
+off_policy_s6305 diag gamma=4 rep=1: accepted/examined=0.902, target passes/token=0.251, median tok/s ratio=0.944, 126s
+Using device: cuda
+`torch_dtype` is deprecated! Use `dtype` instead!
+checks ok, worst prob diff 3.06e-03
+step costs L=64: target 40.17 ms, draft 53.00 ms, c=1.320, v={'2': 1.0668577249124283, '4': 1.0587621733823995}
+step costs L=256: target 39.93 ms, draft 51.25 ms, c=1.284, v={'2': 0.96143498863317, '4': 0.9686014035956709}
+step costs L=512: target 39.54 ms, draft 51.40 ms, c=1.300, v={'2': 0.9766097663611443, '4': 0.9671684513739204}
+step costs L=1024: target 40.54 ms, draft 51.40 ms, c=1.268, v={'2': 0.9933371023899141, '4': 1.0164700943609963}
+unmerged_off_policy_s6304 main gamma=2 rep=0: accepted/examined=0.872, target passes/token=0.389, median tok/s ratio=0.708, 489s
+unmerged_off_policy_s6304 main gamma=2 rep=1: accepted/examined=0.866, target passes/token=0.391, median tok/s ratio=0.701, 491s
+unmerged_off_policy_s6304 main gamma=4 rep=0: accepted/examined=0.879, target passes/token=0.269, median tok/s ratio=0.609, 530s
+unmerged_off_policy_s6304 main gamma=4 rep=1: accepted/examined=0.873, target passes/token=0.271, median tok/s ratio=0.627, 539s
+Using device: cuda
+`torch_dtype` is deprecated! Use `dtype` instead!
+supplied_teacher: 30/120 prompts, 10s
+supplied_teacher: 60/120 prompts, 19s
+supplied_teacher: 90/120 prompts, 27s
+supplied_teacher: 120/120 prompts, 34s
+supplied_teacher / original: n=3718 fkl 0.2119 tv 0.1364 1-tv 0.8636 greedy 0.8685
+supplied_teacher / off_policy_s6304: n=3718 fkl 0.1797 tv 0.1327 1-tv 0.8673 greedy 0.8739
+supplied_teacher / off_policy_s6305: n=3718 fkl 0.1773 tv 0.1295 1-tv 0.8705 greedy 0.8817
+supplied_teacher / on_policy_s6304: n=3718 fkl 0.1754 tv 0.1338 1-tv 0.8662 greedy 0.8757
+supplied_teacher / on_policy_s6305: n=3718 fkl 0.1786 tv 0.1423 1-tv 0.8577 greedy 0.8760
+supplied_original_draft: 30/120 prompts, 9s
+supplied_original_draft: 60/120 prompts, 18s
+supplied_original_draft: 90/120 prompts, 26s
+supplied_original_draft: 120/120 prompts, 33s
+supplied_original_draft / original: n=3934 fkl 0.3012 tv 0.1750 1-tv 0.8250 greedy 0.8254
+supplied_original_draft / off_policy_s6304: n=3934 fkl 0.2505 tv 0.1669 1-tv 0.8331 greedy 0.8340
+supplied_original_draft / off_policy_s6305: n=3934 fkl 0.2564 tv 0.1659 1-tv 0.8341 greedy 0.8371
+supplied_original_draft / on_policy_s6304: n=3934 fkl 0.2400 tv 0.1667 1-tv 0.8333 greedy 0.8345
+supplied_original_draft / on_policy_s6305: n=3934 fkl 0.2399 tv 0.1714 1-tv 0.8286 greedy 0.8388
+teacher_pure: 30/120 prompts, 9s
+teacher_pure: 60/120 prompts, 18s
+teacher_pure: 90/120 prompts, 26s
+teacher_pure: 120/120 prompts, 33s
+teacher_pure / original: n=3499 fkl 0.1932 tv 0.1194 1-tv 0.8806 greedy 0.8863
+teacher_pure / off_policy_s6304: n=3499 fkl 0.1661 tv 0.1161 1-tv 0.8839 greedy 0.8917
+teacher_pure / off_policy_s6305: n=3499 fkl 0.1657 tv 0.1133 1-tv 0.8867 greedy 0.8974
+teacher_pure / on_policy_s6304: n=3499 fkl 0.1688 tv 0.1191 1-tv 0.8809 greedy 0.8885
+teacher_pure / on_policy_s6305: n=3499 fkl 0.1713 tv 0.1278 1-tv 0.8722 greedy 0.8894
+exact_spec_original_gamma4: 30/120 prompts, 9s
+exact_spec_original_gamma4: 60/120 prompts, 18s
+exact_spec_original_gamma4: 90/120 prompts, 25s
+exact_spec_original_gamma4: 120/120 prompts, 33s
+exact_spec_original_gamma4 / original: n=3449 fkl 0.1571 tv 0.1071 1-tv 0.8929 greedy 0.9029
+exact_spec_original_gamma4 / off_policy_s6304: n=3449 fkl 0.1306 tv 0.1022 1-tv 0.8978 greedy 0.9139
+exact_spec_original_gamma4 / off_policy_s6305: n=3449 fkl 0.1289 tv 0.1001 1-tv 0.8999 greedy 0.9159
+exact_spec_original_gamma4 / on_policy_s6304: n=3449 fkl 0.1327 tv 0.1045 1-tv 0.8955 greedy 0.9159
+exact_spec_original_gamma4 / on_policy_s6305: n=3449 fkl 0.1350 tv 0.1128 1-tv 0.8872 greedy 0.9136
+student_off_policy_s6304: 30/120 prompts, 9s
+student_off_policy_s6304: 60/120 prompts, 18s
+student_off_policy_s6304: 90/120 prompts, 25s
+student_off_policy_s6304: 120/120 prompts, 32s
+student_off_policy_s6304 / original: n=3334 fkl 0.2513 tv 0.1450 1-tv 0.8550 greedy 0.8551
+student_off_policy_s6304 / off_policy_s6304: n=3334 fkl 0.2144 tv 0.1379 1-tv 0.8621 greedy 0.8668
+student_off_policy_s6304 / off_policy_s6305: n=3334 fkl 0.2199 tv 0.1385 1-tv 0.8615 greedy 0.8614
+student_off_policy_s6304 / on_policy_s6304: n=3334 fkl 0.2081 tv 0.1391 1-tv 0.8609 greedy 0.8626
+student_off_policy_s6304 / on_policy_s6305: n=3334 fkl 0.2072 tv 0.1462 1-tv 0.8538 greedy 0.8656
+student_off_policy_s6305: 30/120 prompts, 9s
+student_off_policy_s6305: 60/120 prompts, 18s
+student_off_policy_s6305: 90/120 prompts, 26s
+student_off_policy_s6305: 120/120 prompts, 33s
+student_off_policy_s6305 / original: n=3456 fkl 0.2437 tv 0.1433 1-tv 0.8567 greedy 0.8550
+student_off_policy_s6305 / off_policy_s6304: n=3456 fkl 0.1990 tv 0.1351 1-tv 0.8649 greedy 0.8678
+student_off_policy_s6305 / off_policy_s6305: n=3456 fkl 0.2049 tv 0.1338 1-tv 0.8662 greedy 0.8701
+student_off_policy_s6305 / on_policy_s6304: n=3456 fkl 0.2004 tv 0.1373 1-tv 0.8627 greedy 0.8695
+student_off_policy_s6305 / on_policy_s6305: n=3456 fkl 0.1962 tv 0.1434 1-tv 0.8566 greedy 0.8701
+student_on_policy_s6304: 30/120 prompts, 9s
+student_on_policy_s6304: 60/120 prompts, 18s
+student_on_policy_s6304: 90/120 prompts, 26s
+student_on_policy_s6304: 120/120 prompts, 33s
+student_on_policy_s6304 / original: n=3480 fkl 0.2299 tv 0.1399 1-tv 0.8601 greedy 0.8776
+student_on_policy_s6304 / off_policy_s6304: n=3480 fkl 0.1937 tv 0.1341 1-tv 0.8659 greedy 0.8799
+student_on_policy_s6304 / off_policy_s6305: n=3480 fkl 0.1962 tv 0.1330 1-tv 0.8670 greedy 0.8767
+student_on_policy_s6304 / on_policy_s6304: n=3480 fkl 0.1901 tv 0.1337 1-tv 0.8663 greedy 0.8819
+student_on_policy_s6304 / on_policy_s6305: n=3480 fkl 0.1922 tv 0.1429 1-tv 0.8571 greedy 0.8825
+student_on_policy_s6305: 30/120 prompts, 9s
+student_on_policy_s6305: 60/120 prompts, 18s
+student_on_policy_s6305: 90/120 prompts, 26s
+student_on_policy_s6305: 120/120 prompts, 33s
+student_on_policy_s6305 / original: n=3479 fkl 0.2920 tv 0.1678 1-tv 0.8322 greedy 0.8387
+student_on_policy_s6305 / off_policy_s6304: n=3479 fkl 0.2416 tv 0.1587 1-tv 0.8413 greedy 0.8439
+student_on_policy_s6305 / off_policy_s6305: n=3479 fkl 0.2470 tv 0.1579 1-tv 0.8421 greedy 0.8396
+student_on_policy_s6305 / on_policy_s6304: n=3479 fkl 0.2345 tv 0.1583 1-tv 0.8417 greedy 0.8419
+student_on_policy_s6305 / on_policy_s6305: n=3479 fkl 0.2280 tv 0.1627 1-tv 0.8373 greedy 0.8520
+Using device: cuda
+`torch_dtype` is deprecated! Use `dtype` instead!
+original rep 0: 20/120 prompts, 219s
+original rep 0: 40/120 prompts, 423s
+original rep 0: 60/120 prompts, 618s
+original rep 0: 80/120 prompts, 629s
+original rep 0: 100/120 prompts, 636s
+original rep 0: 120/120 prompts, 639s
+original rep 0: math acc 0.400, familiar acc 0.333, shifted acc 0.967
+original rep 1: 20/120 prompts, 869s
+original rep 1: 40/120 prompts, 1069s
+original rep 1: 60/120 prompts, 1272s
+original rep 1: 80/120 prompts, 1285s
+original rep 1: 100/120 prompts, 1295s
+original rep 1: 120/120 prompts, 1300s
+original rep 1: math acc 0.383, familiar acc 0.300, shifted acc 0.800
+Using device: cuda
+`torch_dtype` is deprecated! Use `dtype` instead!
+off_policy_s6304 rep 0: 20/120 prompts, 240s
+off_policy_s6304 rep 0: 40/120 prompts, 424s
+off_policy_s6304 rep 0: 60/120 prompts, 613s
+off_policy_s6304 rep 0: 80/120 prompts, 627s
+off_policy_s6304 rep 0: 100/120 prompts, 635s
+off_policy_s6304 rep 0: 120/120 prompts, 639s
+off_policy_s6304 rep 0: math acc 0.300, familiar acc 0.333, shifted acc 0.900
+off_policy_s6304 rep 1: 20/120 prompts, 850s
+off_policy_s6304 rep 1: 40/120 prompts, 1036s
+off_policy_s6304 rep 1: 60/120 prompts, 1225s
+off_policy_s6304 rep 1: 80/120 prompts, 1237s
+off_policy_s6304 rep 1: 100/120 prompts, 1243s
+off_policy_s6304 rep 1: 120/120 prompts, 1246s
+off_policy_s6304 rep 1: math acc 0.283, familiar acc 0.333, shifted acc 0.967
+Using device: cuda
+`torch_dtype` is deprecated! Use `dtype` instead!
+off_policy_s6305 rep 0: 20/120 prompts, 203s
+off_policy_s6305 rep 0: 40/120 prompts, 380s
+off_policy_s6305 rep 0: 60/120 prompts, 552s
+off_policy_s6305 rep 0: 80/120 prompts, 565s
+off_policy_s6305 rep 0: 100/120 prompts, 573s
+off_policy_s6305 rep 0: 120/120 prompts, 577s
+off_policy_s6305 rep 0: math acc 0.267, familiar acc 0.333, shifted acc 0.933
+off_policy_s6305 rep 1: 20/120 prompts, 776s
+off_policy_s6305 rep 1: 40/120 prompts, 972s
+off_policy_s6305 rep 1: 60/120 prompts, 1164s
+off_policy_s6305 rep 1: 80/120 prompts, 1176s
+off_policy_s6305 rep 1: 100/120 prompts, 1185s
+off_policy_s6305 rep 1: 120/120 prompts, 1188s
+off_policy_s6305 rep 1: math acc 0.217, familiar acc 0.333, shifted acc 0.933
