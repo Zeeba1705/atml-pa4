@@ -1,0 +1,5 @@
+run,method,seed,updates,skipped_updates,presentations,truncated_presentations,scored_math,scored_short,kl_first10_updates,kl_last10_updates,teacher_pool_generation_s,teacher_scoring_s,student_rollout_s,student_forward_backward_s,optimizer_step_s,training_wall_clock_s,merge_s,merge_max_abs_logit_error,upfront_total_s,student_params,adapter_params,peak_allocated_mib
+off_policy_s6304,off_policy,6304,157,0,829,2,30000,10000,0.1309,0.0971,3790.8,39.5,0.0,166.2,1.2,212.2,0.044,0.2031,4003.0,495114112,1081344,5113.4
+off_policy_s6305,off_policy,6305,157,1,833,2,30000,10000,0.1325,0.0993,3790.8,37.7,0.0,162.1,1.1,206.0,0.046,0.2344,3996.8,495114112,1081344,5211.9
+on_policy_s6304,on_policy,6304,157,1,840,2,30000,10000,0.1918,0.1909,0.0,38.0,2229.3,172.7,1.1,2446.5,0.04,0.1797,2446.5,495114112,1081344,5075.1
+on_policy_s6305,on_policy,6305,157,1,810,2,30000,10000,0.2605,0.1923,0.0,35.4,2161.1,161.9,1.1,2364.7,0.04,0.1719,2364.8,495114112,1081344,5216.2

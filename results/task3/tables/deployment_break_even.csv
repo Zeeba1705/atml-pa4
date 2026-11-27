@@ -1,0 +1,9 @@
+draft,gamma,upfront_s,saving_ms_per_request_vs_target_only,requests_to_break_even_vs_target_only,saving_ms_per_request_vs_original_draft,requests_to_break_even_vs_original_draft,note
+off_policy_s6304,2,4003.0,-13.5,never (speculative slower),-26.8,never (not faster than original draft),"64-token eos-aware requests, mean latency over 120 prompts x 2 reps; off-policy upfront includes the full teacher pool"
+off_policy_s6304,4,4003.0,-360.5,never (speculative slower),46.1,86834,"64-token eos-aware requests, mean latency over 120 prompts x 2 reps; off-policy upfront includes the full teacher pool"
+off_policy_s6305,2,3996.8,-8.6,never (speculative slower),-4.0,never (not faster than original draft),"64-token eos-aware requests, mean latency over 120 prompts x 2 reps; off-policy upfront includes the full teacher pool"
+off_policy_s6305,4,3996.8,-337.2,never (speculative slower),88.9,44959,"64-token eos-aware requests, mean latency over 120 prompts x 2 reps; off-policy upfront includes the full teacher pool"
+on_policy_s6304,2,2446.5,-9.6,never (speculative slower),-16.0,never (not faster than original draft),"64-token eos-aware requests, mean latency over 120 prompts x 2 reps; off-policy upfront includes the full teacher pool"
+on_policy_s6304,4,2446.5,-333.8,never (speculative slower),69.1,35406,"64-token eos-aware requests, mean latency over 120 prompts x 2 reps; off-policy upfront includes the full teacher pool"
+on_policy_s6305,2,2364.8,-1.5,never (speculative slower),0.0,never (not faster than original draft),"64-token eos-aware requests, mean latency over 120 prompts x 2 reps; off-policy upfront includes the full teacher pool"
+on_policy_s6305,4,2364.8,-353.9,never (speculative slower),88.6,26691,"64-token eos-aware requests, mean latency over 120 prompts x 2 reps; off-policy upfront includes the full teacher pool"

@@ -1,0 +1,10 @@
+split,prompt_id,position,target_top,target_top_text,original_tv,original_top,original_top_text,off_policy_s6304_tv,off_policy_s6304_top,off_policy_s6304_top_text,off_policy_s6305_tv,off_policy_s6305_top,off_policy_s6305_top_text,on_policy_s6304_tv,on_policy_s6304_top,on_policy_s6304_top_text,on_policy_s6305_tv,on_policy_s6305_top,on_policy_s6305_top_text
+math,GSM8K-0005,85,1124, \,0.9623,220, ,0.9216,220, ,0.8963,220, ,0.9552,220, ,0.9658,220, 
+math,GSM8K-0026,60,6439, worked,0.9109,63759, earns,0.8717,63759, earns,0.93,63759, earns,0.8245,63759, earns,0.7903,63759, earns
+math,GSM8K-0005,91,11221, instructions,0.9085,151645,<|im_end|>,0.8915,151645,<|im_end|>,0.9039,151645,<|im_end|>,0.901,151645,<|im_end|>,0.9055,151645,<|im_end|>
+familiar,SHORT-familiar-0026,14,220, ,0.8806,1372, number,0.2884,220, ,0.3512,220, ,0.3501,220, ,0.5288,1372, number
+familiar,SHORT-familiar-0020,28,13,.,0.8295,24,9,0.2396,13,.,0.116,13,.,0.1054,13,.,0.2743,13,.
+familiar,SHORT-familiar-0014,16,9106, destination,0.8096,2274, US,0.8075,2274, US,0.8087,2274, US,0.8006,2274, US,0.7989,2274, US
+shifted,SHORT-shifted-0029,112,11141,country,0.976,10504,FR,0.9762,10504,FR,0.9759,10504,FR,0.9751,10504,FR,0.9745,10504,FR
+shifted,SHORT-shifted-0029,48,284, =,0.9693,28106,_country,0.9649,28106,_country,0.9553,28106,_country,0.9529,28106,_country,0.9655,28106,_country
+shifted,SHORT-shifted-0014,1,785,The,0.9503,35028,AU,0.9411,35028,AU,0.9489,35028,AU,0.9159,35028,AU,0.8919,35028,AU
