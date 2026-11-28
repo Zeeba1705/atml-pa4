@@ -357,6 +357,166 @@ def case_finder(conds, data_dir, per_cond=5, min_tokens=32):
     return out
 
 
+def cross_config_scores(conds, candidates):
+    #same input across every configuration: for each hellaswag id / window picked by the fixed rule above, the four
+    #char-normalised candidate scores (or per-token nll) under every condition that scored it
+    rows= []
+    hs_ids= sorted({c["id"] for c in candidates if c["kind"] == "hellaswag"})
+    win_ids= sorted({c["id"] for c in candidates if c["kind"] == "wikitext2_window"})
+
+    for o in hs_ids:
+        for name, c in conds.items():
+            if o not in c["hs_ex"]:
+                continue
+
+            ex= c["hs_ex"][o]
+            s= [ll / ch for ll, ch in zip(ex["lls"], ex["choice_chars"])]
+            row= {"kind": "hellaswag", "id": o, "condition": name, "gold": ex["gold"], "pred": ex["pred"],
+                  "pred_norm": ex["pred_norm"], "norm_margin": rnd(norm_margin(ex))}
+
+            for i in range(4):
+                row[f"norm_score_{i}"]= rnd(s[i])
+                row[f"raw_ll_{i}"]= rnd(ex["lls"][i])
+
+            rows.append(row)
+
+    for w in win_ids:
+        for name, c in conds.items():
+            r= c["wt2_ex"][w]
+            rows.append({"kind": "wikitext2_window", "id": w, "condition": name, "n_scored": r["n_scored"],
+                         "nll_per_token": rnd(r["nll_sum"] / r["n_scored"])})
+
+    return rows
+
+
+def baseline_deltas(conds):
+    #paired change of every condition from the unchanged model (handout p.5 "paired changes from the unchanged model")
+    rows= []
+    base= conds["baseline"]
+
+    for name, c in conds.items():
+        if name == "baseline":
+            continue
+
+        row= {"condition": name}
+
+        for suite, key in [("wikitext2", "wt2_ex"), ("c4_val", "c4_ex")]:
+            ws= sorted(c[key])
+            units= [(c[key][w]["nll_sum"], base[key][w]["nll_sum"], c[key][w]["n_scored"]) for w in ws]
+            bs= bootstrap_stat(units, ppl_diff_stat)
+            row[f"{suite}_ppl"]= rnd(c[suite]["ppl"], 3)
+            row[f"{suite}_ppl_baseline"]= rnd(base[suite]["ppl"], 3)
+            row[f"{suite}_ppl_diff"]= rnd(bs["estimate"], 3)
+            row[f"{suite}_ppl_ci_low"]= rnd(bs["ci_low"], 3)
+            row[f"{suite}_ppl_ci_high"]= rnd(bs["ci_high"], 3)
+            row[f"{suite}_ppl_rel_change_pct"]= rnd(100 * (c[suite]["ppl"] / base[suite]["ppl"] - 1), 2)
+
+        orders= sorted(c["hs_ex"])
+
+        for metric, pk in [("hs_acc", "pred"), ("hs_acc_norm", "pred_norm")]:
+            diffs= [float(c["hs_ex"][o][pk] == c["hs_ex"][o]["gold"]) - float(base["hs_ex"][o][pk] == base["hs_ex"][o]["gold"])
+                    for o in orders]
+            bs= paired_bootstrap(diffs)
+            row[f"{metric}_n"]= len(orders)
+            row[f"{metric}_diff_pp"]= rnd(100 * bs["mean_diff"], 2)
+            row[f"{metric}_ci_low_pp"]= rnd(100 * bs["ci_low"], 2)
+            row[f"{metric}_ci_high_pp"]= rnd(100 * bs["ci_high"], 2)
+
+        rows.append(row)
+
+    return rows
+
+
+def third(layer, n_layers=28):
+    return "early (0-9)" if layer < 10 else ("middle (10-18)" if layer < 19 else "late (19-27)")
+
+
+def component_summary(conds, map_rows):
+    #per projection type and per layer third: calibration error, nonzeros, wanda pruned-score share (pruning/quant
+    #conditions), and the p3/q3 sensitivity measures and final allocations (parameter-weighted where it is a share)
+    rows= []
+    params= {(r["layer"], r["proj"]): r["params"] for r in map_rows}
+
+    for name, c in conds.items():
+        if not c["layers"]:
+            continue
+
+        for gname, gkey in [("proj", lambda r: r["proj"]), ("layer_third", lambda r: third(r["layer"]))]:
+            groups= defaultdict(list)
+
+            for r in c["layers"]:
+                groups[gkey(r)].append(r)
+
+            for g, rs in groups.items():
+                w= np.array([params[(r["layer"], r["proj"])] for r in rs], dtype=float)
+                psf= [r["pruned_score_fraction"] for r in rs if r.get("pruned_score_fraction") is not None]
+                rows.append({"source": name, "group_by": gname, "group": g, "n_units": len(rs),
+                             "rel_output_error_mean": rnd(np.mean([r["rel_output_error"] for r in rs]), 6),
+                             "rel_output_error_max": rnd(np.max([r["rel_output_error"] for r in rs]), 6),
+                             "nonzero_fraction_weighted": rnd(np.average([r.get("nonzero_fraction", np.nan) for r in rs], weights=w), 4)
+                             if all(r.get("nonzero_fraction") is not None for r in rs) else None,
+                             "bits_weighted": rnd(np.average([r["bits"] for r in rs], weights=w), 3) if all(r.get("bits") for r in rs) else None,
+                             "pruned_score_fraction_mean": rnd(np.mean(psf), 6) if psf else None})
+
+    keys= ["taylor_pruned_mean_s0.5", "taylor_pruned_mean_s0.75", "fisher_quant_b4", "fisher_quant_b3", "fisher_quant_b2",
+           "fisher_quant_b8", "p3_s0.5_sparsity", "p3_s0.75_sparsity", "q3_b4_bits", "q3_b3_bits"]
+
+    for gname, gkey in [("proj", lambda r: r["proj"]), ("layer_third", lambda r: third(r["layer"]))]:
+        groups= defaultdict(list)
+
+        for r in map_rows:
+            groups[gkey(r)].append(r)
+
+        for g, rs in groups.items():
+            w= np.array([r["params"] for r in rs], dtype=float)
+            row= {"source": "sensitivity_and_allocation", "group_by": gname, "group": g, "n_units": len(rs)}
+
+            for k in keys:
+                vals= [r[k] for r in rs]
+                #sensitivities are ~1e-7, so keep 4 significant figures instead of fixed decimals
+                v= np.average(vals, weights=w) if k.startswith(("p3", "q3")) else np.mean(vals)
+                row[k + ("_weighted" if k.startswith(("p3", "q3")) else "_mean")]= float(f"{v:.4g}")
+
+            for k in ["fisher_quant_b4", "taylor_pruned_mean_s0.5"]:
+                row[f"{k}_share_of_total"]= rnd(sum(r[k] for r in rs) / sum(r[k] for r in map_rows), 4)
+
+            rows.append(row)
+
+    return rows
+
+
+def storage_breakdown(rows, map_rows):
+    #packed bytes split into b-bit codes, quantizer metadata (fp16 scales + packed zero-points + padding),
+    #unfolded awq scales and the non-eligible fp16 params
+    out= []
+    eligible= sum(r["params"] for r in map_rows)
+
+    for r in rows:
+        if not r["packed_total_bytes"]:
+            continue
+
+        if r["family"] == "q3":
+            alloc= f"q3_b{r['bits']}_bits"
+            codes= sum(m["params"] * m[alloc] for m in map_rows) / 8
+        else:
+            codes= eligible * r["bits"] / 8
+
+        scales= r["unfolded_scale_bytes"] or 0
+        meta= r["packed_eligible_bytes"] - codes
+        non_el= r["packed_total_bytes"] - r["packed_eligible_bytes"] - scales
+
+        out.append({"condition": r["condition"], "packed_total_bytes": r["packed_total_bytes"], "code_bytes": int(codes),
+                    "quantizer_metadata_bytes": int(meta), "unfolded_awq_scale_bytes": scales,
+                    "non_eligible_fp16_bytes": int(non_el),
+                    "metadata_share_of_eligible": rnd(meta / r["packed_eligible_bytes"]),
+                    "effective_bits_per_eligible_weight": r["effective_bits_per_eligible_weight"],
+                    "packed_over_dense_fp16": r["packed_over_dense_fp16"],
+                    "eval_peak_alloc_MiB": r["eval_peak_alloc_MiB"], "latency_peak_alloc_MiB": r["latency_peak_alloc_MiB"],
+                    "note": "evaluated as fake-quant fp16: allocated memory and latency are fp16 numbers"})
+
+    return out
+
+
 #---------------------------------------------------------------- figures
 def quality_figures(rows, fig_dir):
     base= next(r for r in rows if r["family"] == "baseline")
@@ -510,7 +670,12 @@ def main(args):
     write_csv(os.path.join(tdir, "p3_dev_sweep.csv"), sweep)
 
     write_csv(os.path.join(tdir, "paired_bootstrap.csv"), bootstrap_table(conds))
-    write_csv(os.path.join(tdir, "qualitative_candidates.csv"), case_finder(conds, args.data_dir))
+    cands= case_finder(conds, args.data_dir)
+    write_csv(os.path.join(tdir, "qualitative_candidates.csv"), cands)
+    write_csv(os.path.join(tdir, "qualitative_scores_all_conditions.csv"), cross_config_scores(conds, cands))
+    write_csv(os.path.join(tdir, "baseline_deltas.csv"), baseline_deltas(conds))
+    write_csv(os.path.join(tdir, "component_summary.csv"), component_summary(conds, map_rows))
+    write_csv(os.path.join(tdir, "storage_breakdown.csv"), storage_breakdown(rows, map_rows))
 
     quality_figures(rows, fig_dir)
     map_figures(map_rows, fig_dir)
