@@ -1,0 +1,9 @@
+condition,packed_total_bytes,code_bytes,quantizer_metadata_bytes,unfolded_awq_scale_bytes,non_eligible_fp16_bytes,metadata_share_of_eligible,effective_bits_per_eligible_weight,packed_over_dense_fp16,eval_peak_alloc_MiB,latency_peak_alloc_MiB,note
+q1_uniform_b3,982670848,491323392,24310272,0,467037184,0.0471,3.1484,0.3183,3743.1,3072.5,evaluated as fake-quant fp16: allocated memory and latency are fp16 numbers
+q1_uniform_b4,1147724800,655097856,25589760,0,467037184,0.0376,4.1562,0.3717,3743.1,3072.5,evaluated as fake-quant fp16: allocated memory and latency are fp16 numbers
+q1_uniform_b8,1807940608,1310195712,30707712,0,467037184,0.0229,8.1875,0.5856,3694.1,3072.5,evaluated as fake-quant fp16: allocated memory and latency are fp16 numbers
+q2_awq_b3,982756864,491323392,24310272,86016,467037184,0.0471,3.149,0.3183,3743.1,3072.6,evaluated as fake-quant fp16: allocated memory and latency are fp16 numbers
+q2_awq_b4,1147810816,655097856,25589760,86016,467037184,0.0376,4.1568,0.3718,3743.1,3072.6,evaluated as fake-quant fp16: allocated memory and latency are fp16 numbers
+q2_awq_b8,1808026624,1310195712,30707712,86016,467037184,0.0229,8.188,0.5856,3694.2,3072.6,evaluated as fake-quant fp16: allocated memory and latency are fp16 numbers
+q3_mixed_budget_b3,982756864,491323392,24310272,86016,467037184,0.0471,3.149,0.3183,3744.1,3073.6,evaluated as fake-quant fp16: allocated memory and latency are fp16 numbers
+q3_mixed_budget_b4,1147810816,655097856,25589760,86016,467037184,0.0376,4.1568,0.3718,3744.1,3073.6,evaluated as fake-quant fp16: allocated memory and latency are fp16 numbers
