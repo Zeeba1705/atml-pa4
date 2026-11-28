@@ -4,7 +4,8 @@ Lookup sheet for writing the report. It lists where every result lives, what eac
 numbers, the honest labels that must accompany them, and which differences are statistically resolved. It
 deliberately contains **no analysis or explanation of why** — that is the report's job.
 
-All numbers were copied from the committed CSVs on 2026-11-27. If a CSV is regenerated, it wins over this file.
+All numbers were copied from the committed CSVs on 2026-11-28. Each task ends with a "Research question → evidence"
+map against the handout's Required Evidence and Research Questions (pp.5, 10–11, 15). If a CSV is regenerated, it wins over this file.
 
 Branches: Task 1 = `task1-compress`, Task 2 = `task2-attention`, Task 3 = `task3-specdec`. Each task's tables are
 regenerated on CPU with `python -m task{1,2,3}.make_tables`, and decisions are in `docs/decisions.md` on each branch.
@@ -27,6 +28,11 @@ except where a Bonferroni column is given.
 | P3 λ sweep on C4 dev (selection evidence) | `results/task1/tables/p3_dev_sweep.csv` |
 | Paired bootstraps | `results/task1/tables/paired_bootstrap.csv` |
 | Qualitative candidates (fixed rule) | `results/task1/tables/qualitative_candidates.csv` |
+| Same inputs scored by every condition (4 candidate scores per HellaSwag id; per-token NLL per window) | `results/task1/tables/qualitative_scores_all_conditions.csv` |
+| Paired change of every condition from the unchanged model | `results/task1/tables/baseline_deltas.csv` |
+| Per-projection-type and per-layer-third summary (errors, removed score mass, sensitivities, allocations) | `results/task1/tables/component_summary.csv` |
+| Packed bytes split into codes / metadata / AWQ scales / non-eligible | `results/task1/tables/storage_breakdown.csv` |
+| Per-condition Wanda score quantiles per projection | `results/task1/tables/layer_errors.csv` (`score_*` columns, Wanda-based rows) |
 | Figures | `results/task1/figures/{quality_vs_sparsity,quality_vs_bytes,calibration_error_vs_ppl,sensitivity_and_sparsity_maps,q3_bit_maps}.png` |
 | Frozen allocations (pre-held-out) | `splits/task1/{sensitivity,p3_allocation_s0.5,p3_allocation_s0.75,q3_allocation_b4,q3_allocation_b3}.json`, `splits/task1/p3_dev/` |
 
@@ -101,6 +107,121 @@ acc_norm's does not.
 
 PPL bootstrap: resample windows with replacement, pool the NLL sums and token counts for both conditions on the
 same resample, then take exp. The CI is on the PPL difference.
+
+### Paired change from the unchanged model (`baseline_deltas.csv`)
+Window bootstrap for PPL; HellaSwag acc_norm over the examples each condition scored (2,000 or the first 512), in
+**percentage points**. Relative PPL change is (PPL/PPL_base − 1) × 100%.
+
+| condition | ΔWT2 PPL [CI] | rel. % | ΔC4 PPL [CI] | Δ acc_norm pp [CI] (n) |
+|---|---|---|---|---|
+| p1 s0.25 | +5.22 [4.75, 5.80] | +32.4 | +3.02 [2.67, 3.46] | +0.59 [−1.56, 2.73] (512) |
+| p1 s0.5 | +111.7 [102.6, 123.0] | +693 | +87.5 [78.8, 97.3] | −29.55 [−31.85, −27.30] (2000) |
+| p1 s0.75 | +1.58e6 [1.31e6, 1.87e6] | – | +1.22e6 [0.94e6, 1.59e6] | −29.69 [−35.16, −24.02] (512) |
+| p2 s0.25 | +0.43 [0.36, 0.51] | +2.7 | +0.42 [0.34, 0.56] | +1.37 [−0.20, 2.93] (512) |
+| p2 s0.5 | +9.30 [8.63, 10.05] | +57.8 | +6.15 [5.34, 7.29] | −11.65 [−13.20, −10.00] (2000) |
+| p2 s0.75 | +2795 [2574, 3019] | – | +1758 [1542, 1989] | −28.91 [−33.98, −23.83] (512) |
+| p2 2:4 s0.5 | +50.7 [46.2, 55.6] | +315 | +35.9 [32.1, 40.4] | −14.65 [−18.55, −10.94] (512) |
+| p3 s0.5 | +7.53 [6.96, 8.18] | +46.7 | +5.23 [4.49, 6.32] | −11.00 [−12.55, −9.50] (2000) |
+| p3 s0.75 | +3156 [2833, 3543] | – | +1099 [940, 1290] | −32.42 [−37.11, −27.34] (512) |
+| q1 b8 | −0.023 [−0.032, −0.013] | −0.14 | +0.005 [0.000, 0.011] | 0.00 [−0.78, 0.78] (512) |
+| q1 b4 | +2.79 [2.52, 3.12] | +17.3 | +1.77 [1.51, 2.11] | −2.40 [−3.45, −1.35] (2000) |
+| q1 b3 | +24.4 [22.6, 26.6] | +152 | +15.6 [13.8, 18.0] | −13.25 [−15.00, −11.55] (2000) |
+| q2 b8 | +0.012 [0.007, 0.018] | +0.08 | +0.008 [0.004, 0.011] | 0.00 [0.00, 0.00] (512) |
+| q2 b4 | +1.53 [1.37, 1.69] | +9.5 | +1.00 [0.83, 1.25] | −1.55 [−2.55, −0.60] (2000) |
+| q2 b3 | +9.11 [8.48, 9.85] | +56.6 | +6.01 [5.19, 7.21] | −7.75 [−9.25, −6.30] (2000) |
+| q3 b4 budget | +1.51 [1.36, 1.65] | +9.3 | +1.04 [0.85, 1.35] | −2.25 [−3.20, −1.35] (2000) |
+| q3 b3 budget | +7.86 [7.35, 8.45] | +48.8 | +5.32 [4.62, 6.26] | −8.20 [−9.70, −6.75] (2000) |
+
+Raw-acc deltas are in the same file. Baseline P3/Q3 deltas cross the software-environment boundary (caveat below).
+
+### Components: magnitude, activation, removal impact, sensitivity, allocation (`component_summary.csv`)
+- `pruned_score_fraction` = 1 − (kept score / total score) within a projection, using **that method's own score**:
+  |W| for P1, |W|·‖X_j‖₂ for P2/P3. It is the share of score mass removed, so P1 and P2 values are on different
+  scales and are not directly comparable. `rel_output_error` is comparable across methods.
+- **Mean layer-output error by projection type** (from `layer_errors.csv` / `component_summary.csv`):
+
+  | proj | P1 50% | P2 50% | P3 50% | Q1 b4 | Q2 b4 | Q2 b3 | Q3 b3 budget |
+  |---|---|---|---|---|---|---|---|
+  | q | 0.0782 | 0.0198 | 0.0099 | 0.0030 | 0.0018 | 0.0081 | 0.0091 |
+  | k | 0.0438 | 0.0123 | 0.0027 | 0.0030 | 0.0022 | 0.0103 | 0.0024 |
+  | v | 0.0706 | 0.0272 | 0.0076 | 0.0150 | 0.0093 | 0.0412 | 0.0088 |
+  | o | 0.0836 | 0.0348 | 0.0191 | 0.0130 | 0.0093 | 0.0418 | 0.0298 |
+  | gate | 0.0333 | 0.0135 | 0.0184 | 0.0040 | 0.0030 | 0.0146 | 0.0298 |
+  | up | 0.0925 | 0.0453 | 0.0438 | 0.0142 | 0.0089 | 0.0414 | 0.0456 |
+  | down | 0.0606 | 0.0359 | 0.0314 | 0.0099 | 0.0080 | 0.0364 | 0.0500 |
+
+  The same file has these for every condition at 25/50/75% and 8/4/3 bits, and grouped by layer third (early 0–9,
+  middle 10–18, late 19–27).
+- **Removed score mass at 50%, mean by projection**: P1 0.188–0.201 (|W| mass); P2 0.159–0.192 (Wanda mass);
+  P3 0.078 (v) to 0.244 (q).
+- **Sensitivity by projection type** (mean over 28 layers) with the final allocation (parameter-weighted):
+
+  | proj | Taylor s0.5 | Fisher b4 | Fisher b3 | share of total Fisher b4 | share of total Taylor s0.5 | P3 sparsity @50% | @75% | Q3 bits @INT4 | @INT3 |
+  |---|---|---|---|---|---|---|---|---|---|
+  | q | 4.25e-8 | 6.12e-5 | 2.73e-4 | 0.024 | 0.066 | 0.589 | 0.834 | 3.93 | 2.96 |
+  | k | 1.05e-7 | 7.75e-5 | 3.49e-4 | 0.031 | 0.163 | 0.407 | 0.654 | 4.86 | 3.96 |
+  | v | 1.97e-7 | 2.37e-4 | 8.60e-4 | 0.094 | 0.305 | 0.354 | 0.603 | 7.71 | 4.29 |
+  | o | 1.03e-7 | 1.74e-4 | 7.42e-4 | 0.069 | 0.159 | 0.415 | 0.661 | 4.14 | 3.29 |
+  | gate | 5.69e-8 | 3.23e-4 | 1.47e-3 | 0.129 | 0.088 | 0.540 | 0.792 | 3.61 | 2.82 |
+  | up | 6.82e-8 | 4.93e-4 | 2.06e-3 | 0.196 | 0.105 | 0.494 | 0.745 | 3.96 | 3.00 |
+  | down | 7.35e-8 | 1.15e-3 | 3.60e-3 | 0.457 | 0.114 | 0.472 | 0.721 | 4.29 | 3.07 |
+
+- **By layer third**:
+  - Fisher b4 share: early 0.403, middle 0.166, late 0.431.
+  - Taylor s0.5 share: early 0.393, middle 0.329, late 0.278.
+  - P3 sparsity @50%: early 0.488, middle 0.529, late 0.484.
+  - Q3 bits @INT4: early 4.08, middle 3.65, late 4.27.
+- **Extremes visible in the heat maps** (`sensitivity_and_sparsity_maps.png`, `q3_bit_maps.png`): Fisher down_proj in
+  layers 1, 2, 26 and 27, and Taylor v_proj in layer 0, are the largest cells.
+- **Matched-budget checks**:
+  - P3 zeros equal P2 zeros at both sparsities (`matched_zero_check`).
+  - Q3 packed bytes equal the Q2 bytes exactly (`allocation_meta.csv`).
+- **Calibration error vs held-out quality**: `main.csv` (`layer_rel_err_mean`) against `wt2_ppl`; figure
+  `calibration_error_vs_ppl.png`. Examples:
+  - P2 50% 0.0270 → 25.41 vs P3 50% 0.0190 → 23.63.
+  - Q2 b3 0.0277 → 25.22 vs Q3 b3 0.0251 → 23.97.
+  - Q2 b4 0.0061 → 17.63 vs Q3 b4 0.0063 → 17.61.
+  - P2 75% 0.111 → 2811 vs P3 75% 0.086 → 3173.
+
+### Theoretical vs measured resources (`storage_breakdown.csv`, `main.csv`)
+| condition | b-bit codes | quantizer metadata (FP16 scales + packed zero-points + padding) | unfolded AWQ scales | non-eligible FP16 | metadata share of eligible bytes |
+|---|---|---|---|---|---|
+| INT8 (Q1/Q2) | 1,310,195,712 | 30,707,712 | 0 / 86,016 | 467,037,184 | 2.3% |
+| INT4 (Q1/Q2/Q3) | 655,097,856 | 25,589,760 | 0 / 86,016 / 86,016 | 467,037,184 | 3.8% |
+| INT3 (Q1/Q2/Q3) | 491,323,392 | 24,310,272 | 0 / 86,016 / 86,016 | 467,037,184 | 4.7% |
+
+- Effective bits per eligible weight (codes + metadata + scales): 4.157 at INT4 and 3.149 at INT3 (Q2/Q3).
+- Packed / dense FP16: INT4 0.372; INT3 0.318.
+- 16-bit sparse estimate / dense FP16: 50% 0.629; 25% 0.841; 75% 0.416. For the baseline it is 1.053, because nearly
+  every weight is nonzero.
+- **Measured**, with everything evaluated as dense FP16:
+  - Eval peak allocated is about 3.7 GiB for every quantized condition (3,694–3,744 MiB).
+  - Latency is within the same session's range as the baseline. Prefill at 512 is 98–105 ms for baseline, P1, P2, Q1
+    and Q2; decode is 30–33 ms/token.
+  - So the measured memory and latency do not follow nominal bits or sparsity.
+- **Build cost** (`main.csv`):
+  - Calibration (activation collection) 5.3–6.3 s.
+  - Compression: Q1 about 2 s; P1/P2/P3 11–17 s; Q2/Q3 262–283 s (Q2 and Q3 include the 21-point α search).
+  - Layer-error pass 60–111 s.
+  - The P3/Q3 sensitivity pass took 915 s (`splits/task1/sensitivity.json`), plus about 88 s per P3 dev-sweep
+    point × 5 λ × 2 sparsities (`p3_dev_sweep.csv`).
+  - Build peak allocated: 4,112 MiB (P1/P2), 4,200 MiB (P3, Q1), 5,423 MiB (Q2/Q3); sensitivity pass 8,129 MiB.
+
+### Research question → evidence
+1. **Magnitude vs activation vs removal impact, by sparsity and component**:
+   - Removing the same share of weights by |W| (P1) vs |W|·‖X‖ (P2): per-projection error by type in
+     `component_summary.csv`, and both at 25/50/75%.
+   - Wanda score distributions per projection (`layer_errors.csv` `score_*` columns).
+   - Taylor sensitivity by component; quality vs sparsity figure; P2 − P1 bootstrap.
+2. **Most sensitive components and allocation**: the sensitivity tables above, the heat maps and final maps, the
+   allocation rules in `allocation_meta.csv` (P3 linear rank rule with λ from the dev sweep; Q3 exact ILP with
+   objective vs uniform), and the dev sweep including unselected λ.
+3. **Uniform vs layer-dependent at matched budget, PPL vs HellaSwag**: the P3−P2 and Q3−Q2 bootstraps (both PPL
+   suites and both acc metrics), baseline deltas, calibration error vs PPL, and the qualitative cross-condition scores.
+4. **Calibration cost, representation overhead, kernels**: the storage breakdown, sparse estimate, build times,
+   memory and latency above, plus the labels below.
+5. **Qualitative** (required evidence): `qualitative_candidates.csv` (fixed-rule picks with text) plus
+   `qualitative_scores_all_conditions.csv` (the same ids under every condition). Choose and interpret them yourself.
 
 ### Caveats and labels to carry into the report
 - **Quantized = fake-quantized FP16** (dequantized weights in memory). Packed bytes are a serialized count, not a
@@ -274,6 +395,65 @@ Budget = M_4(L), the serialized INT4 channel-K / token-V bytes. Mean budget is 2
   - Retention granularity: shared for sink+recent; per (layer, KV head) for question-aware and hybrid
     (decision 2.21, which also gives the index accounting).
 
+### Part C systems numbers (`kv_main.csv`, `kv_lengths.csv`)
+| | 2,048 nominal (~2,628 tok) | 4,096 nominal (~5,217 tok) |
+|---|---|---|
+| Full-context FP16 prefill, mean s | 1.381 | 4.507 |
+| Peak allocated during that prefill, max MiB | 3,906.8 | 6,239.9 |
+| Question scoring (question-aware ranking), mean s | 0.068 | 0.099 |
+
+Per method, means over all 180 cases:
+
+| method | compress s | suffix prefill s | decode s | tokens generated | peak alloc MiB (max) | FP16 positions kept | bytes at budget point MiB | shared FP16 suffix+generated MiB |
+|---|---|---|---|---|---|---|---|---|
+| fp16 | 0.003 | 0.045 | 0.231 | 6.0 | 3,363 | all | 107.25 | 1.06 |
+| evict_sink_recent | 0.006 | 0.038 | 0.192 | 6.05 | 3,304 | 1,123 | 30.71 | 1.06 |
+| evict_question | 0.006 | 0.038 | 0.190 | 6.0 | 3,308 | 1,119 | 30.73 | 1.06 |
+| int4_token | 0.030 | 0.042 | 0.694 | 16.0 | 3,371 | 29 | 30.73 | 1.33 |
+| int4_channel_k | 0.030 | 0.042 | 0.230 | 6.0 | 3,369 | 29 | 30.73 | 1.06 |
+| hybrid_int2 | 0.031 | 0.042 | 0.229 | 6.0 | 3,369 | 562 | 29.79 | 1.06 |
+
+- The peak allocated is at the post-prefill stage. The context prefill peak is the same for every method, because
+  each one compresses after a full FP16 prefill (handout p.10).
+- int4_token generated the full 16 tokens without EOS (`stopped_eos_fraction` 0.0); the rest are about 1.0.
+- Teacher-forced KL, mean over the 5 answer tokens: evict_sink_recent 1.83, evict_question 0.0068, int4_token 4.41,
+  int4_channel_k 0.00047, hybrid 0.0029.
+
+**Continuous paired bootstraps** (`kv_bootstrap.csv`, all 180 cases; also split by length in the file):
+
+| comparison | Δ ref-answer NLL [CI] | Δ post-prefill KL [CI] |
+|---|---|---|
+| evict_question − evict_sink_recent | −9.13 [−10.12, −8.10] | −2.098 [−2.368, −1.824] |
+| int4_channel_k − int4_token | −22.05 [−22.70, −21.39] | −5.588 [−5.825, −5.337] |
+| hybrid − evict_question | −0.018 [−0.050, 0.006] | +0.0033 [0.0006, 0.0069] |
+| hybrid − int4_channel_k | +0.012 [−0.001, 0.036] | +0.0016 [−0.0013, 0.0054] |
+| evict_question − int4_channel_k | +0.030 [−0.003, 0.077] | −0.0017 [−0.0026, −0.0010] |
+| int4_channel_k − fp16 | +0.0033 [0.0020, 0.0047] | +0.0024 [0.0015, 0.0034] |
+| evict_question − fp16 | +0.033 [−0.0001, 0.081] | +0.0006 [0.0002, 0.0011] |
+| hybrid − fp16 | +0.015 [0.002, 0.038] | +0.0039 [0.0010, 0.0078] |
+
+### Research question → evidence
+1. **Dense vs tiled vs SDPA (fidelity, backward cost, memory vs L)**:
+   - `attention.csv`: output and gradient errors, forward vs forward+backward latency and memory, the FP32 dense OOM.
+   - `attention_sdpa_backends.csv`, `attention_edge_cases.csv`.
+   - Figures `attention_latency.png`, `attention_memory.png`.
+2. **Local / dilated / content-selected / linear state vs distance and load**:
+   - `mqar_test_per_seed.csv`, `mqar_test_seed_mean.csv`.
+   - The distance-by-load heatmap (`mqar_distance_by_load.png`; model names give the training K and regime).
+   - Learning curves for every mechanism (`mqar_dev_curves.csv`, figure).
+   - Train-vs-test mask control (dense-trained + test-time W=64 vs window-trained), and the B3 bootstrap.
+   - Costs: theoretical pairs/state vs measured sweep (dense masks materialized, linear score tensor).
+   - Dense gate verified: dense = 1.00 on its trained cells, every seed.
+3. **Matched-INT4 budget: eviction vs full quantization vs hybrid; grouping; NLL and evidence beyond accuracy**:
+   - The matched-budget table and the breakdowns.
+   - Accuracy and continuous bootstraps.
+   - K/V reconstruction error (token-wise vs channel-wise K).
+   - Evidence retained; masks and aligned generations for the 6 fixed cases.
+4. **Prefill, importance estimation, grouping, packing and decode-step overhead vs nominal ratios**:
+   - The systems table above.
+   - `kv_bench.csv`: pack, unpack, unpack+step vs the FP16 step at batch 1/8, both lengths; serialized = formula.
+   - The MQAR forward sweep (window/dilated slower than dense at every T; linear_recurrent 2,960 ms at T=8192).
+
 ---
 
 ## Task 3 — distillation + speculative decoding
@@ -390,6 +570,109 @@ The familiar-split strict accuracy is bounded by format compliance (decision 3.1
 **Deployment break-even** (`deployment_break_even.csv`):
 - Against target-only: "never" for every draft and γ, because speculative is slower.
 - Against the original draft at γ=4: 26,691 to 86,834 requests. At γ=2: "never".
+
+### Additional Task 3 evidence
+
+**Sampler correctness**:
+- `tests/test_task3.py` (13 tests, all pass on CPU): accept probability, residual normalization, reject→residual
+  sample, full accept → bonus token, cap handling, γ > remaining tokens, EOS mid-round, the exact joint, Markov χ²
+  (correct passes and bug rejected), split prefill = full forward, cache rollback (`crop`) = fresh forward,
+  target-only reference = chain, bank positions = supplied rule.
+- On the real models (`results/task3/spec_eval/<draft>/checks.json`): tokenizer, chat-template and vocab agreement
+  (151,936); split-prefill and post-generation probability differences ≤ 0.0034 (tolerance 0.02).
+
+**Alignment on every bank**, all splits and positions, fkl / tv (`alignment.csv`):
+
+| bank (n records) | original | off s6304 | off s6305 | on s6304 | on s6305 |
+|---|---|---|---|---|---|
+| supplied_teacher (3,718) | 0.212 / 0.136 | 0.180 / 0.133 | 0.177 / 0.130 | 0.175 / 0.134 | 0.179 / 0.142 |
+| supplied_original_draft (3,934) | 0.301 / 0.175 | 0.251 / 0.167 | 0.256 / 0.166 | 0.240 / 0.167 | 0.240 / 0.171 |
+| teacher_pure (ours, 3,499) | 0.193 / 0.119 | 0.166 / 0.116 | 0.166 / 0.113 | 0.169 / 0.119 | 0.171 / 0.128 |
+| exact_spec_original_gamma4 (3,449) | 0.157 / 0.107 | 0.131 / 0.102 | 0.129 / 0.100 | 0.133 / 0.105 | 0.135 / 0.113 |
+| student_off_policy_s6304 (3,334) | 0.251 / 0.145 | 0.214 / 0.138 | 0.220 / 0.139 | 0.208 / 0.139 | 0.207 / 0.146 |
+| student_off_policy_s6305 (3,456) | 0.244 / 0.143 | 0.199 / 0.135 | 0.205 / 0.134 | 0.200 / 0.137 | 0.196 / 0.143 |
+| student_on_policy_s6304 (3,480) | 0.230 / 0.140 | 0.194 / 0.134 | 0.196 / 0.133 | 0.190 / 0.134 | 0.192 / 0.143 |
+| student_on_policy_s6305 (3,479) | 0.292 / 0.168 | 0.242 / 0.159 | 0.247 / 0.158 | 0.235 / 0.158 | 0.228 / 0.163 |
+
+- Each student is scored on its own bank and on the other students' banks (the diagonal and off-diagonal of the
+  lower block).
+- rkl, greedy agreement and expected acceptance (1−tv) are in the same file. Bootstraps vs original are in
+  `alignment_vs_original_bootstrap.csv`, for every bank and split.
+
+**By position and workload on the exact-spec bank**, fkl / 1−tv:
+
+| | original | off s6304 | on s6304 |
+|---|---|---|---|
+| pos 1–16 (791) | 0.195 / 0.874 | 0.128 / 0.901 | 0.123 / 0.903 |
+| pos 17–32 (574) | 0.168 / 0.877 | 0.147 / 0.880 | 0.162 / 0.873 |
+| pos 33–64 (1,076) | 0.168 / 0.886 | 0.151 / 0.883 | 0.152 / 0.883 |
+| pos 65–192 (1,008) | 0.109 / 0.924 | 0.102 / 0.921 | 0.103 / 0.916 |
+| math (2,880) | 0.130 / 0.906 | 0.117 / 0.903 | 0.121 / 0.902 |
+| familiar (346) | 0.320 / 0.802 | 0.149 / 0.877 | 0.154 / 0.870 |
+| shifted (223) | 0.260 / 0.864 | 0.279 / 0.866 | 0.257 / 0.857 |
+
+- Seed dispersion (`alignment_methods_seed_dispersion.csv`), exact-spec bank, all: fkl half-range over the 2 seeds
+  is 0.0009 (off-policy) and 0.0011 (on-policy); tv 0.0011 and 0.0042.
+- `prefix_disagreements.csv` lists high-TV prefixes (prompt id, position, target argmax token and text, each draft's
+  TV and argmax token and text) for matched-prompt qualitative examples.
+
+**Per-workload speculative results** (`spec_main.csv`, original draft):
+- γ=2, accepted/examined: math 0.878, familiar 0.844, shifted 0.838. tok/s ratio (median): 0.997 / 0.774 / 0.732.
+- γ=4: accepted/examined 0.886 / 0.806 / 0.806; ratio 0.922 / 0.675 / 0.660.
+- Students on familiar at γ=4: accepted/examined 0.874–0.878 (off) and 0.859 (on); see the file.
+
+**By output length** (`spec_by_output_length.csv`, original):
+
+| γ | output-length bin (runs) | acc/examined | tok/s ratio (geomean) |
+|---|---|---|---|
+| 2 | 1–16 tokens (92) | 0.889 | 0.715 |
+| 2 | 17–32 (14) | 0.842 | 0.888 |
+| 2 | 33–63 (6) | 0.787 | 0.886 |
+| 2 | 64, truncated (128) | 0.874 | 0.986 |
+| 4 | 1–16 (83) | 0.892 | 0.599 |
+| 4 | 17–32 (17) | 0.751 | 0.638 |
+| 4 | 33–63 (11) | 0.782 | 0.738 |
+| 4 | 64 (129) | 0.878 | 0.902 |
+
+**Work, latency, memory, EOS** (`spec_main.csv`, all split):
+
+| draft | γ | accepted prefix/round | target passes/token (spec; target-only = 1) | draft passes/token | mean latency ms spec / target | EOS frac spec / target | truncated (64 cap) | peak alloc MiB spec / target |
+|---|---|---|---|---|---|---|---|---|
+| original | 2 | 1.59 | 0.390 | 0.764 | 1716 / 1778 | 0.467 / 0.429 | 0.533 | 3,924 / 3,924 |
+| original | 4 | 2.74 | 0.274 | 1.063 | 2020 / 1668 | 0.463 / 0.471 | 0.538 | 3,930 / 3,924 |
+| off s6304 | 4 | 2.78 | 0.270 | 1.044 | 1974 / 1614 | 0.438 / 0.471 | 0.563 | 3,930 / 3,924 |
+| on s6304 | 4 | 2.81 | 0.268 | 1.041 | 1951 / 1617 | 0.446 / 0.471 | 0.554 | 3,930 / 3,924 |
+| unmerged off s6304 | 4 | 2.78 | 0.270 | 1.044 | 2814 / 1638 | 0.438 / 0.471 | 0.563 | 3,934 / 3,928 |
+
+All rows, including the γ=2 students, are in the file.
+
+**Predicted vs measured acceptance** (`speedup_model.csv`): measured α (accepted/examined) vs bank 1−tv.
+- γ=2: original 0.872 vs 0.880; off s6304 0.869 vs 0.888; off s6305 0.865 vs 0.891; on s6304 0.876 vs 0.887;
+  on s6305 0.858 vs 0.879.
+- γ=4: original 0.868 vs 0.880; off s6305 0.881 vs 0.891.
+- Ŝ from bank α is in the same file (e.g. original γ=2 1.083, γ=4 0.990).
+
+**Distillation parameter counts**: student 495,114,112 params, of which the LoRA adapter is 1,081,344. Merged
+checkpoint 494,032,768. Peak allocated during training 5,075–5,216 MiB.
+
+**Standalone, by output length**: `standalone_math_by_length.csv`. EOS and truncation per model are in the
+`truncated` column above.
+
+### Research question → evidence
+1. **Prefix distribution vs agreement; exact spec reproduces target statistics**:
+   - The alignment grid above (teacher-produced, original-draft-produced and exact-spec banks, plus each student's
+     own and the others' rollouts).
+   - Bootstraps vs original; the training KL curves (`distill_kl_curves.png`).
+   - The bank-consistency check (teacher_pure vs exact_spec).
+2. **Domain, response length, position → overlap, accepted length, verification work; transfer**:
+   - Position and workload tables; `spec_main.csv` by split; `spec_by_output_length.csv`.
+   - Familiar vs shifted (unused templates) splits, for both alignment and standalone.
+3. **KL/TV/1−tv vs empirical acceptance across γ; costs vs analytical speedup**:
+   - Predicted vs measured α; `speedup_model.csv` (c, v_γ, Ŝ from measured and from bank α, measured S, break-even α).
+   - `spec_decomposition.csv`; figure `speedup_measured_vs_predicted.png`.
+4. **When draft/verify/adapter/EOS cost dominates; distillation cost**:
+   - The decomposition, unmerged timing, EOS and short-output bins.
+   - `distillation_costs.csv` and `deployment_break_even.csv`.
 
 ### Caveats and labels
 - The exact-speculative prefix bank is **generated by us** at γ=4; the data repo does not supply it (decision 3.1).
